@@ -5,70 +5,19 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-        <style>
-            * {
-                font-family: 'Poppins', sans-serif;
-            }
-
-            h1 {
-                font-weight: bold;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                background-color: #500000;
-            }
-            .login-container {
-                width: 500px;
-                height: 460px;
-                margin: 0 auto;
-                margin-top: 250px;
-                background-color: white;
-                display: flex;
-                flex-direction: column;
-                text-align: center;
-                border-radius: 12px;
-            }
-
-            #signup-text {
-                font-size: 10px;
-            }
-
-            a {
-                text-decoration: none;
-                color: #0082CB;
-            }
-
-            input, text {
-                border-radius: 12px;
-                width: 420px;
-                height: 44px;
-                margin: 12px auto;
-                padding: 0 10px;
-            }
-
-            button {
-                width: 420px;
-                height: 63px;
-                background-color: #500000;
-                margin: 21px auto;
-                color: white;
-                font-weight: bold;
-                font-size: 16px;
-                border: none;
-                border-radius: 12px;
-                cursor: pointer;
-            }
-
-        </style>
+        <link rel="stylesheet" href="../css/registration.css">
     </head>
     <body>
-        <div class="login-container">
+        <div class="signup-container">
             <h1>SIGNUP</h1>
-            <input type="text" placeholder="Username" id="username" name="username" required>
-            <input type="password" placeholder="Create password" id="create-password" name="password" required>
-            <input type="password" placeholder="Confirm password" id="confirm-password" name="password" required>
+            <input type="text" placeholder="UIN" id="UIN" name="UIN" required>
+            <input type="text" placeholder="First name"id="first_name" name="first_name" required>
+            <input type="text" placeholder="Middle initial"id="m_initial" name="m_initial" required>
+            <input type="text" placeholder="Last name"id="last_name" name="last_name" required>
+            <input type="text" placeholder="Email"id="email" name="email" required>
+            <input type="text" placeholder="Discord name"id="discord" name="discord" required>
+            <input type="text" placeholder="Account name"id="account_username" name="account_username" required>
+            <input type="password" placeholder="Account password"id="account_password" name="account_password" required>
             <span id="signup-text">Already have an account? <a href="../">Login</a></span>
             <button type="submit" id="signup-button">SIGNUP</button>
         </div>
