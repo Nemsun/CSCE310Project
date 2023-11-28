@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,10 +13,12 @@
     <body>
         <div class="login-container">
             <h1>LOGIN</h1>
-            <input type="text" placeholder="Username" id="username" name="username" required>
-            <input type="password" placeholder="Password" id="password" name="password" required>
-            <span id="signup-text">Don't have an account? <a href="pages/signup.php">Signup</a></span>
-            <button type="submit" id="login-button">LOGIN</button>
+            <form action="includes/process_login.php" method="post">
+                <input type="text" placeholder="Username" id="username" name="username" required>
+                <input type="password" placeholder="Password" id="password" name="password" required>
+                <span id="signup-text">Don't have an account? <a href="pages/create_account.php">Signup</a></span>
+                <button type="submit" name="login" id="login-button">LOGIN</button>
+            </form>
         </div>
     </body>
 </html>
