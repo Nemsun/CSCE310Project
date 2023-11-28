@@ -20,7 +20,7 @@
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">
-                <button class="logout">LOGOUT</button>
+                <button class="logout-btn">LOGOUT</button>
             </div>
         <li>
     </ul>
