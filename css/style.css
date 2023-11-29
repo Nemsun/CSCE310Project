@@ -85,3 +85,28 @@ td, th {
 .delete-btn:hover {
     background-color: #790101;
 }
+
+.alert {
+    position: relative;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 35px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-close-btn {
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

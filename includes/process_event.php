@@ -34,12 +34,16 @@ if (isset($_POST['add_btn'])) {
     $stmt = $conn->prepare("INSERT INTO event (UIN, Program_Num, Start_Date, Start_Time, Location, End_Date, End_Time, Event_Type) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("iissssss", $uin, $programNum, $startDate, $startTime, $location, $endDate, $endTime, $eventType);
-    $stmt->execute();
+    if($stmt->execute()) {
+        $_SESSION['success'] = 'Event added successfully!';
+        header("Location: ../pages/event_admin.php?addevent=success");
+
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
 
     $stmt->close();
     $conn->close();
-
-    header("Location: ../pages/event_admin.php?addevent=success");
     exit();
 
 } else {

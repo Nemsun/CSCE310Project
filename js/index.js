@@ -9,3 +9,7 @@ openModal.addEventListener('click', () => {
 closeModal.addEventListener('click', () => {
     dialog.close();
 });
+
+function closeAlert() {
+    document.getElementById('alert').style.display = 'none';
+}

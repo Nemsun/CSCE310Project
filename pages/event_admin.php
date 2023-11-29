@@ -4,6 +4,12 @@
 <?php session_start(); ?>
 
 <div class="main-container">
+        <?php
+            if(isset($_SESSION['success'])) {
+                echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
+                unset($_SESSION['success']);
+            }
+        ?>
     <div class="header">
         <h2>Manage Events</h2>
         <dialog id="event-dialog">
@@ -24,7 +30,6 @@
             </form>
         </dialog>
         <button class="add-btn" id="open-event-modal">Add Event</button>
-        <script src="../js/index.js"></script>
     </div>
     <div class="table-wrapper">
         <h3>Event List</h3>
@@ -86,3 +91,5 @@
         </table>
     </div>
 </div>
+
+<script src="../js/index.js"></script>
