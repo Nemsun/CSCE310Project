@@ -1,12 +1,31 @@
-<?php include '../assets/header.php'; ?>
+<?php include '../assets/event_admin_header.php'; ?>
 <?php include '../assets/navbar.php'; ?>
-<?php include '../includes/dbh.inc.php'; ?>
+<?php include_once '../includes/dbh.inc.php'; ?>
 <?php session_start(); ?>
 
 <div class="main-container">
     <div class="header">
         <h2>Manage Events</h2>
-        <button class="add-btn">Add Event</button>
+        <dialog id="event-dialog">
+            <div class="modal-header">
+                <h3>Add Event</h3>
+                <button autofocus id="close-event-modal" class="close-modal-btn">&times;</button>
+            </div>
+            <form>
+                <input type="text" placeholder="Event ID" name="event_id" required>
+                <input type="text" placeholder="UIN" name="uin" required>
+                <input type="text" placeholder="Program Number" name="program_num" required>
+                <input type="text" placeholder="Start Date" name="start_date" required>
+                <input type="text" placeholder="Start Time" name="start_time" required>
+                <input type="text" placeholder="Location" name="location" required>
+                <input type="text" placeholder="End Date" name="end_date" required>
+                <input type="text" placeholder="End Time" name="end_time" required>
+                <input type="text" placeholder="Event Type" name="event_type" required>
+                <button type="submit" class="add-btn center margin-top" name="add_btn">Add</button>
+            </form>
+        </dialog>
+        <button class="add-btn" id="open-event-modal">Add Event</button>
+        <script src="../js/index.js"></script>
     </div>
     <div class="table-wrapper">
         <h3>Event List</h3>

@@ -1,7 +1,7 @@
 <nav class="navbar">
         <ul class="navbar-nav">
             <li class="welcome-wrapper">
-                <a href="../pages/test.php" class="welcome">WELCOME</a>
+                <a href="../pages/student_dashboard.php" class="welcome">WELCOME</a>
             </li>
         <li class="nav-item">
             <a href="#" class="nav-link" >Dashboard</a>

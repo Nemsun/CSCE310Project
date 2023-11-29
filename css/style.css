@@ -19,13 +19,11 @@
     font-size: 20px;
     background-color: #0082CB;
     color: white;
+    transition: 0.1s;
 }
 
 .add-btn:hover {
-    cursor: pointer;
-    background-color:#CC0007;
-    color: white;
-    transition: 0.1s;
+    background-color: #0066A2;
 }
 
 .header {
@@ -67,6 +65,11 @@ td, th {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: 0.1s;
+}
+
+.edit-btn:hover {
+    background-color: #008A1A;
 }
 
 .delete-btn {
@@ -76,4 +79,9 @@ td, th {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: 0.1s;
+}
+
+.delete-btn:hover {
+    background-color: #790101;
 }

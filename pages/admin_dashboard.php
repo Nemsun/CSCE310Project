@@ -1,8 +1,7 @@
 <?php include '../assets/header.php'; ?>
 <?php include '../assets/navbar.php'; ?>
+<?php session_start(); ?>
 
 <div class="main-container">
-    <div class="content">
-        <h1>Test</h1>
-        <p>This is a test page.</p>
-    </div>
+    <h2> Welcome back <?php echo $_SESSION['first_name']; ?>!</h2>
+</div>
