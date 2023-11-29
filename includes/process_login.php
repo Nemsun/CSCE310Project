@@ -18,15 +18,16 @@ if (isset($_POST['login'])) {
     if ($result->num_rows == 1 AND $user['User_Type'] != 'INACTIVE') {
         $_SESSION['user_id'] = $user['UIN'];
         $_SESSION['user_type'] = $user['User_Type'];
+        $_SESSION['first_name'] = $user['First_name'];
 
         $stmt->close();
         $conn->close();
 
         // Redirect based on user type
         if ($_SESSION['user_type'] == 'Admin') {
-            header("Location: ../pages/test.php");
+            header("Location: ../pages/admin_dashboard.php");
         } else {
-            header("Location: ../pages/test.php");
+            header("Location: ../pages/student_dashboard.php");
         }
     } else {
         header("Location: error_page.php");
