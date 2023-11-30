@@ -18,14 +18,30 @@
                 <button autofocus id="close-event-modal" class="close-modal-btn">&times;</button>
             </div>
             <form action="../includes/process_event.php" method="post">
-                <input type="text" placeholder="UIN" name="uin" required>
-                <input type="text" placeholder="Program Number (1-5)" name="program_num" required>
-                <input type="text" placeholder="Start Date (yyyy-mm-dd)" name="start_date" required>
-                <input type="text" placeholder="Start Time (00:00:00)" name="start_time" required>
-                <input type="text" placeholder="Location" name="location" required>
-                <input type="text" placeholder="End Date (yyyy-mm-dd)" name="end_date" required>
-                <input type="text" placeholder="End Time (00:00:00)" name="end_time" required>
-                <input type="text" placeholder="Event Type" name="event_type" required>
+                <label class="event-label" for="uin-id">UIN</label>
+                <input id="uin-id" type="text" placeholder="UIN" name="uin" required>
+
+                <label class="event-label" for="program-num">Program Number</label>
+                <input id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
+                
+                <label class="event-label" for="start-date">Start Date</label>
+                <input id="start-date" type="date" name="start_date" required>
+
+                <label class="event-label" for="start-time">Start Time</label>
+                <input id="start-time" type="time" name="start_time" required>
+
+                <label class="event-label" for="location-id">Location</label>
+                <input id="location-id" type="text" placeholder="Location" name="location" required>
+
+                <label class="event-label" for="end-date">End Date</label>
+                <input id="end-date" type="date" name="end_date" required>
+
+                <label class="event-label" for="end-time">End Time</label>
+                <input id="end-time" type="time" name="end_time" required>
+
+                <label class="event-label" for="event-type">Event Type</label>
+                <input id="event-type" type="text" placeholder="Event Type" name="event_type" required>
+                
                 <button type="submit" class="add-btn center margin-top" name="add_btn">Add</button>
             </form>
         </dialog>

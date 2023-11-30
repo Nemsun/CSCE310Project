@@ -9,7 +9,7 @@ form {
 
 dialog {
     width: 500px;
-    height: 660px;
+    height: 800px;
     position: absolute;
     left: 50%;
     top: 20%;
@@ -35,7 +35,7 @@ input, text {
     justify-content: space-between;
     align-items: center;
     padding: 0;
-    margin: 0 30px;
+    margin: 0 25px;
     color: white;
     margin-bottom: 10px;
 }
@@ -67,4 +67,10 @@ input, text {
 
 ::backdrop {
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+.event-label {
+    font-size: 12px; 
+    color: white; 
+    margin-left: 24px;
 }
