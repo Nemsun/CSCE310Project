@@ -10,6 +10,18 @@ closeEventModal.addEventListener('click', () => {
     eventDialog.close();
 });
 
+const eventUserDialog = document.getElementById('event-user-dialog');
+const openEventUserModal = document.getElementById('open-event-user-modal');
+const closeEventUserModal = document.getElementById('close-event-user-modal');
+
+openEventUserModal.addEventListener('click', () => {
+    eventUserDialog.showModal();
+});
+
+closeEventUserModal.addEventListener('click', () => {
+    eventUserDialog.close();
+});
+
 function showEventTrackingDetails(eventId) {
     // Get the event tracking data from the hidden input field
     var eventTrackingData = JSON.parse(document.getElementById('eventTrackingData ' + eventId).value);
@@ -31,19 +43,13 @@ function updateEventTrackingTable(eventTrackingData) {
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
         cell1.innerHTML = eventTrackingData[i].ET_Num;
         cell2.innerHTML = eventTrackingData[i].Event_Id;
         cell3.innerHTML = eventTrackingData[i].UIN;
-
-        var editButton = document.createElement("button");
-        editButton.innerHTML = "Edit";
-        editButton.className = "table-btn edit-btn";
-        cell4.appendChild(editButton);
         
         var deleteButton = document.createElement("button");
         deleteButton.innerHTML = "Delete";
         deleteButton.className = "table-btn delete-btn";
-        cell5.appendChild(deleteButton);
+        cell4.appendChild(deleteButton);
     }
 }

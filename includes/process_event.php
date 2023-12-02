@@ -44,6 +44,20 @@ function addEventTracking($conn, $eventID, $uin) {
     }
 }
 
+function addUserToEvent($conn, $eventID, $uin) {
+    $stmt = $conn->prepare("INSERT INTO event_tracking (Event_Id, UIN) VALUES (?, ?)");
+    $stmt->bind_param("ii", $eventID, $uin);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = 'User added successfully!';
+        header("Location: ../pages/event_admin.php?adduser=success");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("adduser=failure", 'User failed to add!');
+        $stmt->close();
+    }
+}
+
 function deleteEvent($conn, $eventID) {
     /* Check for other dependencies in other tables */
     $dependencyStmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
@@ -80,7 +94,7 @@ function deleteEvent($conn, $eventID) {
 }
 
 if (isset($_POST['add_btn'])) {
-    $uin = $_POST['uin'];
+    $uin = $_POST['UIN'];
     $programNum = filter_var($_POST['program_num'], FILTER_VALIDATE_INT);
     $startDate = $_POST['start_date'];
     $startTime = $_POST['start_time'];
@@ -101,7 +115,37 @@ if (isset($_POST['add_btn'])) {
 
     addEvent($conn, $uin, $programNum, $startDate, $startTime, $location, $endDate, $endTime, $eventType);
 
-} elseif (isset($_POST['delete_btn'])) {
+} else if (isset($_POST['add_user_btn'])) {
+    $eventID = $_POST['Event_Id'];
+    $uin = $_POST['UIN'];
+    /* Error checking */
+    /* Check if the user is already tracking the event */
+    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ? AND UIN = ?");
+    $stmt->bind_param("ii", $eventID, $uin);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        redirectTo("error=alreadytracking", 'User is already tracking this event');
+    }
+    /* Check if the user exists */
+    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
+    $stmt->bind_param("i", $uin);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0) {
+        redirectTo("error=invaliduser", 'User does not exist');
+    }
+    /* Check if the event exists */
+    $stmt = $conn->prepare("SELECT * FROM event WHERE Event_Id = ?");
+    $stmt->bind_param("i", $eventID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0) {
+        redirectTo("error=invalidevent", 'Event does not exist');
+    }
+    
+    addUserToEvent($conn, $eventID, $uin);
+}elseif (isset($_POST['delete_btn'])) {
     $eventDeleteID = $_POST['delete_id'];
     deleteEvent($conn, $eventDeleteID);
 
