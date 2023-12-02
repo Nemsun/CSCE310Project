@@ -92,8 +92,21 @@ function deleteEvent($conn, $eventID) {
     $dependencyStmt->close();
     exit();
 }
+function deleteUserFromEvent($conn, $UIN) {
+    $stmt = $conn->prepare("DELETE FROM event_tracking WHERE UIN = ?");
+    $stmt->bind_param("i", $UIN);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = 'User deleted successfully!';
+        header("Location: ../pages/event_admin.php?deleteuser=success");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("deleteuser=failure", 'User failed to delete!');
+        $stmt->close();
+    }
+}
 
-if (isset($_POST['add_btn'])) {
+if (isset($_POST['add_event_btn'])) {
     $uin = $_POST['UIN'];
     $programNum = filter_var($_POST['program_num'], FILTER_VALIDATE_INT);
     $startDate = $_POST['start_date'];
@@ -145,10 +158,22 @@ if (isset($_POST['add_btn'])) {
     }
     
     addUserToEvent($conn, $eventID, $uin);
-}elseif (isset($_POST['delete_btn'])) {
+
+} elseif (isset($_POST['delete_btn'])) {
     $eventDeleteID = $_POST['delete_id'];
     deleteEvent($conn, $eventDeleteID);
 
+} elseif (isset($_POST['delete_event_user_btn'])) {
+    $UINDeleteID = $_POST['delete_uin_id'];
+    /* Check for dependencies in event table */
+    $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");
+    $stmt->bind_param("i", $UINDeleteID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        redirectTo("error=dependencies", 'User is hosting event and cannot be deleted');
+    }
+    deleteUserFromEvent($conn, $UINDeleteID);
 } else {
     redirectTo("error.php", 'Invalid request');
 }
