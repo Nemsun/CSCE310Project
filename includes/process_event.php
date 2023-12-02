@@ -166,7 +166,7 @@ if (isset($_POST['add_event_btn'])) {
 } elseif (isset($_POST['delete_event_user_btn'])) {
     $UINDeleteID = $_POST['delete_uin_id'];
     /* Check for dependencies in event table */
-    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE UIN = ?");
+    $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");
     $stmt->bind_param("i", $UINDeleteID);
     $stmt->execute();
     $result = $stmt->get_result();
