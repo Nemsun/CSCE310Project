@@ -30,6 +30,7 @@ function showEventTrackingDetails(eventId) {
     updateEventTrackingTable(eventTrackingData);
     // Show the event tracking details div
     document.getElementById('eventTrackingDetails').style.display = 'block';
+    document.getElementById('eventTrackingDetails').style.visibility = 'visible';
 }
 
 function updateEventTrackingTable(eventTrackingData) {
@@ -47,9 +48,20 @@ function updateEventTrackingTable(eventTrackingData) {
         cell2.innerHTML = eventTrackingData[i].Event_Id;
         cell3.innerHTML = eventTrackingData[i].UIN;
         
+        var deleteForm = document.createElement("form");
+        deleteForm.method = "POST";
+        deleteForm.action = "../includes/process_event.php";
+        var hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "delete_uin_id";
+        hiddenInput.value = eventTrackingData[i].UIN;
         var deleteButton = document.createElement("button");
+        deleteButton.type = "submit";
+        deleteButton.name = "delete_event_user_btn";
         deleteButton.innerHTML = "Delete";
         deleteButton.className = "table-btn delete-btn";
-        cell4.appendChild(deleteButton);
+        deleteForm.appendChild(hiddenInput);
+        deleteForm.appendChild(deleteButton);
+        cell4.appendChild(deleteForm);
     }
 }
