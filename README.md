@@ -2,19 +2,19 @@
 Repository for CSCE 310 Project.
 
 
-Student Deliverables:
-Namson
+# Student Deliverables:
+# Namson
   Admin: Event management
   Student: Application Information Management
-Patrick
+# Patrick
   Admin: User Authentication and Roles 
   Student: User Authentication and Roles
-Chase
+# Chase
   Admin: Document Upload and Management
   Student: Document Upload and Management
-Tarun
+# Tarun
   Admin: Program Progress Tracking
   Student: Program Progress Tracking
-Zubair
+# Zubair
   Admin: Progress Information Management
   Student: Program Progress Tracking
