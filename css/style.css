@@ -41,6 +41,22 @@
     color: white;
 }
 
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+.margin-top-40 {
+    margin-top: 40px;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -54,18 +70,27 @@ td, th {
     color: #222222;
 }
 
+th {
+    border-bottom: 1px solid #ddd;
+}
+
 .hidden {
     color: white;
 }
 
-.edit-btn {
+.table-btn {
+    width: 64px;
+    height: 32px;
     padding: 6px 12px;
-    background-color: #00B226;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: 0.1s;
+}
+
+.edit-btn {
+    background-color: #00B226;
 }
 
 .edit-btn:hover {
@@ -73,17 +98,19 @@ td, th {
 }
 
 .delete-btn {
-    padding: 6px 12px;
     background-color: #B31900;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.1s;
 }
 
 .delete-btn:hover {
     background-color: #790101;
+}
+
+.view-btn {
+    background-color: #0082CB;
+}
+
+.view-btn:hover {
+    background-color: #0066A2;
 }
 
 .alert {
@@ -100,6 +127,12 @@ td, th {
     color: #3c763d;
     background-color: #dff0d8;
     border-color: #d6e9c6;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
 }
 
 .alert-close-btn {
