@@ -106,7 +106,7 @@ function deleteUserFromEvent($conn, $UIN) {
     }
 }
 
-if (isset($_POST['add_btn'])) {
+if (isset($_POST['add_event_btn'])) {
     $uin = $_POST['UIN'];
     $programNum = filter_var($_POST['program_num'], FILTER_VALIDATE_INT);
     $startDate = $_POST['start_date'];

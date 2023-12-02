@@ -131,7 +131,7 @@ function getEventTrackingData($conn, $eventId) {
     </div>
     <form action="../includes/process_event.php" method="post">
         <label class="event-label" for="uin-id">UIN</label>
-        <input id="uin-id" type="text" placeholder="UIN" name="uin" required>
+        <input id="uin-id" type="text" placeholder="UIN" name="UIN" required>
 
         <label class="event-label" for="program-num">Program Number</label>
         <input id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
@@ -154,7 +154,7 @@ function getEventTrackingData($conn, $eventId) {
         <label class="event-label" for="event-type">Event Type</label>
         <input id="event-type" type="text" placeholder="Event Type" name="event_type" required>
         
-        <button type="submit" class="add-btn center margin-top" name="add_btn">Add</button>
+        <button type="submit" class="add-btn center margin-top" name="add_event_btn">Add</button>
     </form>
 </dialog>
 
