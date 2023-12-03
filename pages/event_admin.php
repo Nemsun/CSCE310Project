@@ -1,7 +1,6 @@
 <?php include '../assets/event_admin_header.php'; ?>
 <?php include '../assets/navbar.php'; ?>
 <?php include_once '../includes/dbh.inc.php'; ?>
-<?php session_start(); ?>
 <?php
 
 function getEventTrackingData($conn, $eventId) {
