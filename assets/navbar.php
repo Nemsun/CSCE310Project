@@ -20,7 +20,9 @@
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">
-                <button class="logout-btn">LOGOUT</button>
+                <form action="../includes/logout.php" method="post">
+                    <button type="submit" class="logout">LOGOUT</button>
+                </form>
             </div>
         <li>
     </ul>
