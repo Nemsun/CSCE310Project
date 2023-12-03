@@ -1,3 +1,6 @@
+<!--WRITTEN BY: NAMSON PHAM
+    UIN: 530003416                         
+-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,3 +13,11 @@
     </head>
     <body>
         
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: ../index.php");
+    exit();
+}
+?>

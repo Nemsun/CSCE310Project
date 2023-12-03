@@ -1,3 +1,6 @@
+<!--WRITTEN BY: NAMSON PHAM
+    UIN: 530003416                         
+-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/event_admin.css">
+        <link rel="stylesheet" href="../css/admin.css">
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>

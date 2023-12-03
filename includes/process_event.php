@@ -1,3 +1,6 @@
+<!-- WRITTEN BY: NAMSON PHAM
+     UIN: 530003416                         
+-->
 <?php
 session_start();
 include_once 'dbh.inc.php';
