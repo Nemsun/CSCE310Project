@@ -7,22 +7,17 @@
             <a href="#" class="nav-link">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Program Information</a>
+            <a href="../pages/application_information.php" class="nav-link">Application Information</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Progress Tracking</a>
-        </li>
-        <li class="nav-item">
-            <a href="../pages/event_admin.php" class="nav-link">Events</a>
+            <a href="#" class="nav-link">Program</a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">Documents</a>
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">
-                <form action="../includes/logout.php" method="post">
-                    <button type="submit" class="logout">LOGOUT</button>
-                </form>
+                <button class="logout-btn">LOGOUT</button>
             </div>
         <li>
     </ul>

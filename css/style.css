@@ -26,6 +26,25 @@
     background-color: #0066A2;
 }
 
+.cancel-btn {
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    width: 180px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background-color: #B31900;
+    color: white;
+    transition: 0.1s;
+}
+
+.cancel-btn:hover {
+    background-color: #790101;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -45,6 +64,10 @@
     display: flex;
 }
 
+.flex-start {
+    justify-content: flex-start;
+}
+
 .flex-col {
     flex-direction: column;
 }
@@ -53,8 +76,60 @@
     align-items: flex-end;
 }
 
+.align-start {
+    align-items: flex-start;
+}
+
 .margin-top-40 {
     margin-top: 40px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-left-24 {
+    margin-left: 24px;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.text-black {
+    color: black;
+}
+
+.font-size-l {
+    font-size: 20px;
+}
+
+.width-50 {
+    width: 24%;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+.pd-20 {
+    padding: 10px;
+}
+
+.pd-10 {
+    padding: 10px;
+}
+
+.border-radius-12 {
+    border-radius: 12px;
+}
+
+a {
+    text-decoration: none;
 }
 
 table {
