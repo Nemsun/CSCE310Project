@@ -1,3 +1,6 @@
+<!--WRITTEN BY: NAMSON PHAM
+    UIN: 530003416                         
+-->
 <?php include '../assets/event_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 

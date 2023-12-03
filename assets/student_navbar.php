@@ -1,3 +1,6 @@
+<!-- WRITTEN BY: NAMSON PHAM
+     UIN: 530003416                         
+-->
 <nav class="navbar">
         <ul class="navbar-nav">
             <li class="welcome-wrapper">
@@ -17,7 +20,9 @@
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">
-                <button class="logout-btn">LOGOUT</button>
+                <form action="../includes/logout.php" method="post">
+                    <button type="submit" class="logout-btn">LOGOUT</button>
+                </form>
             </div>
         <li>
     </ul>
