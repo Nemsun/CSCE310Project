@@ -1,0 +1,4 @@
+<?php include '../assets/header.php'; 
+include '../assets/student_navbar.php'; 
+include_once '../includes/dbh.inc.php'; 
+session_start(); 
