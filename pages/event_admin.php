@@ -1,7 +1,9 @@
-<?php include '../assets/event_admin_header.php'; ?>
-<?php include '../assets/navbar.php'; ?>
-<?php include_once '../includes/dbh.inc.php'; ?>
-<?php
+<!--WRITTEN BY: NAMSON PHAM
+    UIN: 530003416                         
+-->
+<?php include '../assets/event_admin_header.php'; 
+include '../assets/navbar.php'; 
+include_once '../includes/dbh.inc.php'; 
 
 function getEventTrackingData($conn, $eventId) {
     $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
@@ -74,7 +76,7 @@ function getEventTrackingData($conn, $eventId) {
                             <td><?php echo $row['End_Time']; ?></td>
                             <td><?php echo $row['Event_Type']; ?></td>
                             <td>
-                                <form action="#" method="POST">
+                                <form action="edit_event_admin.php" method="POST">
                                     <input type="hidden" name="edit_id" value="<?php echo $row['Event_Id']; ?>">
                                     <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
                                 </form>
@@ -128,32 +130,32 @@ function getEventTrackingData($conn, $eventId) {
         <h3>Add Event</h3>
         <button autofocus id="close-event-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form action="../includes/process_event.php" method="post">
-        <label class="event-label" for="uin-id">UIN</label>
-        <input id="uin-id" type="text" placeholder="UIN" name="UIN" required>
+    <form class="flex flex-col" action="../includes/process_event.php" method="post">
+        <label class="event-label margin-left-24" for="uin-id">UIN</label>
+        <input class="modal-input" id="uin-id" type="text" placeholder="UIN" name="UIN" required>
 
-        <label class="event-label" for="program-num">Program Number</label>
-        <input id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
+        <label class="event-label margin-left-24" for="program-num">Program Number</label>
+        <input class="modal-input" id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
         
-        <label class="event-label" for="start-date">Start Date</label>
-        <input id="start-date" type="date" name="start_date" required>
+        <label class="event-label margin-left-24" for="start-date">Start Date</label>
+        <input class="modal-input" id="start-date" type="date" name="start_date" required>
 
-        <label class="event-label" for="start-time">Start Time</label>
-        <input id="start-time" type="time" name="start_time" required>
+        <label class="event-label margin-left-24" for="start-time">Start Time</label>
+        <input class="modal-input" id="start-time" type="time" name="start_time" required>
 
-        <label class="event-label" for="location-id">Location</label>
-        <input id="location-id" type="text" placeholder="Location" name="location" required>
+        <label class="event-label margin-left-24" for="location-id">Location</label>
+        <input class="modal-input" id="location-id" type="text" placeholder="Location" name="location" required>
 
-        <label class="event-label" for="end-date">End Date</label>
-        <input id="end-date" type="date" name="end_date" required>
+        <label class="event-label margin-left-24" for="end-date">End Date</label>
+        <input class="modal-input" id="end-date" type="date" name="end_date" required>
 
-        <label class="event-label" for="end-time">End Time</label>
-        <input id="end-time" type="time" name="end_time" required>
+        <label class="event-label margin-left-24" for="end-time">End Time</label>
+        <input class="modal-input" id="end-time" type="time" name="end_time" required>
 
-        <label class="event-label" for="event-type">Event Type</label>
-        <input id="event-type" type="text" placeholder="Event Type" name="event_type" required>
+        <label class="event-label margin-left-24" for="event-type">Event Type</label>
+        <input class="modal-input" id="event-type" type="text" placeholder="Event Type" name="event_type" required>
         
-        <button type="submit" class="add-btn center margin-top" name="add_event_btn">Add</button>
+        <button type="submit" class="add-btn center margin-top-10" name="add_event_btn">Add</button>
     </form>
 </dialog>
 
@@ -162,14 +164,14 @@ function getEventTrackingData($conn, $eventId) {
         <h3>Add User</h3>
         <button autofocus id="close-event-user-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form action="../includes/process_event.php" method="post">
-        <label class="event-label" for="event-id">Event ID</label>
-        <input id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
+    <form class="flex flex-col" action="../includes/process_event.php" method="post">
+        <label class="event-label margin-left-24" for="event-id">Event ID</label>
+        <input class="modal-input" id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
 
-        <label class="event-label" for="user-id">User ID</label>
-        <input id="user-id" type="text" placeholder="User ID" name="UIN" required>
+        <label class="event-label margin-left-24" for="user-id">User ID</label>
+        <input class="modal-input" id="user-id" type="text" placeholder="User ID" name="UIN" required>
         
-        <button type="submit" class="add-btn center margin-top" name="add_user_btn">Add</button>
+        <button type="submit" class="add-btn center margin-top-10" name="add_user_btn">Add</button>
     </form>
 </dialog>
 

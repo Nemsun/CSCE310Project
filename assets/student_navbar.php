@@ -4,19 +4,16 @@
 <nav class="navbar">
         <ul class="navbar-nav">
             <li class="welcome-wrapper">
-                <a href="../pages/admin_dashboard.php" class="welcome">WELCOME</a>
+                <a href="../pages/student_dashboard.php" class="welcome">WELCOME</a>
             </li>
         <li class="nav-item">
-            <a href="../pages/user_admin.php" class="nav-link" >User Dashboard</a>
+            <a href="#" class="nav-link">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Program Information</a>
+            <a href="../pages/application_information.php" class="nav-link">Application Information</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Progress Tracking</a>
-        </li>
-        <li class="nav-item">
-            <a href="../pages/event_admin.php" class="nav-link">Events</a>
+            <a href="#" class="nav-link">Program</a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">Documents</a>

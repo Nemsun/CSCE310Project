@@ -1,3 +1,6 @@
+<!-- WRITTEN BY: NAMSON PHAM
+     UIN: 530003416                         
+-->
 <?php
 session_start();
 include_once 'dbh.inc.php';
@@ -121,7 +124,7 @@ if (isset($_POST['add_event_btn'])) {
     if (!validateDateTime($startDate, $startTime, $endDate, $endTime)) {
         redirectTo("error=startdateafterenddate", 'Start date is after end date');
     }
-    /* Check the program number*/
+    /* Check the program number */
     if ($programNum < 1 || $programNum > 5) {
         redirectTo("error=invalidprogramnum", 'Program number should be between 1-5');
     }
@@ -159,11 +162,11 @@ if (isset($_POST['add_event_btn'])) {
     
     addUserToEvent($conn, $eventID, $uin);
 
-} elseif (isset($_POST['delete_btn'])) {
+} else if (isset($_POST['delete_btn'])) {
     $eventDeleteID = $_POST['delete_id'];
     deleteEvent($conn, $eventDeleteID);
 
-} elseif (isset($_POST['delete_event_user_btn'])) {
+} else if (isset($_POST['delete_event_user_btn'])) {
     $UINDeleteID = $_POST['delete_uin_id'];
     /* Check for dependencies in event table */
     $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");

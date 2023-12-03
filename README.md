@@ -25,5 +25,5 @@ Repository for CSCE 310 Project.
     
 # Zubair
    ### Admin and Student: 
-    Progress Information Management
+    Program Information Management
     Program Progress Tracking
