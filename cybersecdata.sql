@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2023 at 02:01 AM
+-- Generation Time: Nov 28, 2023 at 04:59 AM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -153,6 +153,13 @@ CREATE TABLE `event` (
   `Event_Type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`Event_Id`, `UIN`, `Program_Num`, `Start_Date`, `Start_Time`, `Location`, `End_Date`, `End_Time`, `Event_Type`) VALUES
+(1, 530003416, 1, '2023-11-27', '12:00:00', 'College Station, TX', '2023-11-28', '16:00:00', 'Competition');
+
 -- --------------------------------------------------------
 
 --
@@ -164,6 +171,13 @@ CREATE TABLE `event_tracking` (
   `Event_Id` int(11) NOT NULL,
   `UIN` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event_tracking`
+--
+
+INSERT INTO `event_tracking` (`ET_Num`, `Event_Id`, `UIN`) VALUES
+(1, 1, 530003416);
 
 -- --------------------------------------------------------
 
@@ -204,6 +218,17 @@ CREATE TABLE `programs` (
   `Description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `programs`
+--
+
+INSERT INTO `programs` (`Program_Num`, `Name`, `Description`) VALUES
+(1, 'Cyber Leader Development Program (CLDP)', 'CLDP is a two-year program that complements a student’s existing degree path by providing opportunities for hands-on experience, industry certifications, summer internships, leadership development, and individual mentoring.'),
+(2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.'),
+(3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.'),
+(4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.'),
+(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.');
+
 -- --------------------------------------------------------
 
 --
@@ -239,6 +264,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, `Passwords`, `User_Type`, `Email`, `Discord`) VALUES
+(530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
 (630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick');
 
 --
@@ -383,13 +409,13 @@ ALTER TABLE `document`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `event_tracking`
 --
 ALTER TABLE `event_tracking`
-  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `internship`
@@ -407,7 +433,7 @@ ALTER TABLE `intern_app`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `track`
@@ -430,7 +456,7 @@ ALTER TABLE `applications`
 -- Constraints for table `cert_enrollment`
 --
 ALTER TABLE `cert_enrollment`
-  ADD CONSTRAINT `Cert_ID` FOREIGN KEY (`Cert_ID`) REFERENCES `certification` (`Cert_Id`),
+  ADD CONSTRAINT `Cert_ID` FOREIGN KEY (`Cert_ID`) REFERENCES `certification` (`Cert_ID`),
   ADD CONSTRAINT `Cert_Program` FOREIGN KEY (`Program_Num`) REFERENCES `programs` (`Program_Num`),
   ADD CONSTRAINT `Cert_UIN` FOREIGN KEY (`UIN`) REFERENCES `college_student` (`UIN`);
 

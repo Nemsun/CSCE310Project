@@ -72,7 +72,7 @@ body {
     justify-content: flex-end;
 }
 
-button {
+.logout-btn {
     border: none;
     font-family: 'Poppins', sans-serif;
     width: 180px;
@@ -84,7 +84,7 @@ button {
     font-size: 20px;
 }
 
-button:hover {
+.logout-btn:hover {
     cursor: pointer;
     background: rgba(30, 30, 30, 0.50);
     color: white;
