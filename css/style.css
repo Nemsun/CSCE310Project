@@ -45,6 +45,10 @@
     display: flex;
 }
 
+.flex-start {
+    justify-content: flex-start;
+}
+
 .flex-col {
     flex-direction: column;
 }
@@ -53,9 +57,50 @@
     align-items: flex-end;
 }
 
+.align-start {
+    align-items: flex-start;
+}
+
 .margin-top-40 {
     margin-top: 40px;
 }
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-left-24 {
+    margin-left: 24px;
+}
+
+.text-black {
+    color: black;
+}
+
+.font-size-l {
+    font-size: 20px;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+.pd-20 {
+    padding: 10px;
+}
+
+.pd-10 {
+    padding: 10px;
+}
+
+.border-radius-12 {
+    border-radius: 12px;
+}
+
 
 table {
     border-collapse: collapse;

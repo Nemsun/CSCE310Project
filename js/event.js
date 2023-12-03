@@ -30,7 +30,7 @@ function showEventTrackingDetails(eventId) {
     updateEventTrackingTable(eventTrackingData);
     // Show the event tracking details div
     document.getElementById('eventTrackingDetails').style.display = 'block';
-    document.getElementById('eventTrackingDetails').style.visibility = 'visible';
+    document.getElementById('eventTrackingDetails').preventDefault();
 }
 
 function updateEventTrackingTable(eventTrackingData) {
