@@ -1,7 +1,7 @@
 <!--WRITTEN BY: NAMSON PHAM
     UIN: 530003416                         
 -->
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,7 +10,19 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../css/registration.css">
+        <link rel="stylesheet" href="../css/style.css">
     </head>
+    <div class = "main-container">
+        <?php
+            if(isset($_SESSION['success'])) {
+                echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
+                unset($_SESSION['success']);
+            } else if(isset($_SESSION['error'])) {
+                echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
+                unset($_SESSION['error']);
+            }
+        ?>
+    </div>
     <body>
         <div class="signup-container">
         <h1>SIGNUP</h1>
@@ -29,3 +41,5 @@
         </div>
     </body>
 </html>
+
+<script src="../js/index.js"></script>

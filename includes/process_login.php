@@ -1,7 +1,12 @@
 <?php
 session_start();
-
 include_once 'dbh.inc.php';
+
+function redirectTo($location, $error) {
+    $_SESSION['error'] = $error;
+    header("Location: ../index.php?$location");
+    exit();
+}
 
 if (isset($_POST['login'])) {
     $enteredUsername = $_POST['username'];
@@ -30,15 +35,13 @@ if (isset($_POST['login'])) {
             header("Location: ../pages/student_dashboard.php");
         }
     } else {
-        header("Location: error_page.php");
-        exit();
+        redirectTo("error=invalidlogin", 'Login was invalid, try again!');
     }
 
     $stmt->close();
     $conn->close();
     
 } else {
-    header("Location: error_page.php");
-    exit();
+    redirectTo("error=invalidlogin", 'Login was invalid, try again!');
 }
 ?>

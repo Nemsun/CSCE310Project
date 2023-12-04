@@ -125,8 +125,8 @@ function getUserData($conn, $UIN) {
 
         <label class="event-label margin-left-24" for="User_Type">User Type: </label>
         <select name="user_type" id="user_type">
-            <option value="Admin">Admin </option>
-            <option value="User">User </option>
+            <option value="Admin">Admin</option>
+            <option value="User">Student</option>
         </select>
 
         <label class="event-label margin-left-24" for="Email">Email: </label>
