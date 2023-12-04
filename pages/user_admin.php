@@ -41,59 +41,67 @@ function getUserData($conn, $UIN) {
             $result = $stmt->get_result();
             $stmt->close();
         ?>
-        <table id="eventTable">
-            <thead>
-                <tr>
-                    <th>UIN</th>
-                    <th>First Name</th>
-                    <th>Middle Initial</th>
-                    <th>Last Name</th>
-                    <th>User Type</th>
-                    <th>Email</th>
-                    <th>Discord</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th class="hidden">.</th>
-                    <th class="hidden">.</th>
-                    <th class="hidden">.</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if(mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                        <tr>
-                            <td><?php echo $row['UIN']; ?></td>
-                            <td><?php echo $row['First_name']; ?></td>
-                            <td><?php echo $row['M_Initial']; ?></td>
-                            <td><?php echo $row['Last_Name']; ?></td>
-                            <td><?php echo $row['User_Type']; ?></td>
-                            <td><?php echo $row['Email']; ?></td>
-                            <td><?php echo $row['Discord']; ?></td>
-                            <td><?php echo $row['Username']; ?></td>
-                            <td><?php echo $row['Passwords']; ?></td>
-                            <td>
-                                <form action="#" method="POST">
-                                    <input type="hidden" name="edit_id" value="<?php echo $row['UIN']; ?>">
-                                    <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
-                                </form>
-                            </td> 
-                            <td>
-                                <form action="../includes/process_user.php" method="POST">
-                                    <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
-                                    <button type="submit" name="delete_btn" class="table-btn delete-btn">DELETE</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php
+        <div class="table-container">
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>UIN</th>
+                        <th>First Name</th>
+                        <th>M Initial</th>
+                        <th>Last Name</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Discord</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th class="hidden">.</th>
+                        <th class="hidden">.</th>
+                        <th class="hidden">.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if(mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
+                            ?>
+                            <tr>
+                                <td><?php echo $row['UIN']; ?></td>
+                                <td><?php echo $row['First_name']; ?></td>
+                                <td><?php echo $row['M_Initial']; ?></td>
+                                <td><?php echo $row['Last_Name']; ?></td>
+                                <td><?php echo $row['User_Type']; ?></td>
+                                <td><?php echo $row['Email']; ?></td>
+                                <td><?php echo $row['Discord']; ?></td>
+                                <td><?php echo $row['Username']; ?></td>
+                                <td><?php echo $row['Passwords']; ?></td>
+                                <td>
+                                    <form action="#" method="POST">
+                                        <input type="hidden" name="edit_id" value="<?php echo $row['UIN']; ?>">
+                                        <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
+                                    </form>
+                                </td> 
+                                <td>
+                                    <form action="../includes/process_user.php" method="POST">
+                                        <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
+                                        <button type="submit" name="delete_btn" class="table-btn delete-btn">DELETE</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="../includes/process_user.php" method="POST">
+                                        <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
+                                        <button type="submit" name="delete_btn" class="table-btn delete-btn">FULL DELETE</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        echo "No record found";
                     }
-                } else {
-                    echo "No record found";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

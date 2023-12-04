@@ -143,7 +143,7 @@ table {
 
 td, th {
     text-align: left;
-    font-size: 16px;
+    font-size: 12px;
     background-color: white;
     padding: 20px;
     color: #222222;
@@ -155,6 +155,11 @@ th {
 
 .hidden {
     color: white;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-width: 1600px;
 }
 
 .table-btn {
@@ -170,6 +175,7 @@ th {
 
 .edit-btn {
     background-color: #00B226;
+    text-align: center
 }
 
 .edit-btn:hover {
@@ -178,6 +184,9 @@ th {
 
 .delete-btn {
     background-color: #B31900;
+    width: 70px;
+    height: 35px;
+    text-align: center
 }
 
 .delete-btn:hover {
