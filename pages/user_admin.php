@@ -1,7 +1,7 @@
-<?php include '../assets/user_admin_header.php'; ?>
-<?php include '../assets/navbar.php'; ?>
-<?php include_once '../includes/dbh.inc.php'; ?>
-<?php
+<?php include '../assets/event_admin_header.php'; 
+include '../assets/navbar.php'; 
+include_once '../includes/dbh.inc.php'; 
+session_start();
 
 function getUserData($conn, $UIN) {
     $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
@@ -23,7 +23,6 @@ function getUserData($conn, $UIN) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
                 unset($_SESSION['success']);
             } else if(isset($_SESSION['error'])) {
-                console.log("Error found");
                 echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
                 unset($_SESSION['error']);
             }
