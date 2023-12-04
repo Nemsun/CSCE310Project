@@ -75,7 +75,7 @@ function getUserData($conn, $UIN) {
                                 <td><?php echo $row['Username']; ?></td>
                                 <td><?php echo $row['Passwords']; ?></td>
                                 <td>
-                                    <form action="#" method="POST">
+                                    <form action="edit_user_admin.php" method="POST">
                                         <input type="hidden" name="edit_id" value="<?php echo $row['UIN']; ?>">
                                         <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
                                     </form>
@@ -126,7 +126,7 @@ function getUserData($conn, $UIN) {
         <label class="event-label margin-left-24" for="User_Type">User Type: </label>
         <select name="user_type" id="user_type">
             <option value="Admin">Admin</option>
-            <option value="User">Student</option>
+            <option value="Student">Student</option>
         </select>
 
         <label class="event-label margin-left-24" for="Email">Email: </label>

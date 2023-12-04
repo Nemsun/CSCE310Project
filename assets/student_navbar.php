@@ -9,7 +9,7 @@
                 <a href="../pages/student_dashboard.php" class="welcome">WELCOME</a>
             </li>
         <li class="nav-item">
-            <a href="../pages/.php" class="nav-link" >User Dashboard</a>
+            <a href="../pages/user_student.php" class="nav-link" >User Dashboard</a>
         </li>
         <li class="nav-item">
             <a href="../pages/application_information.php" class="nav-link">Application Information</a>
