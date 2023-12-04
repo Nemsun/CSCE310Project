@@ -1,3 +1,6 @@
+/* WRITTEN BY: NAMSON PHAM
+   UIN: 530003416
+*/
 const eventDialog = document.getElementById('event-dialog');
 const openEventModal = document.getElementById('open-event-modal');
 const closeEventModal = document.getElementById('close-event-modal');
