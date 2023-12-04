@@ -34,7 +34,7 @@ function getEventTrackingData($conn, $eventId) {
         <h2>Manage Events</h2>
     </div>
     <div class="table-wrapper">
-    <div class="flex flex-col align-end">
+    <div class="flex flex-col align-end min-width-180">
         <button class="add-btn" id="open-event-modal">Add Event</button>
     </div>
         <h3>Event List</h3>

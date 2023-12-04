@@ -3,7 +3,6 @@
 -->
 <?php include '../assets/header.php'; ?>
 <?php include '../assets/student_navbar.php'; ?>
-<?php session_start(); ?>
 
 
 <div class="main-container">
