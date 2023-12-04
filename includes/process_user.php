@@ -25,6 +25,14 @@ if (isset($_POST['add_user_btn'])) {
         redirectTo("error=invalidminitial", 'Middle Initial should be 1 character');
     }
 
+    if (strlen($uin) !== 9) {
+        redirectTo("error=invaliduinlength", 'UIN should be 9 numbers');
+    }
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        redirectTo("error=invalidemail", 'Please enter a valid email');
+    }
+
     // ***UIN is Numeric
     if (!is_numeric($uin)) {
         redirectTo("error=invalidUIN", 'UIN should only contain numbers');
@@ -64,4 +72,41 @@ if (isset($_POST['add_user_btn'])) {
     }
 
     $conn->close();
+}
+
+
+
+//SOFT DELETING USER
+if (isset($_POST['delete_btn'])) {
+    $uin = $_POST['UIN'];
+
+    $stmt = $conn->prepare("UPDATE users SET User_Type = 'Inactive' WHERE UIN = ?");
+    $stmt->bind_param("i", $uin);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = 'User deleted successfully!';
+        header("Location: ../pages/user_admin.php?deleteuser=success");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("deleteuser=failure", 'User failed to delete!');
+        $stmt->close();
+    }
+}
+
+
+//HARD DELETING BUTTON
+if (isset($_POST['hard_delete_btn'])) {
+    $uin = $_POST['UIN'];
+
+    $stmt = $conn->prepare("DELETE FROM users WHERE UIN = ?");
+    $stmt->bind_param("i", $uin);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = 'User hard deleted successfully!';
+        header("Location: ../pages/user_admin.php?deleteuser=success");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("deleteuser=failure", 'User failed to delete!');
+        $stmt->close();
+    }
 }

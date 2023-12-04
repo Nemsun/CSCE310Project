@@ -25,6 +25,14 @@ if (isset($_POST['create_account'])) {
         redirectTo("error=invalidminitial", 'Middle Initial should be 1 character');
     }
 
+    if (strlen($uin) !== 9) {
+        redirectTo("error=invaliduinlength", 'UIN should be 9 numbers');
+    }
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        redirectTo("error=invalidemail", 'Please enter a valid email');
+    }
+
     // ***UIN is Numeric
     if (!is_numeric($uin)) {
         redirectTo("error=invalidUIN", 'UIN should only contain numbers');
