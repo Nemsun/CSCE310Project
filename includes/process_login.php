@@ -20,7 +20,7 @@ if (isset($_POST['login'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
-    if ($result->num_rows == 1 AND $user['User_Type'] != 'INACTIVE') {
+    if ($result->num_rows == 1 AND $user['User_Type'] != 'Inactive') {
         $_SESSION['user_id'] = $user['UIN'];
         $_SESSION['user_type'] = $user['User_Type'];
         $_SESSION['first_name'] = $user['First_name'];

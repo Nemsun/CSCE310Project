@@ -82,14 +82,14 @@ function getUserData($conn, $UIN) {
                                 </td> 
                                 <td>
                                     <form action="../includes/process_user.php" method="POST">
-                                        <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
+                                        <input type="hidden" name="UIN" value="<?php echo $row['UIN']; ?>">
                                         <button type="submit" name="delete_btn" class="table-btn delete-btn">DELETE</button>
                                     </form>
                                 </td>
                                 <td>
                                     <form action="../includes/process_user.php" method="POST">
-                                        <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
-                                        <button type="submit" name="delete_btn" class="table-btn full-delete-btn">FULL DELETE</button>
+                                        <input type="hidden" name="UIN" value="<?php echo $row['UIN']; ?>">
+                                        <button type="submit" name="hard_delete_btn" class="table-btn full-delete-btn">FULL DELETE</button>
                                     </form>
                                 </td>
                             </tr>
