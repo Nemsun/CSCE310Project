@@ -7,7 +7,7 @@ include '../assets/navbar.php';
 include_once '../includes/dbh.inc.php';
 session_start(); ?>
 
-<div class="main-container">
+<div class="main-container margin-left-280">
     <div class="header">
         <h2>Edit Event</h2>
     </div>
