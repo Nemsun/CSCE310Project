@@ -1,5 +1,7 @@
 <!-- WRITTEN BY: NAMSON PHAM
-     UIN: 530003416                         
+     UIN: 530003416       
+     
+     MAKE SURE THAT STUDENT AND ADMIN ARE SEPARATED                  
 -->
 <nav class="navbar">
         <ul class="navbar-nav">
@@ -7,7 +9,7 @@
                 <a href="../pages/student_dashboard.php" class="welcome">WELCOME</a>
             </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Dashboard</a>
+            <a href="../pages/.php" class="nav-link" >User Dashboard</a>
         </li>
         <li class="nav-item">
             <a href="../pages/application_information.php" class="nav-link">Application Information</a>

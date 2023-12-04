@@ -7,7 +7,7 @@
                 <a href="../pages/admin_dashboard.php" class="welcome">WELCOME</a>
             </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Dashboard</a>
+            <a href="../pages/user_admin.php" class="nav-link" >User Dashboard</a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">Program Information</a>

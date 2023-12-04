@@ -62,6 +62,11 @@
     margin-right: 35px;
     border-radius: 12px;
     color: white;
+    min-width: 1000px;
+}
+
+.min-width-180 {
+    min-width: 180px;
 }
 
 .flex {
@@ -137,16 +142,18 @@ a {
 }
 
 table {
+    table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
 }
 
 td, th {
     text-align: left;
-    font-size: 16px;
+    font-size: 12px;
     background-color: white;
     padding: 20px;
     color: #222222;
+    overflow: hidden;
 }
 
 th {
@@ -155,6 +162,11 @@ th {
 
 .hidden {
     color: white;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-width: 1600px;
 }
 
 .table-btn {
@@ -170,6 +182,7 @@ th {
 
 .edit-btn {
     background-color: #00B226;
+    text-align: center
 }
 
 .edit-btn:hover {
@@ -178,6 +191,18 @@ th {
 
 .delete-btn {
     background-color: #B31900;
+    text-align: center
+}
+
+.delete-btn:hover {
+    background-color: #790101;
+}
+
+.full-delete-btn {
+    background-color: #B31900;
+    width: 80px !important;
+    height: 45px !important;
+    text-align: center
 }
 
 .delete-btn:hover {
