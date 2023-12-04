@@ -99,7 +99,7 @@ function getEventTrackingData($conn, $eventId) {
                             <?php
                         }
                     } else {
-                        echo "No record found";
+                        $_SESSION['error'] = "No events found in the database";
                     }
                     ?>
                 </tbody>
