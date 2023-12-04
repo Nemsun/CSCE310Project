@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="css/registration.css">
         <link rel="stylesheet" href="css/style.css">
     </head>
-    <div class = "main-container">
+    <div class = "main-container margin-left-35">
         <?php
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
@@ -33,4 +33,4 @@
     </body>
 </html>
 
-<script src="../js/index.js"></script>
+<script src="js/index.js"></script>

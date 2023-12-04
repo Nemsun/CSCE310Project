@@ -17,7 +17,7 @@ function getUserData($conn, $UIN) {
 }
 ?>
 
-<div class="main-container">
+<div class="main-container margin-left-280">
         <?php
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
