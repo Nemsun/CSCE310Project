@@ -1,7 +1,12 @@
 <?php
 session_start();
-
 include_once 'dbh.inc.php';
+
+function redirectTo($location, $error) {
+    $_SESSION['error'] = $error;
+    header("Location: ../pages/create_account.php?$location");
+    exit();
+}
 
 //NEED TO FIX ALERTS
 
@@ -16,14 +21,23 @@ if (isset($_POST['create_account'])) {
     $password = $_POST['account_password'];
     $usertype = "Student";
 
-    // TODO: Error Checking
-    // ***Middle initial should only be one character long
     if (strlen($middleInitial) !== 1) {
-        $_SESSION['message'] = 'Middle initial should be one character long';
-        header("Location: ../pages/create_account.php");
-        echo "Middle initial should be one character long";
-        exit();
+        redirectTo("error=invalidminitial", 'Middle Initial should be 1 character');
     }
+
+    if (strlen($uin) !== 9) {
+        redirectTo("error=invaliduinlength", 'UIN should be 9 numbers');
+    }
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        redirectTo("error=invalidemail", 'Please enter a valid email');
+    }
+
+    // ***UIN is Numeric
+    if (!is_numeric($uin)) {
+        redirectTo("error=invalidUIN", 'UIN should only contain numbers');
+    }
+
 
     // ***No duplicate usernames!
     $stmt = $conn->prepare("SELECT * FROM users WHERE Username = ?");
@@ -31,9 +45,7 @@ if (isset($_POST['create_account'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows !== 0) {
-        header("Location: ../pages/create_account.php");
-        echo "Duplicate username, please try again";
-        exit();
+        redirectTo("error=invaliduser", 'Duplicate username, try a new one');
     }
 
     // ***No duplicate UINs (PK)
@@ -42,9 +54,7 @@ if (isset($_POST['create_account'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows !== 0) {
-        header("Location: ../pages/create_account.php");
-        echo "UIN Already registered";
-        exit();
+        redirectTo("error=invalidUIN", 'This user is already registered');
     }
 
     // Everything besides email and password should be alphanumeric

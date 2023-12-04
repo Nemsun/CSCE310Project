@@ -17,7 +17,7 @@ function getUserData($conn, $UIN) {
 }
 ?>
 
-<div class="main-container">
+<div class="main-container margin-left-280">
         <?php
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
@@ -82,14 +82,14 @@ function getUserData($conn, $UIN) {
                                 </td> 
                                 <td>
                                     <form action="../includes/process_user.php" method="POST">
-                                        <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
+                                        <input type="hidden" name="UIN" value="<?php echo $row['UIN']; ?>">
                                         <button type="submit" name="delete_btn" class="table-btn delete-btn">DELETE</button>
                                     </form>
                                 </td>
                                 <td>
                                     <form action="../includes/process_user.php" method="POST">
-                                        <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
-                                        <button type="submit" name="delete_btn" class="table-btn full-delete-btn">FULL DELETE</button>
+                                        <input type="hidden" name="UIN" value="<?php echo $row['UIN']; ?>">
+                                        <button type="submit" name="hard_delete_btn" class="table-btn full-delete-btn">FULL DELETE</button>
                                     </form>
                                 </td>
                             </tr>
@@ -125,8 +125,8 @@ function getUserData($conn, $UIN) {
 
         <label class="event-label margin-left-24" for="User_Type">User Type: </label>
         <select name="user_type" id="user_type">
-            <option value="Admin">Admin </option>
-            <option value="User">User </option>
+            <option value="Admin">Admin</option>
+            <option value="User">Student</option>
         </select>
 
         <label class="event-label margin-left-24" for="Email">Email: </label>
