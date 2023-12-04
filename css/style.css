@@ -184,8 +184,17 @@ th {
 
 .delete-btn {
     background-color: #B31900;
-    width: 70px;
-    height: 35px;
+    text-align: center
+}
+
+.delete-btn:hover {
+    background-color: #790101;
+}
+
+.full-delete-btn {
+    background-color: #B31900;
+    width: 80px !important;
+    height: 45px !important;
     text-align: center
 }
 

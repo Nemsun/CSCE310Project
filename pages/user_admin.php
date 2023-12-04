@@ -32,7 +32,7 @@ function getUserData($conn, $UIN) {
     </div>
     <div class="table-wrapper">
     <div class="flex flex-col align-end">
-        <button class="add-btn" id="open-event-modal">Add User</button>
+        <button class="add-btn" id="openUserButton">Add User</button>
     </div>
         <h3>User List</h3>
         <?php
@@ -89,14 +89,14 @@ function getUserData($conn, $UIN) {
                                 <td>
                                     <form action="../includes/process_user.php" method="POST">
                                         <input type="hidden" name="delete_id" value="<?php echo $row['UIN']; ?>">
-                                        <button type="submit" name="delete_btn" class="table-btn delete-btn">FULL DELETE</button>
+                                        <button type="submit" name="delete_btn" class="table-btn full-delete-btn">FULL DELETE</button>
                                     </form>
                                 </td>
                             </tr>
                             <?php
                         }
                     } else {
-                        echo "No record found";
+                        echo "No Users Found";
                     }
                     ?>
                 </tbody>
@@ -105,56 +105,21 @@ function getUserData($conn, $UIN) {
     </div>
 </div>
 
-<!-- Dialogs -->
-<dialog id="event-dialog" class="modal modal-event">
-    <div class="modal-header">
-        <h3>Add Event</h3>
-        <button autofocus id="close-event-modal" class="close-modal-btn">&times;</button>
-    </div>
-    <form action="../includes/process_event.php" method="post">
-        <label class="event-label" for="uin-id">UIN</label>
-        <input id="uin-id" type="text" placeholder="UIN" name="UIN" required>
-
-        <label class="event-label" for="program-num">Program Number</label>
-        <input id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
-        
-        <label class="event-label" for="start-date">Start Date</label>
-        <input id="start-date" type="date" name="start_date" required>
-
-        <label class="event-label" for="start-time">Start Time</label>
-        <input id="start-time" type="time" name="start_time" required>
-
-        <label class="event-label" for="location-id">Location</label>
-        <input id="location-id" type="text" placeholder="Location" name="location" required>
-
-        <label class="event-label" for="end-date">End Date</label>
-        <input id="end-date" type="date" name="end_date" required>
-
-        <label class="event-label" for="end-time">End Time</label>
-        <input id="end-time" type="time" name="end_time" required>
-
-        <label class="event-label" for="event-type">Event Type</label>
-        <input id="event-type" type="text" placeholder="Event Type" name="event_type" required>
-        
-        <button type="submit" class="add-btn center margin-top" name="add_event_btn">Add</button>
-    </form>
-</dialog>
-
-<dialog id="event-user-dialog" class="modal modal-event-user">
+<dialog id="user-dialog" class="modal modal-event-user">
     <div class="modal-header">
         <h3>Add User</h3>
-        <button autofocus id="close-event-user-modal" class="close-modal-btn">&times;</button>
+        <button autofocus id="close-user-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form action="../includes/process_event.php" method="post">
-        <label class="event-label" for="event-id">Event ID</label>
-        <input id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
+    <form class="flex flex-col" action="../includes/process_event.php" method="post">
+        <label class="event-label margin-left-24" for="event-id">Event ID</label>
+        <input class="modal-input" id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
 
-        <label class="event-label" for="user-id">User ID</label>
-        <input id="user-id" type="text" placeholder="User ID" name="UIN" required>
+        <label class="event-label margin-left-24" for="user-id">User ID</label>
+        <input class="modal-input" id="user-id" type="text" placeholder="User ID" name="UIN" required>
         
-        <button type="submit" class="add-btn center margin-top" name="add_user_btn">Add</button>
+        <button type="submit" class="add-btn center margin-top-10" name="add_user_btn">Add</button>
     </form>
 </dialog>
 
+<script src="../js/user.js"></script>
 <script src="../js/index.js"></script>
-<script src="../js/event.js"></script>
