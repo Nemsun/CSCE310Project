@@ -4,6 +4,7 @@
 <?php include '../assets/event_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
+session_start();
 
 function getEventTrackingData($conn, $eventId) {
     $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
