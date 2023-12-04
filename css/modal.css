@@ -20,9 +20,15 @@
     width: 500px;
     height: 800px;
 }
+
 .modal-event-user {
     width: 500px;
     height: 300px;
+}
+
+.modal-app {
+    width: 500px;
+    height: 475px;
 }
 
 .modal-input {

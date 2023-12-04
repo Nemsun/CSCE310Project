@@ -99,7 +99,7 @@ function getEventTrackingData($conn, $eventId) {
                             <?php
                         }
                     } else {
-                        echo "No record found";
+                        $_SESSION['error'] = "No events found in the database";
                     }
                     ?>
                 </tbody>
@@ -141,7 +141,7 @@ function getEventTrackingData($conn, $eventId) {
         <input class="modal-input" id="uin-id" type="text" placeholder="UIN" name="UIN" required>
 
         <label class="event-label margin-left-24" for="program-num">Program Number</label>
-        <input class="modal-input" id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
+        <input class="modal-input" id="program-num" type="text" placeholder="Program Number" name="program_num" required>
         
         <label class="event-label margin-left-24" for="start-date">Start Date</label>
         <input class="modal-input" id="start-date" type="date" name="start_date" required>

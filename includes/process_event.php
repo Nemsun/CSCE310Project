@@ -124,9 +124,30 @@ if (isset($_POST['add_event_btn'])) {
     if (!validateDateTime($startDate, $startTime, $endDate, $endTime)) {
         redirectTo("error=startdateafterenddate", 'Start date is after end date');
     }
-    /* Check the program number */
-    if ($programNum < 1 || $programNum > 5) {
-        redirectTo("error=invalidprogramnum", 'Program number should be between 1-5');
+    /* Check the UIN is 9 numbers */
+    if (strlen($uin) != 9) {
+        redirectTo("error=invalidUIN", 'UIN should be 9 numbers');
+    }
+    /* TODO */
+    /* Check the user exists in the user table */
+    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
+    $stmt->bind_param("i", $uin);
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            redirectTo("error=invaliduser", 'User does not exist');
+        }
+        $stmt->close();
+    }
+    /* Check the program number exists in program table */
+    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
+    $stmt->bind_param("i", $programNum);
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            redirectTo("error=invalidprogram", 'Program does not exist');
+        }
+        $stmt->close();
     }
 
     addEvent($conn, $uin, $programNum, $startDate, $startTime, $location, $endDate, $endTime, $eventType);
