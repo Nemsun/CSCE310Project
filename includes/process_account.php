@@ -36,42 +36,42 @@ if (isset($_POST['create_account'])) {
         exit();
     }
 
-        // ***No duplicate UINs (PK)
-        $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
-        $stmt->bind_param("i", $UIN);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows !== 0) {
-            header("Location: ../pages/create_account.php");
-            echo "UIN Already registered";
-            exit();
-        }
-    
-        // Everything besides email and password should be alphanumeric
-        // Email should be alphanumeric + @ and periods
-        // Password can be whatever
-        
-        // Database insertion
-        $stmt = $conn->prepare("INSERT INTO users (UIN, First_name, M_Initial, Last_Name, Username, Passwords, User_Type, Email, Discord) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssssss", $uin, $firstName, $middleInitial, $lastName, $username, $password, $usertype, $email, $discord);
-    
-        if ($stmt->execute()) {
-            $_SESSION['message'] = "Account created successfully";
-        } else {
-            $_SESSION['message'] = "Account was not created, please recheck for valid inputs";
-        }
-
-        $stmt->close();
-        $conn->close();
-        echo '<script>alert("' . $_SESSION['message'] . '");</script>';
-        unset($_SESSION['message']);
-    
-        header("Location: ../");
-        exit();
-        
-    } else {
-        header("Location: error.php");
+    // ***No duplicate UINs (PK)
+    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
+    $stmt->bind_param("i", $UIN);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows !== 0) {
+        header("Location: ../pages/create_account.php");
+        echo "UIN Already registered";
         exit();
     }
-    ?>
+
+    // Everything besides email and password should be alphanumeric
+    // Email should be alphanumeric + @ and periods
+    // Password can be whatever
+    
+    // Database insertion
+    $stmt = $conn->prepare("INSERT INTO users (UIN, First_name, M_Initial, Last_Name, Username, Passwords, User_Type, Email, Discord) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("issssssss", $uin, $firstName, $middleInitial, $lastName, $username, $password, $usertype, $email, $discord);
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "Account created successfully";
+    } else {
+        $_SESSION['message'] = "Account was not created, please recheck for valid inputs";
+    }
+
+    $stmt->close();
+    $conn->close();
+    echo '<script>alert("' . $_SESSION['message'] . '");</script>';
+    unset($_SESSION['message']);
+
+    header("Location: ../");
+    exit();
+    
+} else {
+    header("Location: error.php");
+    exit();
+}
+?>

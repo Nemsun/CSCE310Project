@@ -23,6 +23,7 @@ function getUserData($conn, $UIN) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
                 unset($_SESSION['success']);
             } else if(isset($_SESSION['error'])) {
+                console.log("Error found");
                 echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
                 unset($_SESSION['error']);
             }
@@ -32,7 +33,7 @@ function getUserData($conn, $UIN) {
     </div>
     <div class="table-wrapper">
     <div class="flex flex-col align-end">
-        <button class="add-btn" id="openUserButton">Add User</button>
+        <button class="add-btn" id="open-user-modal">Add User</button>
     </div>
         <h3>User List</h3>
         <?php
@@ -105,17 +106,41 @@ function getUserData($conn, $UIN) {
     </div>
 </div>
 
-<dialog id="user-dialog" class="modal modal-event-user">
+<dialog id="user-dialog" class="modal modal-event">
     <div class="modal-header">
         <h3>Add User</h3>
         <button autofocus id="close-user-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form class="flex flex-col" action="../includes/process_event.php" method="post">
-        <label class="event-label margin-left-24" for="event-id">Event ID</label>
-        <input class="modal-input" id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
+    <form class="flex flex-col" action="../includes/process_user.php" method="post">
+        <label class="event-label margin-left-24" for="UIN">UIN: </label>
+        <input class="modal-input" id="UIN" type="text" placeholder="UIN" name="UIN" required>
 
-        <label class="event-label margin-left-24" for="user-id">User ID</label>
-        <input class="modal-input" id="user-id" type="text" placeholder="User ID" name="UIN" required>
+        <label class="event-label margin-left-24" for="First_name">First Name: </label>
+        <input class="modal-input" id="first_name" type="text" placeholder="First Name" name="first_name" required>
+
+        <label class="event-label margin-left-24" for="M_Initial">Middle Initial: </label>
+        <input class="modal-input" id="m_initial" type="text" placeholder="Middle Initial" name="m_initial" required>
+
+        <label class="event-label margin-left-24" for="Last_Name">Last Name: </label>
+        <input class="modal-input" id="last_name" type="text" placeholder="Last Name" name="last_name" required>
+
+        <label class="event-label margin-left-24" for="User_Type">User Type: </label>
+        <select name="user_type" id="user_type">
+            <option value="Admin">Admin </option>
+            <option value="User">User </option>
+        </select>
+
+        <label class="event-label margin-left-24" for="Email">Email: </label>
+        <input class="modal-input" id="email" type="text" placeholder="Email" name="email" required>
+
+        <label class="event-label margin-left-24" for="Discord">Discord: </label>
+        <input class="modal-input" id="discord" type="text" placeholder="Discord" name="discord" required>
+
+        <label class="event-label margin-left-24" for="Username">Username: </label>
+        <input class="modal-input" id="username" type="text" placeholder="Username" name="username" required>
+
+        <label class="event-label margin-left-24" for="Password">Password: </label>
+        <input class="modal-input" id="password" type="text" placeholder="Password" name="password" required>
         
         <button type="submit" class="add-btn center margin-top-10" name="add_user_btn">Add</button>
     </form>

@@ -1,5 +1,7 @@
 <!-- WRITTEN BY: NAMSON PHAM
-     UIN: 530003416                         
+     UIN: 530003416       
+     
+     MAKE SURE THAT STUDENT AND ADMIN ARE SEPARATED                  
 -->
 <nav class="navbar">
         <ul class="navbar-nav">
