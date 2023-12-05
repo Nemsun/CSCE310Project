@@ -1,8 +1,6 @@
-<?php include '../assets/event_admin_header.php'; 
+<?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
-session_start();
-
 ?>
 
 <div class="main-container margin-left-280">

@@ -217,6 +217,13 @@ th {
     border-bottom: 1px solid #ddd;
 }
 
+select {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+}
+
 .hidden {
     color: white;
 }
