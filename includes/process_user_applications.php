@@ -4,12 +4,8 @@
 <?php
 session_start();
 include_once 'dbh.inc.php';
+include 'helper.php';
 
-function redirectTo($location, $error) {
-    $_SESSION['error'] = $error;
-    header("Location: ../pages/application_information.php?$location");
-    exit();
-}
 function addApplication($conn, $uin, $programNum, $uncomCert, $comCert, $purposeStmt) {
     $stmt = $conn->prepare("INSERT INTO applications (UIN, Program_Num, Uncom_Cert, Com_Cert, Purpose_Statement) 
                             VALUES (?, ?, ?, ?, ?)");
@@ -21,7 +17,7 @@ function addApplication($conn, $uin, $programNum, $uncomCert, $comCert, $purpose
         $stmt->close();
         exit();
     } else {
-        redirectTo("addapp=failure", 'Application failed to add!');
+        redirectTo("application_information", "addapp=failure", 'Application failed to add!');
         $stmt->close();
     }
 }
@@ -39,7 +35,7 @@ if (isset($_POST['add_app_btn'])) {
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
-            redirectTo("error=invaliduser", 'User does not exist');
+            redirectTo("application_information", "error=invaliduser", 'User does not exist');
         }
         $stmt->close();
     }
@@ -50,7 +46,7 @@ if (isset($_POST['add_app_btn'])) {
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
-            redirectTo("error=invalidprogram", 'Program does not exist');
+            redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
         }
         $stmt->close();
     }
@@ -68,7 +64,7 @@ if (isset($_POST['add_app_btn'])) {
         $stmt->close();
         exit();
     } else {
-        redirectTo("deleteapp=failure", 'Application failed to delete!');
+        redirectTo("application_information", "deleteapp=failure", 'Application failed to delete!');
         $stmt->close();
     }
 } else if (isset($_POST['update_app_btn'])) {
@@ -84,7 +80,7 @@ if (isset($_POST['add_app_btn'])) {
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($result->num_rows == 0) {
-            redirectTo("error=invalidprogram", 'Program does not exist');
+            redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
         }
         $stmt->close();
     }
@@ -96,9 +92,9 @@ if (isset($_POST['add_app_btn'])) {
         $stmt->close();
         exit();
     } else {
-        redirectTo("updateapp=failure", 'Application failed to update!');
+        redirectTo("application_information", "updateapp=failure", 'Application failed to update!');
         $stmt->close();
     }
 } else {
-    redirectTo("error.php", 'Invalid request!');
+    redirectTo("application_information", "error=invalidaction", 'Invalid action!');
 }

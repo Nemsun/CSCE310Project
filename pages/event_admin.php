@@ -5,22 +5,30 @@
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
 
+// This function returns an array of event tracking data
 function getEventTrackingData($conn, $eventId) {
+    // Get event tracking data from database using event ID
+    // Prepare statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
     $stmt->bind_param("i", $eventId);
     $stmt->execute();    
     $result = $stmt->get_result();
+    // Store data in array
     $data = array();
+    // Loop through each row in the result set
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
+    // Close statement
     $stmt->close();
+    // Return data
     return $data;
 }
 ?>
 
 <div class="main-container margin-left-280">
         <?php
+            // Alert messages
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
                 unset($_SESSION['success']);
@@ -38,6 +46,7 @@ function getEventTrackingData($conn, $eventId) {
     </div>
         <h3>Event List</h3>
         <?php
+            // Get all events from database
             $stmt = $conn->prepare("SELECT * FROM event");
             $stmt->execute();
             $result = $stmt->get_result();
@@ -63,6 +72,7 @@ function getEventTrackingData($conn, $eventId) {
                 </thead>
                 <tbody>
                     <?php
+                    // Populate table with data from database
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
                             ?>
@@ -91,14 +101,17 @@ function getEventTrackingData($conn, $eventId) {
                                 <td>
                                     <button type="button" name="view_btn" class="table-btn view-btn" onclick="showEventTrackingDetails(<?php echo $row['Event_Id']; ?>)">VIEW</button>
                                     <input type="hidden" id="eventTrackingData <?php echo $row['Event_Id']; ?>" 
-                                        value='<?php echo json_encode(getEventTrackingData($conn, $row['Event_Id'])); ?>'
+                                        value='<?php 
+                                                // Get event tracking data from database using event ID
+                                                // In order to pass data to JavaScript, we need to encode it as a JSON string
+                                                echo json_encode(getEventTrackingData($conn, $row['Event_Id'])); ?>'
                                     >
                                 </td>
                             </tr>
                             <?php
                         }
                     } else {
-                        $_SESSION['error'] = "No events found in the database";
+                        // $_SESSION['error'] = "No events found in the database";
                     }
                     ?>
                 </tbody>
