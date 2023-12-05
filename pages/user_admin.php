@@ -1,18 +1,13 @@
-<?php include '../assets/event_admin_header.php'; 
+<?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
-session_start();
 
 function getUserData($conn, $UIN) {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
+    $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
     $stmt->bind_param("i", $UIN);
     $stmt->execute();    
     $result = $stmt->get_result();
-    $data = array();
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-    $stmt->close();
+    $data = $result->fetch_assoc();
     return $data;
 }
 ?>
@@ -57,6 +52,7 @@ function getUserData($conn, $UIN) {
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
+                        <th class="hidden">.</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,6 +70,16 @@ function getUserData($conn, $UIN) {
                                 <td><?php echo $row['Discord']; ?></td>
                                 <td><?php echo $row['Username']; ?></td>
                                 <td><?php echo $row['Passwords']; ?></td>
+                                <?php if ($row['User_Type'] == 'Student') { ?>
+                                <td>
+                                    <form action="user_admin.php" method="POST">
+                                        <input type="hidden" name="UIN" value="<?php echo $row['UIN']?>">
+                                        <button type="submit" name="view_btn" class="table-btn view-btn">VIEW</button>
+                                    </form>
+                                </td>
+                                <?php } else { ?>
+                                    <td> </td>
+                                <?php } ?>
                                 <td>
                                     <form action="edit_user_admin.php" method="POST">
                                         <input type="hidden" name="edit_id" value="<?php echo $row['UIN']; ?>">
@@ -101,6 +107,105 @@ function getUserData($conn, $UIN) {
                     ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <br>
+    <div class="table-wrapper" id="specificTable">
+        <h2> View Student </h2>
+        <div class="table-container">
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>Info</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        if (isset($_POST['view_btn'])) {
+                            $currentUIN = $_POST['UIN'];
+                            $userData = getUserData($conn, $currentUIN);
+                            if ($userData) {
+
+                            ?>
+                    <div class="flex flex-col align-end">
+                        <form action="edit_student_admin.php" method="POST">
+                            <input type="hidden" name="UIN" value="<?php echo $userData['UIN']; ?>">
+                            <button type="submit" name="student_btn" class="table-btn edit-btn">EDIT</button>
+                        </form>
+                    </div>
+                    <tr>
+                        <td>UIN</td>
+                        <td><?php echo $userData['UIN'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td><?php echo $userData['Gender'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Hispanic</td>
+                        <td><?php echo $userData['Hispanic'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Race</td>
+                        <td><?php echo $userData['Race'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Citizen</td>
+                        <td><?php echo $userData['Citizen'];?></td>
+                    </tr>
+                    <tr>
+                        <td>First Generation</td>
+                        <td><?php echo $userData['First_Generation'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td>
+                        <td><?php echo $userData['DoB'];?></td>
+                    </tr>
+                    <tr>
+                        <td>GPA</td>
+                        <td><?php echo $userData['GPA'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Major</td>
+                        <td><?php echo $userData['Major'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Minor #1</td>
+                        <td><?php echo $userData['Minor_1'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Minor #2</td>
+                        <td><?php echo $userData['Minor_2'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Expected Graduation Year</td>
+                        <td><?php echo $userData['Expected_Graduation'];?></td>
+                    </tr>
+                    <tr>
+                        <td>School</td>
+                        <td><?php echo $userData['School'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Classification</td>
+                        <td><?php echo $userData['Classification'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number</td>
+                        <td><?php echo $userData['Phone'];?></td>
+                    </tr>
+                    <tr>
+                        <td>Student Type</td>
+                        <td><?php echo $userData['Student_Type'];?></td>
+                    </tr>
+            </table>
+            <?php 
+                            } else {
+                                echo "Student not selected or hasn't completed information";
+                            }
+                        }
+            ?>
         </div>
     </div>
 </div>

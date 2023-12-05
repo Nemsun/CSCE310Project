@@ -3,6 +3,7 @@
      
      MAKE SURE THAT STUDENT AND ADMIN ARE SEPARATED                  
 -->
+<?php include_once '../includes/dbh.inc.php';  ?>
 <nav class="navbar">
         <ul class="navbar-nav">
             <li class="welcome-wrapper">
@@ -18,7 +19,7 @@
             <a href="../pages/program_management.php" class="nav-link">Program</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Documents</a>
+            <a href="../pages/documents_student.php" class="nav-link">Documents</a>
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">
@@ -29,3 +30,15 @@
         <li>
     </ul>
 </nav>
+
+<?php
+$UIN = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
+$stmt->bind_param("i", $UIN);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows == 0) {
+    header("Location: ../pages/user_student_info.php");
+    exit();
+}
+?>

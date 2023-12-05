@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2023 at 04:59 AM
+-- Generation Time: Dec 05, 2023 at 09:59 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cybersecdata`
 --
-
 CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `cybersecdata`;
 
@@ -113,14 +112,46 @@ CREATE TABLE `college_student` (
   `DoB` date NOT NULL,
   `GPA` float NOT NULL,
   `Major` varchar(255) NOT NULL,
-  `Minor 1` varchar(255) NOT NULL,
-  `Minor 2` varchar(255) NOT NULL,
+  `Minor_1` varchar(255) NOT NULL,
+  `Minor_2` varchar(255) NOT NULL,
   `Expected_Graduation` smallint(6) NOT NULL,
   `School` varchar(255) NOT NULL,
   `Classification` varchar(255) NOT NULL,
-  `Phone` int(11) NOT NULL,
+  `Phone` bigint(20) NOT NULL,
   `Student_Type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `college_student`
+--
+
+INSERT INTO `college_student` (`UIN`, `Gender`, `Hispanic`, `Race`, `Citizen`, `First_Generation`, `DoB`, `GPA`, `Major`, `Minor_1`, `Minor_2`, `Expected_Graduation`, `School`, `Classification`, `Phone`, `Student_Type`) VALUES
+(333333333, 'Male', 0x31, 'asdf', 0x31, 0x31, '2023-11-27', 3, 'asdf', '', '', 2020, 'asdf', 'Freshman', 2341234444, 'Active'),
+(630003608, 'Male', 0x31, 'White', 0x31, 0x31, '0000-00-00', 3.9, 'Computer Engineering', 'Mathematics', '', 2024, 'Texas A&M University', 'Freshman', 8325400698, 'Active');
+
+--
+-- Triggers `college_student`
+--
+DELIMITER $$
+CREATE TRIGGER `deleteApplication` BEFORE DELETE ON `college_student` FOR EACH ROW DELETE FROM applications WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteCertEnroll` BEFORE DELETE ON `college_student` FOR EACH ROW DELETE FROM cert_enrollment WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteEnrollment` BEFORE DELETE ON `college_student` FOR EACH ROW DELETE FROM class_enrollment WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteInternApp` BEFORE DELETE ON `college_student` FOR EACH ROW DELETE FROM intern_app WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteTrack` BEFORE DELETE ON `college_student` FOR EACH ROW DELETE FROM track WHERE Student_Num = OLD.UIN
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -158,7 +189,7 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`Event_Id`, `UIN`, `Program_Num`, `Start_Date`, `Start_Time`, `Location`, `End_Date`, `End_Time`, `Event_Type`) VALUES
-(1, 530003416, 1, '2023-11-27', '12:00:00', 'College Station, TX', '2023-11-28', '16:00:00', 'Competition');
+(3, 630003608, 1, '2023-12-04', '23:16:00', 'asdf', '2023-12-11', '23:19:00', 'Event');
 
 -- --------------------------------------------------------
 
@@ -177,7 +208,7 @@ CREATE TABLE `event_tracking` (
 --
 
 INSERT INTO `event_tracking` (`ET_Num`, `Event_Id`, `UIN`) VALUES
-(1, 1, 530003416);
+(1, 3, 630003608);
 
 -- --------------------------------------------------------
 
@@ -223,11 +254,7 @@ CREATE TABLE `programs` (
 --
 
 INSERT INTO `programs` (`Program_Num`, `Name`, `Description`) VALUES
-(1, 'Cyber Leader Development Program (CLDP)', 'CLDP is a two-year program that complements a student’s existing degree path by providing opportunities for hands-on experience, industry certifications, summer internships, leadership development, and individual mentoring.'),
-(2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.'),
-(3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.'),
-(4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.'),
-(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.');
+(1, 'program', 'description');
 
 -- --------------------------------------------------------
 
@@ -264,8 +291,22 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, `Passwords`, `User_Type`, `Email`, `Discord`) VALUES
-(530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
-(630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick');
+(111111111, 'Test1', 'a', 'test2', 'test1', 'test1', 'Student', 'test1@gmail.com', 'test1'),
+(123456789, 'john', 'a', 'doe', 'johndoe', 'johndoe', 'Admin', 'johndoe@gmail.com', 'johndoe'),
+(333333333, 'test5', 't', 'test5', 'test5', 'test5', 'Student', 'test5@gmail.com', 'test5'),
+(630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick_k');
+
+--
+-- Triggers `users`
+--
+DELIMITER $$
+CREATE TRIGGER `deleteEvent` BEFORE DELETE ON `users` FOR EACH ROW DELETE FROM event WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteEventTracking` BEFORE DELETE ON `users` FOR EACH ROW DELETE FROM event_tracking WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -409,7 +450,7 @@ ALTER TABLE `document`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `event_tracking`
@@ -433,7 +474,7 @@ ALTER TABLE `intern_app`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `track`
@@ -456,7 +497,7 @@ ALTER TABLE `applications`
 -- Constraints for table `cert_enrollment`
 --
 ALTER TABLE `cert_enrollment`
-  ADD CONSTRAINT `Cert_ID` FOREIGN KEY (`Cert_ID`) REFERENCES `certification` (`Cert_ID`),
+  ADD CONSTRAINT `Cert_ID` FOREIGN KEY (`Cert_ID`) REFERENCES `certification` (`Cert_Id`),
   ADD CONSTRAINT `Cert_Program` FOREIGN KEY (`Program_Num`) REFERENCES `programs` (`Program_Num`),
   ADD CONSTRAINT `Cert_UIN` FOREIGN KEY (`UIN`) REFERENCES `college_student` (`UIN`);
 

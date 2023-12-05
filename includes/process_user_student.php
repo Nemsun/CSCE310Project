@@ -55,8 +55,58 @@ if (isset($_POST['update_btn'])) {
     $conn->close();
 }
 
+if (isset($_POST['update_student_btn'])) {
+    $uin = $_SESSION['user_id'];
+    $gender = $_POST['gender'];
+    $hispanic = $_POST['hispanic'];
+    $race = $_POST['race'];
+    $citizen = $_POST['citizen'];
+    $first_generation = $_POST['first_generation'];
+    $dob = $_POST['dob'];
+    $gpa = $_POST['gpa'];
+    $major = $_POST['major'];
+    $minor1 = $_POST['minor1'];
+    $minor2 = $_POST['minor2'];
+    $expected_graduation = $_POST['expected_graduation'];
+    $school = $_POST['school'];
+    $classification = $_POST['classification'];
+    $phone = $_POST['phone'];
 
+    if (strlen($expected_graduation) !== 4 OR !is_numeric($expected_graduation)) {
+        redirectTo("error=invalidgrad", 'Please enter a valid graduation date');
+    }
 
+    // ***Phone is Numeric
+    if (!is_numeric($phone) OR strlen($phone) !== 10) {
+        redirectTo("error=invalidPhone", 'Phone Number should only contain numbers and be 10 characters');
+    }
+
+    if (!is_numeric($gpa)) {
+        redirectTo("error=invalidGPA", 'Please enter a valid GPA');
+    }
+    // Database insertion
+    $stmt = $conn->prepare("UPDATE college_student SET Gender = ?, Hispanic = ?, Race = ?, Citizen = ?, First_Generation = ?, DoB = ?, GPA = ?, Major = ?, 
+                            Minor_1 = ?, Minor_2 = ?, Expected_Graduation = ?, School = ?, Classification = ?, Phone = ? WHERE UIN = ?");
+    $stmt->bind_param("sisiisssssissii", $gender, $hispanic, $race, $citizen, $first_generation, $dob, $gpa, $major, $minor1, $minor2, $expected_graduation, 
+                     $school, $classification, $phone, $uin);
+
+    if ($stmt->execute()) {
+        // Redirect to the desired page
+        header("Location: ../pages/student_dashboard.php");
+        exit();
+    } else {
+        if ($result->num_rows !== 0) {
+            redirectTo("error=failedcreation", 'Failed to enter information');
+        }
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    header("Location: ../pages/student_dashboard.php");
+    exit();
+
+}
 
 //DEACTIVATE ACCOUNT
 if (isset($_POST['delete_btn'])) {
@@ -64,7 +114,11 @@ if (isset($_POST['delete_btn'])) {
 
     $stmt = $conn->prepare("UPDATE users SET User_Type = 'Inactive' WHERE UIN = ?");
     $stmt->bind_param("i", $uin);
-    if ($stmt->execute()) {
+
+    $stmt2 = $conn->prepare("UPDATE college_student SET Student_Type = 'Inactive' WHERE UIN = ?");
+    $stmt2->bind_param("i", $uin);
+
+    if ($stmt->execute() AND $stmt2->execute()) {
         $_SESSION['success'] = 'User deleted successfully!';
         header("Location: ../index.php?deleteuser=success");
         $stmt->close();

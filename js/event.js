@@ -1,10 +1,13 @@
 /* WRITTEN BY: NAMSON PHAM
    UIN: 530003416
 */
+
+// Grabbing the event dialog and the open and close buttons
 const eventDialog = document.getElementById('event-dialog');
 const openEventModal = document.getElementById('open-event-modal');
 const closeEventModal = document.getElementById('close-event-modal');
 
+// Adding event listeners to the open and close buttons
 openEventModal.addEventListener('click', () => {
     eventDialog.showModal();
 });
@@ -13,10 +16,12 @@ closeEventModal.addEventListener('click', () => {
     eventDialog.close();
 });
 
+// Grabbing the event tracking dialog and the open and close buttons
 const eventUserDialog = document.getElementById('event-user-dialog');
 const openEventUserModal = document.getElementById('open-event-user-modal');
 const closeEventUserModal = document.getElementById('close-event-user-modal');
 
+// Adding event listeners to the open and close buttons
 openEventUserModal.addEventListener('click', () => {
     eventUserDialog.showModal();
 });
@@ -25,10 +30,15 @@ closeEventUserModal.addEventListener('click', () => {
     eventUserDialog.close();
 });
 
+/**
+ * This function parses the event tracking data from the hidden input field
+ * and updates the event tracking table with the retrieved data
+ * @param {*} eventId 
+ */
 function showEventTrackingDetails(eventId) {
     // Get the event tracking data from the hidden input field
     var eventTrackingData = JSON.parse(document.getElementById('eventTrackingData ' + eventId).value);
-    console.log(eventTrackingData);
+    // console.log(eventTrackingData);
     // Update the table with the retrieved data
     updateEventTrackingTable(eventTrackingData);
     // Show the event tracking details div
@@ -36,6 +46,10 @@ function showEventTrackingDetails(eventId) {
     document.getElementById('eventTrackingDetails').preventDefault();
 }
 
+/**
+ * This function updates the event tracking table with the retrieved data
+ * @param {*} eventTrackingData 
+ */
 function updateEventTrackingTable(eventTrackingData) {
     var tableBody = document.getElementById("eventTrackingTableBody");
     // Clear existing table rows

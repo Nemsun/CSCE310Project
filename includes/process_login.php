@@ -2,15 +2,20 @@
 session_start();
 include_once 'dbh.inc.php';
 
-function redirectTo($location, $error) {
+/**
+ * This function redirects the user to the login page with the specified error message
+ * @param $location - the location to redirect to
+ * @param $error - the error message to display
+ */
+function redirectLogin($location, $error) {
     $_SESSION['error'] = $error;
     header("Location: ../index.php?$location");
     exit();
 }
 
 if (isset($_POST['login'])) {
-    $enteredUsername = $_POST['username'];
-    $enteredPassword = $_POST['password'];
+    $enteredUsername = $_POST['root@localhost'];
+    $enteredPassword = $_POST[''];
 
     //Make sure that username and password don't contain sql injections
 
@@ -35,13 +40,13 @@ if (isset($_POST['login'])) {
             header("Location: ../pages/student_dashboard.php");
         }
     } else {
-        redirectTo("error=invalidlogin", 'Login was invalid, try again!');
+        redirectLogin("error=invalidlogin", 'Login was invalid, try again!');
     }
 
     $stmt->close();
     $conn->close();
     
 } else {
-    redirectTo("error=invalidlogin", 'Login was invalid, try again!');
+    redirectLogin("error=invalidlogin", 'Login was invalid, try again!');
 }
 ?>

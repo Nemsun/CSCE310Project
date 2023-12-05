@@ -35,6 +35,18 @@ body {
     border-radius: 12px;
 }
 
+.student-container {
+    width: 500px;
+    height: 1400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 12px;
+}
+
 #signup-text {
     font-size: 10px;
 }
@@ -72,4 +84,44 @@ button:hover {
 form {
     display: flex;
     flex-direction: column;
+}
+
+.register-btn {
+    width: 420px;
+    height: 63px;
+    background-color: #0082CB;
+    margin: 21px auto;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-btn:hover {
+    background-color: #005A9C;
+}
+
+.cancel-register {
+    width: 420px;
+    height: 63px;
+    background-color: #B31900;
+    margin: 21px auto;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancel-register:hover {
+    background-color: #790101;
 }

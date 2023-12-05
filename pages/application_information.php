@@ -3,163 +3,105 @@
 -->
 <?php include '../assets/header.php'; 
 include '../assets/student_navbar.php'; 
-include_once '../includes/dbh.inc.php';  ?>
+include_once '../includes/dbh.inc.php';  
+?>
 
 <div class="main-container margin-left-280">
-        <?php
-            if(isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['success']);
-            } else if(isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['error']);
-            }
-        ?>
+    <?php include '../assets/alerts.php'; ?>
     <div class="header">
         <h2>Manage Applications</h2>
     </div>
     <div class="table-wrapper">
     <div class="flex flex-col align-end min-width-180">
-        <button class="add-btn" id="open-event-modal">Add Event</button>
+        <button class="add-btn" id="open-app-modal">Add Application</button>
     </div>
         <h3>Applications</h3>
         <?php
-            $stmt = $conn->prepare("SELECT * FROM event");
+            // Get all applications from database
+            // Prepare statement to prevent SQL injection
+            $stmt = $conn->prepare("SELECT * FROM applications");
+            // Execute the statement
             $stmt->execute();
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
         ?>
-        <table id="eventTable">
-            <thead>
-                <tr>
-                    <th>Event ID</th>
-                    <th>UIN</th>
-                    <th>Program</th>
-                    <th>Start Date</th>
-                    <th>Start Time</th>
-                    <th>Location</th>
-                    <th>End Date</th>
-                    <th>End Time</th>
-                    <th>Event Type</th>
-                    <th class="hidden">.</th>
-                    <th class="hidden">.</th>
-                    <th class="hidden">.</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if(mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                        <tr>
-                            <td><?php echo $row['Event_Id']; ?></td>
-                            <td><?php echo $row['UIN']; ?></td>
-                            <td><?php echo $row['Program_Num']; ?></td>
-                            <td><?php echo $row['Start_Date']; ?></td>
-                            <td><?php echo $row['Start_Time']; ?></td>
-                            <td><?php echo $row['Location']; ?></td>
-                            <td><?php echo $row['End_Date']; ?></td>
-                            <td><?php echo $row['End_Time']; ?></td>
-                            <td><?php echo $row['Event_Type']; ?></td>
-                            <td>
-                                <form action="edit_event_admin.php" method="POST">
-                                    <input type="hidden" name="edit_id" value="<?php echo $row['Event_Id']; ?>">
-                                    <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
-                                </form>
-                            </td> 
-                            <td>
-                                <form action="../includes/process_event.php" method="POST">
-                                    <input type="hidden" name="delete_id" value="<?php echo $row['Event_Id']; ?>">
-                                    <button type="submit" name="delete_btn" class="table-btn delete-btn">DELETE</button>
-                                </form>
-                            </td>
-                            <td>
-                                <button type="button" name="view_btn" class="table-btn view-btn" onclick="showEventTrackingDetails(<?php echo $row['Event_Id']; ?>)">VIEW</button>
-                                <input type="hidden" id="eventTrackingData <?php echo $row['Event_Id']; ?>" 
-                                    value='<?php echo json_encode(getEventTrackingData($conn, $row['Event_Id'])); ?>'
-                                >
-                            </td>
-                        </tr>
-                        <?php
+        <div class="table-container">
+            <table id="app-table">
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Program</th>
+                        <th>Uncompleted Certifications</th>
+                        <th>Completed Certifications</th>
+                        <th>Purpose Statement</th>
+                        <th class="hidden">.</th>
+                        <th class="hidden">.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Populate table with data from database
+                    if(mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
+                            ?>
+                            <tr>
+                                <td><?php echo $row['App_Num']; ?></td>
+                                <td><?php echo $row['Program_Num'] ?></td>
+                                <td><?php echo $row['Uncom_Cert']; ?></td>
+                                <td><?php echo $row['Com_Cert']; ?></td>
+                                <td><?php echo $row['Purpose_Statement']; ?></td>
+                                <td>
+                                    <form action="view_application_information.php" method="POST">
+                                        <input type="hidden" name="view_app_id" value="<?php echo $row['App_Num']; ?>">
+                                        <button type="submit" name="view_app_btn" class="table-btn view-btn">VIEW</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="../includes/process_user_applications.php" method="POST">
+                                        <input type="hidden" name="delete_app_id" value="<?php echo $row['App_Num']; ?>">
+                                        <button type="submit" name="delete_app_btn" class="table-btn delete-btn">DELETE</button>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        // $_SESSION['error'] = "No applications found in the database";
                     }
-                } else {
-                    echo "No record found";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-    <div id="event-tracking" class="table-wrapper margin-top-40">
-        <div class="flex flex-col align-end">
-            <button class="add-btn" id="open-event-user-modal">Add User</button>
+                    ?>
+                </tbody>
+            </table>
         </div>
-        <h3>Event Tracking List</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Event Tracking Number</th>
-                    <th>Event ID</th>
-                    <th>UIN</th>
-                    <th class="hidden">.</th>
-                </tr>
-            </thead>
-            <tbody id="eventTrackingTableBody">
-                <!-- Populate table -->
-            </tbody>
-        </table>
     </div>
 </div>
 
 <!-- Dialogs -->
-<dialog id="event-dialog" class="modal modal-event">
+<dialog id="app-dialog" class="modal modal-app">
     <div class="modal-header">
-        <h3>Add Event</h3>
-        <button autofocus id="close-event-modal" class="close-modal-btn">&times;</button>
+        <h3>Add Application</h3>
+        <button autofocus id="close-app-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form class="flex flex-col" action="../includes/process_event.php" method="post">
-        <label class="event-label margin-left-24" for="uin-id">UIN</label>
-        <input class="modal-input" id="uin-id" type="text" placeholder="UIN" name="UIN" required>
+    <form class="flex flex-col" action="../includes/process_applications.php" method="post">
+            
+        <input type="hidden" name="uin" value="<?php echo $_SESSION['user_id'] ?>">
 
         <label class="event-label margin-left-24" for="program-num">Program Number</label>
-        <input class="modal-input" id="program-num" type="text" placeholder="Program Number (1-5)" name="program_num" required>
+        <input class="modal-input" id="program-num" type="text" placeholder="Program Number" name="program_num" required>
+
+        <label class="event-label margin-left-24" for="uncom-cert">Uncompleted Certifications</label>
+        <input class="modal-input" id="uncom-cert" type="text" placeholder="Uncompleted Certifications" name="uncom_cert">
+
+        <label class="event-label margin-left-24" for="com-cert">Completed Certifications</label>
+        <input class="modal-input" id="com-cert" type="text" placeholder="Completed Certifications" name="com_cert">
+
+        <label class="event-label margin-left-24" for="purpose-stmt">Purpose Statement</label>
+        <input class="modal-input" id="purpose-stmt" type="text" placeholder="Purpose Statement" name="purpose_stmt" required>
         
-        <label class="event-label margin-left-24" for="start-date">Start Date</label>
-        <input class="modal-input" id="start-date" type="date" name="start_date" required>
-
-        <label class="event-label margin-left-24" for="start-time">Start Time</label>
-        <input class="modal-input" id="start-time" type="time" name="start_time" required>
-
-        <label class="event-label margin-left-24" for="location-id">Location</label>
-        <input class="modal-input" id="location-id" type="text" placeholder="Location" name="location" required>
-
-        <label class="event-label margin-left-24" for="end-date">End Date</label>
-        <input class="modal-input" id="end-date" type="date" name="end_date" required>
-
-        <label class="event-label margin-left-24" for="end-time">End Time</label>
-        <input class="modal-input" id="end-time" type="time" name="end_time" required>
-
-        <label class="event-label margin-left-24" for="event-type">Event Type</label>
-        <input class="modal-input" id="event-type" type="text" placeholder="Event Type" name="event_type" required>
-        
-        <button type="submit" class="add-btn center margin-top-10" name="add_event_btn">Add</button>
-    </form>
-</dialog>
-
-<dialog id="event-user-dialog" class="modal modal-event-user">
-    <div class="modal-header">
-        <h3>Add User</h3>
-        <button autofocus id="close-event-user-modal" class="close-modal-btn">&times;</button>
-    </div>
-    <form class="flex flex-col" action="../includes/process_event.php" method="post">
-        <label class="event-label margin-left-24" for="event-id">Event ID</label>
-        <input class="modal-input" id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
-
-        <label class="event-label margin-left-24" for="user-id">User ID</label>
-        <input class="modal-input" id="user-id" type="text" placeholder="User ID" name="UIN" required>
-        
-        <button type="submit" class="add-btn center margin-top-10" name="add_user_btn">Add</button>
+        <button type="submit" class="add-btn center margin-top-10" name="add_app_btn">Add</button>
     </form>
 </dialog>
 
 <script src="../js/index.js"></script>
-<script src="../js/event.js"></script>
+<script src="../js/app.js"></script>
