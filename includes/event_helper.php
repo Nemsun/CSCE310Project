@@ -24,33 +24,9 @@ function addEvent($conn, $uin, $programNum, $startDate, $startTime, $location, $
     // Execute the statement and check if it was successful, if so, add the event to the event tracking table
     // if not redirect to the event admin page with an error
     if ($stmt->execute()) {
-        $eventID = $stmt->insert_id;
-        addEventTracking($conn, $eventID, $uin);
-        $stmt->close();
-    } else {
-        redirectTo("event_admin", "addevent=failure", 'Event failed to add!');
-        $stmt->close();
-    }
-}
-
-/**
- * This function adds an event to an event tracking table
- * @param $conn - the connection to the database
- * @param $eventID - the event ID of the event to be added to
- * @param $uin - the UIN of the user to be added
- */
-function addEventTracking($conn, $eventID, $uin) {
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("INSERT INTO event_tracking (Event_Id, UIN) VALUES (?, ?)");
-    // Bind parameters to the statement
-    $stmt->bind_param("ii", $eventID, $uin);
-    // Execute the statement and check if it was successful, if so, redirect to the event admin page with a success message
-    // if not redirect to the event admin page with an error
-    if ($stmt->execute()) {
         $_SESSION['success'] = 'Event added successfully!';
         header("Location: ../pages/event_admin.php?addevent=success");
         $stmt->close();
-        exit();
     } else {
         redirectTo("event_admin", "addevent=failure", 'Event failed to add!');
         $stmt->close();
@@ -87,39 +63,6 @@ function addUserToEvent($conn, $eventID, $uin) {
  * @param $eventID - the event ID of the event to be deleted
  */
 function deleteEvent($conn, $eventID) {
-    /* Check for other dependencies in other tables
-     * Check if the event is being tracked by any users
-     * If so, delete those dependencies first
-     * If not, proceed with a normal delete */
-
-    // Prepare statement to prevent SQL injections
-    $dependencyStmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
-    // Bind parameters to the statement
-    $dependencyStmt->bind_param("i", $eventID);
-    // Execute the statement and check if it was successful, if so, check if there are any dependencies
-    $dependencyStmt->execute();
-    // Get the result of the statement
-    $dependencyResult = $dependencyStmt->get_result();
-    // If there are dependencies, delete them first
-    if ($dependencyResult->num_rows > 0) {
-        /* Delete those dependencies */
-        // Prepare statement to prevent SQL injections
-        $dependencyDeleteStmt = $conn->prepare("DELETE FROM event_tracking WHERE Event_Id = ?");
-        // Bind parameters to the statement
-        $dependencyDeleteStmt->bind_param("i", $eventID);
-        // Execute the statement and check if it was successful
-        $dependencyDeleteStmt->execute();
-        // If the statement was successful redirect to the event admin page with a success message
-        // if not redirect to the event admin page with an error
-        if ($dependencyDeleteStmt->affected_rows > 0) {
-            $_SESSION['success'] = 'Event deleted successfully!';
-            header("Location: ../pages/event_admin.php?deleteevent=success");
-        } else {
-            redirectTo("event_admin", "deleteevent=failure", 'Event failed to delete!');
-        }
-        $dependencyDeleteStmt->close();
-    }
-    /* No dependencies found, proceed with a normal delete */
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("DELETE FROM event WHERE Event_Id = ?");
     // Bind parameters to the statement
@@ -135,7 +78,6 @@ function deleteEvent($conn, $eventID) {
         redirectTo("event_admin", "deleteevent=failure", 'Event failed to delete!');
     }
     $stmt->close();
-    $dependencyStmt->close();
     exit();
 }
 

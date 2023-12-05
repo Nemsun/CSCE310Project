@@ -53,6 +53,21 @@ if (isset($_POST['add_event_btn'])) {
         $stmt->close();
     }
 
+    /* Check the user is not a college student */
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $uin);
+    // Execute the statement and check if it was successful
+    // If the user is a college student, redirect to the event admin page with an error
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            redirectTo("event_admin", "error=invaliduser", 'User is a college student');
+        }
+        $stmt->close();
+    }
+
     /* Check the program number exists in program table */
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
@@ -192,6 +207,20 @@ if (isset($_POST['update_btn'])) {
     $result = $stmt->get_result();
     if ($result->num_rows == 0) {
         redirectTo("event_admin", "error=invaliduser", 'User does not exist');
+        exit();
+    }
+
+    // User must not be a college student
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $editUIN);
+    // Execute the statement and check if it was successful
+    $stmt->execute();
+    // If the user is a college student, redirect to the event admin page with an error
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        redirectTo("event_admin", "error=invaliduser", 'User is a college student');
         exit();
     }
     

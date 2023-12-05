@@ -34,9 +34,3 @@ function redirectTo($page, $location, $error) {
     header("Location: ../pages/$page.php?$location");
     exit();
 }
-
-function redirectLogin($location, $error) {
-    $_SESSION['error'] = $error;
-    header("Location: ../index.php?$location");
-    exit();
-}

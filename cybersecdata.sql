@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2023 at 07:53 PM
+-- Generation Time: Dec 05, 2023 at 08:12 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,9 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cybersecdata`
 --
-
-CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `cybersecdata`;
 
 -- --------------------------------------------------------
 
@@ -154,13 +151,6 @@ CREATE TABLE `event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `event`
---
-
-INSERT INTO `event` (`Event_Id`, `UIN`, `Program_Num`, `Start_Date`, `Start_Time`, `Location`, `End_Date`, `End_Time`, `Event_Type`) VALUES
-(1, 530003416, 1, '2023-11-27', '12:00:00', 'College Station, TX', '2023-11-28', '16:00:00', 'Competition');
-
---
 -- Triggers `event`
 --
 DELIMITER $$
@@ -183,13 +173,6 @@ CREATE TABLE `event_tracking` (
   `Event_Id` int(11) NOT NULL,
   `UIN` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `event_tracking`
---
-
-INSERT INTO `event_tracking` (`ET_Num`, `Event_Id`, `UIN`) VALUES
-(1, 1, 530003416);
 
 -- --------------------------------------------------------
 
@@ -276,6 +259,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, `Passwords`, `User_Type`, `Email`, `Discord`) VALUES
+(123456789, 'admin', 'a', 'admn', 'admin', 'admin', 'Admin', 'admin@abc.com', 'admin'),
 (530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
 (630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick');
 
