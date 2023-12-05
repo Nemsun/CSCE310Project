@@ -112,7 +112,7 @@ include_once '../includes/dbh.inc.php';
                 <br>
 
                 <button type="submit" class="add-btn" name="update_student" id="update_student">Update</button>
-                <a href="../user_admin.php">Cancel</a>
+                <a href="user_admin.php">Cancel</a>
             </form>
         <?php 
              

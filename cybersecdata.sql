@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2023 at 04:59 AM
+-- Generation Time: Dec 05, 2023 at 07:53 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -159,6 +159,18 @@ CREATE TABLE `event` (
 
 INSERT INTO `event` (`Event_Id`, `UIN`, `Program_Num`, `Start_Date`, `Start_Time`, `Location`, `End_Date`, `End_Time`, `Event_Type`) VALUES
 (1, 530003416, 1, '2023-11-27', '12:00:00', 'College Station, TX', '2023-11-28', '16:00:00', 'Competition');
+
+--
+-- Triggers `event`
+--
+DELIMITER $$
+CREATE TRIGGER `deleteEventTracking` BEFORE DELETE ON `event` FOR EACH ROW DELETE FROM event_tracking WHERE Event_Id = OLD.Event_Id
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `insertEventTracking` AFTER INSERT ON `event` FOR EACH ROW INSERT INTO event_tracking VALUES (NULL, NEW.Event_Id, NEW.UIN)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
