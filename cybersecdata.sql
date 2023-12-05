@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `cybersecdata`
 --
-
+CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `cybersecdata`;
 -- --------------------------------------------------------
 
 --
@@ -405,13 +406,13 @@ ALTER TABLE `document`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event_tracking`
 --
 ALTER TABLE `event_tracking`
-  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `internship`
