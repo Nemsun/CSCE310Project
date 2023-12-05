@@ -47,7 +47,7 @@ session_start(); ?>
                 <label class="event-label text-black font-size-l pd-10" for="event-type">Event Type</label>
                 <input class="pd-20 border-radius-12 edit-input" id="event-type" type="text" placeholder="Event Type" name="edit_event_type" value="<?php echo $row['Event_Type']?>">
                 
-                <div class="flex space-between width-50">
+                <div class="flex space-between width-24">
                     <button type="submit" class="add-btn margin-top-20" name="update_btn">Update</button>
                     <a href="event_admin.php" class="cancel-btn margin-top-20">Cancel</a>
                 </div>
