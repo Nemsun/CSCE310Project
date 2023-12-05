@@ -1,3 +1,5 @@
+<!-- Written by Patrick Keating -->
+
 <?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
