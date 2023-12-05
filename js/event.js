@@ -7,6 +7,7 @@ const eventDialog = document.getElementById('event-dialog');
 const openEventModal = document.getElementById('open-event-modal');
 const closeEventModal = document.getElementById('close-event-modal');
 
+// Adding event listeners to the open and close buttons
 openEventModal.addEventListener('click', () => {
     eventDialog.showModal();
 });
@@ -20,6 +21,7 @@ const eventUserDialog = document.getElementById('event-user-dialog');
 const openEventUserModal = document.getElementById('open-event-user-modal');
 const closeEventUserModal = document.getElementById('close-event-user-modal');
 
+// Adding event listeners to the open and close buttons
 openEventUserModal.addEventListener('click', () => {
     eventUserDialog.showModal();
 });
@@ -28,7 +30,11 @@ closeEventUserModal.addEventListener('click', () => {
     eventUserDialog.close();
 });
 
-// Parsing the event tracking data from the hidden input field
+/**
+ * This function parses the event tracking data from the hidden input field
+ * and updates the event tracking table with the retrieved data
+ * @param {*} eventId 
+ */
 function showEventTrackingDetails(eventId) {
     // Get the event tracking data from the hidden input field
     var eventTrackingData = JSON.parse(document.getElementById('eventTrackingData ' + eventId).value);
@@ -40,7 +46,10 @@ function showEventTrackingDetails(eventId) {
     document.getElementById('eventTrackingDetails').preventDefault();
 }
 
-// Populate the event tracking table with the retrieved data
+/**
+ * This function updates the event tracking table with the retrieved data
+ * @param {*} eventTrackingData 
+ */
 function updateEventTrackingTable(eventTrackingData) {
     var tableBody = document.getElementById("eventTrackingTableBody");
     // Clear existing table rows

@@ -11,13 +11,22 @@ include_once '../includes/dbh.inc.php';?>
         <h2>Edit Event</h2>
     </div>
     <?php
+        // If the edit button is clicked, get the event id and display the event information
+        // POST METHOD 
         if (isset($_POST['edit_btn'])) {
+            // Get the event id from the form
             $eventEditID = $_POST['edit_id'];
+            // Prepare statement to prevent SQL injection
             $stmt = $conn->prepare("SELECT * FROM event WHERE Event_Id = ?");
+            // Bind parameters to the statement
             $stmt->bind_param("i", $eventEditID);
+            // Execute the statement
             $stmt->execute();
+            // Get the result from the statement
             $result = $stmt->get_result();
+            // Close the statement
             $stmt->close();
+            // Display the event information
             foreach ($result as $row) {
             ?>
             <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_event.php" method="post">

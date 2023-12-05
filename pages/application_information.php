@@ -8,6 +8,7 @@ include_once '../includes/dbh.inc.php';
 
 <div class="main-container margin-left-280">
         <?php
+            // Alert messages
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
                 unset($_SESSION['success']);
@@ -25,8 +26,12 @@ include_once '../includes/dbh.inc.php';
     </div>
         <h3>Applications</h3>
         <?php
+            // Get all applications from database
+            // Prepare statement to prevent SQL injection
             $stmt = $conn->prepare("SELECT * FROM applications");
+            // Execute the statement
             $stmt->execute();
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
         ?>
@@ -45,6 +50,7 @@ include_once '../includes/dbh.inc.php';
                 </thead>
                 <tbody>
                     <?php
+                    // Populate table with data from database
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
                             ?>

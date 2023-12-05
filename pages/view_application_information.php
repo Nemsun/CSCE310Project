@@ -6,6 +6,7 @@ include '../assets/student_navbar.php';
 include_once '../includes/dbh.inc.php';  
 ?>
 <?php
+    // Variables to store the application information
     $appNum = "";
     $programNum = "";
     $programName = "";
@@ -13,13 +14,22 @@ include_once '../includes/dbh.inc.php';
     $uncomCert = "";
     $comCert = "";
     $purposeStatement = "";
+    // If the view button is clicked, get the application id and display the application information
+    // POST METHOD
     if (isset($_POST['view_app_btn'])) {
+        // Get the application id from the form
         $appNum = $_POST['view_app_id'];
+        // Prepare statement to prevent SQL injection
         $stmt = $conn->prepare("SELECT * FROM applications WHERE App_Num = ?");
+        // Bind parameters to the statement
         $stmt->bind_param("i", $appNum);
+        // Execute the statement
         if ($stmt->execute()) {
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
+            // Display the application information
+            // Store the application information in variables
             foreach ($result as $row) {
                 $appNum = $row['App_Num'];
                 $programNum = $row['Program_Num'];
@@ -28,12 +38,17 @@ include_once '../includes/dbh.inc.php';
                 $purposeStatement = $row['Purpose_Statement'];
             }
         }
-        
+        // Get the program information
+        // Prepare statement to prevent SQL injection
         $programStmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
+        // Bind parameters to the statement
         $programStmt->bind_param("i", $programNum);
+        // Execute the statement
         if ($programStmt->execute()) {
+            // Get the result from the statement
             $programResult = $programStmt->get_result();
             $programStmt->close();
+            // Store the program information in variables
             foreach ($programResult as $row) {
                 $programName = $row['Name'];
                 $programDesc = $row['Description'];

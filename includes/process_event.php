@@ -6,7 +6,18 @@ session_start();
 include_once 'dbh.inc.php';
 include 'helper.php';
 
-// This function creates an event to the event table
+/**
+ * This function adds an application to the applications table in the database
+ * @param $conn - the connection to the database
+ * @param $uin - the UIN of the student
+ * @param $programNum - the program number of the program the student is applying to
+ * @param $startDate - the start date of the program the student is applying to
+ * @param $endDate - the end date of the program the student is applying to
+ * @param $location - the location of the program the student is applying to
+ * @param $endDate - the end date of the program the student is applying to
+ * @param $endTime - the end time of the program the student is applying to
+ * @param $eventType - the event type of the program the student is applying to
+ */
 function addEvent($conn, $uin, $programNum, $startDate, $startTime, $location, $endDate, $endTime, $eventType) {
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("INSERT INTO event (UIN, Program_Num, Start_Date, Start_Time, Location, End_Date, End_Time, Event_Type) 
@@ -25,7 +36,12 @@ function addEvent($conn, $uin, $programNum, $startDate, $startTime, $location, $
     }
 }
 
-// This function adds an event to the event tracking table
+/**
+ * This function adds an event to an event tracking table
+ * @param $conn - the connection to the database
+ * @param $eventID - the event ID of the event to be added to
+ * @param $uin - the UIN of the user to be added
+ */
 function addEventTracking($conn, $eventID, $uin) {
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("INSERT INTO event_tracking (Event_Id, UIN) VALUES (?, ?)");
@@ -44,7 +60,12 @@ function addEventTracking($conn, $eventID, $uin) {
     }
 }
 
-// This function adds a user to an event
+/**
+ * This function adds a user to an event tracking table
+ * @param $conn - the connection to the database
+ * @param $eventID - the event ID of the event to be added to
+ * @param $uin - the UIN of the user to be added
+ */
 function addUserToEvent($conn, $eventID, $uin) {
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("INSERT INTO event_tracking (Event_Id, UIN) VALUES (?, ?)");
@@ -63,7 +84,11 @@ function addUserToEvent($conn, $eventID, $uin) {
     }
 }
 
-// This function deletes an event from the event table
+/**
+ * This function deletes an event from the event table
+ * @param $conn - the connection to the database
+ * @param $eventID - the event ID of the event to be deleted
+ */
 function deleteEvent($conn, $eventID) {
     /* Check for other dependencies in other tables
      * Check if the event is being tracked by any users
@@ -117,7 +142,11 @@ function deleteEvent($conn, $eventID) {
     exit();
 }
 
-// This function deletes a user from an event from the event tracking table
+/**
+ * This function deletes a user from an event tracking table
+ * @param $conn - the connection to the database
+ * @param $UIN - the UIN of the user to be deleted
+ */
 function deleteUserFromEvent($conn, $UIN) {
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("DELETE FROM event_tracking WHERE UIN = ?");

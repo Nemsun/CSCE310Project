@@ -5,7 +5,12 @@
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
 
-// This function returns an array of event tracking data
+/**
+ * This function gets the event tracking data from the database using the event ID
+ * @param $conn - the connection to the database
+ * @param $eventId - the event ID
+ * @return array - the event tracking data
+ */
 function getEventTrackingData($conn, $eventId) {
     // Get event tracking data from database using event ID
     // Prepare statement to prevent SQL injection
@@ -47,8 +52,11 @@ function getEventTrackingData($conn, $eventId) {
         <h3>Event List</h3>
         <?php
             // Get all events from database
+            // Prepare statement to prevent SQL injection
             $stmt = $conn->prepare("SELECT * FROM event");
+            // Execute the statement
             $stmt->execute();
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
         ?>
@@ -73,6 +81,7 @@ function getEventTrackingData($conn, $eventId) {
                 <tbody>
                     <?php
                     // Populate table with data from database
+                    // Loop through each row in the result set
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
                             ?>
