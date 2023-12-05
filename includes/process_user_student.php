@@ -118,7 +118,7 @@ if (isset($_POST['delete_btn'])) {
     $stmt2 = $conn->prepare("UPDATE college_student SET Student_Type = 'Inactive' WHERE UIN = ?");
     $stmt2->bind_param("i", $uin);
 
-    if ($stmt->execute() AND $stmt2->execcute()) {
+    if ($stmt->execute() AND $stmt2->execute()) {
         $_SESSION['success'] = 'User deleted successfully!';
         header("Location: ../index.php?deleteuser=success");
         $stmt->close();
