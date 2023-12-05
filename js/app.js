@@ -1,7 +1,7 @@
 /* WRITTEN BY: NAMSON PHAM
-   UIN: 530003416 
+   UIN: 530003416
 */
-const appDialog = document.getElementById('application-dialog');
+const appDialog = document.getElementById('app-dialog');
 const openAppModal = document.getElementById('open-app-modal');
 const closeAppModal = document.getElementById('close-app-modal');
 

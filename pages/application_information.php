@@ -1,7 +1,7 @@
 <!--WRITTEN BY: NAMSON PHAM
     UIN: 530003416                         
 -->
-<?php include '../assets/student_app_header.php'; 
+<?php include '../assets/header.php'; 
 include '../assets/student_navbar.php'; 
 include_once '../includes/dbh.inc.php';  
 ?>
@@ -81,7 +81,7 @@ include_once '../includes/dbh.inc.php';
 </div>
 
 <!-- Dialogs -->
-<dialog id="application-dialog" class="modal modal-app">
+<dialog id="app-dialog" class="modal modal-app">
     <div class="modal-header">
         <h3>Add Application</h3>
         <button autofocus id="close-app-modal" class="close-modal-btn">&times;</button>
@@ -107,4 +107,4 @@ include_once '../includes/dbh.inc.php';
 </dialog>
 
 <script src="../js/index.js"></script>
-<script src="../js/user_application.js"></script>
+<script src="../js/app.js"></script>
