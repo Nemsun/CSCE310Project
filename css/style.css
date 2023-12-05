@@ -306,3 +306,7 @@ th {
     transform: translateY(-50%);
     cursor: pointer;
 }
+
+.hiddenTable {
+    display: none;
+}
