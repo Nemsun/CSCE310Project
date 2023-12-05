@@ -22,7 +22,6 @@ if (isset($_POST['add_app_btn'])) {
     $uncomCert = filter_var($_POST['uncom_cert'], FILTER_SANITIZE_STRING);
     $comCert = filter_var($_POST['com_cert'], FILTER_SANITIZE_STRING);
     $purposeStmt = filter_var($_POST['purpose_stmt'], FILTER_SANITIZE_STRING);
-
     /* Error checking */
     /* Check if UIN exists in the student table */
     // Prepare statement to prevent SQL injection
@@ -39,7 +38,6 @@ if (isset($_POST['add_app_btn'])) {
         }
         $stmt->close();
     }
-    
     /* Check if program number exists in program table */
     // Prepare statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
@@ -55,17 +53,14 @@ if (isset($_POST['add_app_btn'])) {
         }
         $stmt->close();
     }
-    
     // If no errors, add the application to the database
     addApplication($conn, $userUIN, $programNum, $uncomCert, $comCert, $purposeStmt);
-
 } 
 
 if (isset($_POST['delete_app_btn'])) {
     // Get the application number from the form
     $appToBeDeleted = $_POST['delete_app_id'];
     $studentUIN = $_SESSION['user_id'];
-
     // Prepare statement to prevent SQL injection
     $stmt = $conn->prepare("DELETE FROM applications WHERE App_Num = ? AND UIN = ?");
     // Bind parameters to the statement
@@ -82,7 +77,6 @@ if (isset($_POST['delete_app_btn'])) {
         redirectTo("application_information", "deleteapp=failure", 'Application failed to delete!');
         $stmt->close();
     }
-
 } 
 
 if (isset($_POST['update_app_btn'])) {
@@ -92,7 +86,6 @@ if (isset($_POST['update_app_btn'])) {
     $editUncomCert = filter_var($_POST['uncom_cert'], FILTER_SANITIZE_STRING);
     $editComCert = filter_var($_POST['com_cert'], FILTER_SANITIZE_STRING);
     $editPurposeStmt = filter_var($_POST['purpose_statement'], FILTER_SANITIZE_STRING);
-
     /* Error checking */
     /* Check if program number exists in program table */
     // Prepare statement to prevent SQL injection

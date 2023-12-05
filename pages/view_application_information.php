@@ -60,7 +60,7 @@ include_once '../includes/dbh.inc.php';
     <div class="header">
         <h2>Application Information</h2>
     </div>
-    <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_user_applications.php" method="post">
+    <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_applications.php" method="post">
         <div class="flex align-center margin-top-10 margin-bot-10">
             <label class="event-label text-black font-size-l pd-10 font-weight-bold" for="app-num">Application Number: </label>
             <input class="font-size-l border-radius-12 width-48px text-align-center" id="app-num" type="text" placeholder="Application Number" name="app_num" value="<?php echo $appNum; ?>" disabled>

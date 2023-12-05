@@ -103,3 +103,28 @@ function deleteUserFromEvent($conn, $UIN) {
         $stmt->close();
     }
 }
+
+/**
+ * This function gets the event tracking data from the database using the event ID
+ * @param $conn - the connection to the database
+ * @param $eventId - the event ID
+ * @return array - the event tracking data
+ */
+function getEventTrackingData($conn, $eventId) {
+    // Get event tracking data from database using event ID
+    // Prepare statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();    
+    $result = $stmt->get_result();
+    // Store data in array
+    $data = array();
+    // Loop through each row in the result set
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    // Close statement
+    $stmt->close();
+    // Return data
+    return $data;
+}

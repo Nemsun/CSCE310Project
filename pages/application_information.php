@@ -7,16 +7,7 @@ include_once '../includes/dbh.inc.php';
 ?>
 
 <div class="main-container margin-left-280">
-        <?php
-            // Alert messages
-            if(isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['success']);
-            } else if(isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['error']);
-            }
-        ?>
+    <?php include '../assets/alerts.php'; ?>
     <div class="header">
         <h2>Manage Applications</h2>
     </div>
@@ -92,7 +83,7 @@ include_once '../includes/dbh.inc.php';
         <h3>Add Application</h3>
         <button autofocus id="close-app-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form class="flex flex-col" action="../includes/process_user_applications.php" method="post">
+    <form class="flex flex-col" action="../includes/process_applications.php" method="post">
             
         <input type="hidden" name="uin" value="<?php echo $_SESSION['user_id'] ?>">
 
