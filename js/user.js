@@ -1,11 +1,11 @@
-const eventUserDialog = document.getElementById('user-dialog');
-const openEventUserModal = document.getElementById('open-user-modal');
-const closeEventUserModal = document.getElementById('close-user-modal');
+const userDialog = document.getElementById('user-dialog');
+const openUserModal = document.getElementById('open-user-modal');
+const closeUserModal = document.getElementById('close-user-modal');
 
-openEventUserModal.addEventListener('click', () => {
-    eventUserDialog.showModal();
+openUserModal.addEventListener('click', () => {
+    userDialog.showModal();
 });
 
-closeEventUserModal.addEventListener('click', () => {
-    eventUserDialog.close();
+closeUserModal.addEventListener('click', () => {
+    userDialog.close();
 });

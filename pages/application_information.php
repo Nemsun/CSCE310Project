@@ -1,21 +1,13 @@
 <!--WRITTEN BY: NAMSON PHAM
     UIN: 530003416                         
 -->
-<?php include '../assets/student_app_header.php'; 
+<?php include '../assets/header.php'; 
 include '../assets/student_navbar.php'; 
 include_once '../includes/dbh.inc.php';  
-session_start();?>
+?>
 
 <div class="main-container margin-left-280">
-        <?php
-            if(isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['success']);
-            } else if(isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['error']);
-            }
-        ?>
+    <?php include '../assets/alerts.php'; ?>
     <div class="header">
         <h2>Manage Applications</h2>
     </div>
@@ -25,8 +17,12 @@ session_start();?>
     </div>
         <h3>Applications</h3>
         <?php
+            // Get all applications from database
+            // Prepare statement to prevent SQL injection
             $stmt = $conn->prepare("SELECT * FROM applications");
+            // Execute the statement
             $stmt->execute();
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
         ?>
@@ -45,6 +41,7 @@ session_start();?>
                 </thead>
                 <tbody>
                     <?php
+                    // Populate table with data from database
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
                             ?>
@@ -81,12 +78,12 @@ session_start();?>
 </div>
 
 <!-- Dialogs -->
-<dialog id="application-dialog" class="modal modal-app">
+<dialog id="app-dialog" class="modal modal-app">
     <div class="modal-header">
         <h3>Add Application</h3>
         <button autofocus id="close-app-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form class="flex flex-col" action="../includes/process_user_applications.php" method="post">
+    <form class="flex flex-col" action="../includes/process_applications.php" method="post">
             
         <input type="hidden" name="uin" value="<?php echo $_SESSION['user_id'] ?>">
 
@@ -107,4 +104,4 @@ session_start();?>
 </dialog>
 
 <script src="../js/index.js"></script>
-<script src="../js/user_application.js"></script>
+<script src="../js/app.js"></script>

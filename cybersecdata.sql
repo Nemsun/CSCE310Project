@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Database: `cybersecdata`
 --
 
+=======
+CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `cybersecdata`;
 -- --------------------------------------------------------
 
 --
@@ -169,11 +172,16 @@ CREATE TABLE `event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `event`
+-- Triggers `event`
 --
-
-INSERT INTO `event` (`Event_Id`, `UIN`, `Program_Num`, `Start_Date`, `Start_Time`, `Location`, `End_Date`, `End_Time`, `Event_Type`) VALUES
-(1, 530003416, 1, '2023-11-27', '12:00:00', 'College Station, TX', '2023-11-28', '16:00:00', 'Competition');
+DELIMITER $$
+CREATE TRIGGER `deleteEventTracking` BEFORE DELETE ON `event` FOR EACH ROW DELETE FROM event_tracking WHERE Event_Id = OLD.Event_Id
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `insertEventTracking` AFTER INSERT ON `event` FOR EACH ROW INSERT INTO event_tracking VALUES (NULL, NEW.Event_Id, NEW.UIN)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -186,13 +194,6 @@ CREATE TABLE `event_tracking` (
   `Event_Id` int(11) NOT NULL,
   `UIN` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `event_tracking`
---
-
-INSERT INTO `event_tracking` (`ET_Num`, `Event_Id`, `UIN`) VALUES
-(1, 1, 530003416);
 
 -- --------------------------------------------------------
 
@@ -280,6 +281,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, `Passwords`, `User_Type`, `Email`, `Discord`) VALUES
 (529008060, 'chase', 'M', 'albright', 'chase33', '123', 'Student', 'chasemalbright33@gmail.com', 'chase123'),
+(123456789, 'admin', 'a', 'admn', 'admin', 'admin', 'Admin', 'admin@abc.com', 'admin'),
 (530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
 (630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick');
 
@@ -424,13 +426,13 @@ ALTER TABLE `documents`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event_tracking`
 --
 ALTER TABLE `event_tracking`
-  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `internship`

@@ -1,35 +1,14 @@
 <!--WRITTEN BY: NAMSON PHAM
     UIN: 530003416                         
 -->
-<?php include '../assets/event_admin_header.php'; 
+<?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
-session_start();
-
-function getEventTrackingData($conn, $eventId) {
-    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
-    $stmt->bind_param("i", $eventId);
-    $stmt->execute();    
-    $result = $stmt->get_result();
-    $data = array();
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-    $stmt->close();
-    return $data;
-}
+include '../includes/event_helper.php';
 ?>
 
 <div class="main-container margin-left-280">
-        <?php
-            if(isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['success']);
-            } else if(isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger" role="alert" id="alert">' . $_SESSION['error'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
-                unset($_SESSION['error']);
-            }
-        ?>
+    <?php include '../assets/alerts.php'; ?>
     <div class="header">
         <h2>Manage Events</h2>
     </div>
@@ -39,8 +18,12 @@ function getEventTrackingData($conn, $eventId) {
     </div>
         <h3>Event List</h3>
         <?php
+            // Get all events from database
+            // Prepare statement to prevent SQL injection
             $stmt = $conn->prepare("SELECT * FROM event");
+            // Execute the statement
             $stmt->execute();
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
         ?>
@@ -64,6 +47,8 @@ function getEventTrackingData($conn, $eventId) {
                 </thead>
                 <tbody>
                     <?php
+                    // Populate table with data from database
+                    // Loop through each row in the result set
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
                             ?>
@@ -92,14 +77,17 @@ function getEventTrackingData($conn, $eventId) {
                                 <td>
                                     <button type="button" name="view_btn" class="table-btn view-btn" onclick="showEventTrackingDetails(<?php echo $row['Event_Id']; ?>)">VIEW</button>
                                     <input type="hidden" id="eventTrackingData <?php echo $row['Event_Id']; ?>" 
-                                        value='<?php echo json_encode(getEventTrackingData($conn, $row['Event_Id'])); ?>'
+                                        value='<?php 
+                                                // Get event tracking data from database using event ID
+                                                // In order to pass data to JavaScript, we need to encode it as a JSON string
+                                                echo json_encode(getEventTrackingData($conn, $row['Event_Id'])); ?>'
                                     >
                                 </td>
                             </tr>
                             <?php
                         }
                     } else {
-                        $_SESSION['error'] = "No events found in the database";
+                        // $_SESSION['error'] = "No events found in the database";
                     }
                     ?>
                 </tbody>

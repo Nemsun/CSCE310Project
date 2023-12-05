@@ -1,8 +1,12 @@
-<?php include '../assets/student_app_header.php'; 
+<!-- WRITTEN BY: NAMSON PHAM
+     UIN: 530003416
+-->
+<?php include '../assets/header.php'; 
 include '../assets/student_navbar.php';
 include_once '../includes/dbh.inc.php';  
-session_start();?>
+?>
 <?php
+    // Variables to store the application information
     $appNum = "";
     $programNum = "";
     $programName = "";
@@ -10,13 +14,22 @@ session_start();?>
     $uncomCert = "";
     $comCert = "";
     $purposeStatement = "";
+    // If the view button is clicked, get the application id and display the application information
+    // POST METHOD
     if (isset($_POST['view_app_btn'])) {
+        // Get the application id from the form
         $appNum = $_POST['view_app_id'];
+        // Prepare statement to prevent SQL injection
         $stmt = $conn->prepare("SELECT * FROM applications WHERE App_Num = ?");
+        // Bind parameters to the statement
         $stmt->bind_param("i", $appNum);
+        // Execute the statement
         if ($stmt->execute()) {
+            // Get the result from the statement
             $result = $stmt->get_result();
             $stmt->close();
+            // Display the application information
+            // Store the application information in variables
             foreach ($result as $row) {
                 $appNum = $row['App_Num'];
                 $programNum = $row['Program_Num'];
@@ -25,12 +38,17 @@ session_start();?>
                 $purposeStatement = $row['Purpose_Statement'];
             }
         }
-        
+        // Get the program information
+        // Prepare statement to prevent SQL injection
         $programStmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
+        // Bind parameters to the statement
         $programStmt->bind_param("i", $programNum);
+        // Execute the statement
         if ($programStmt->execute()) {
+            // Get the result from the statement
             $programResult = $programStmt->get_result();
             $programStmt->close();
+            // Store the program information in variables
             foreach ($programResult as $row) {
                 $programName = $row['Name'];
                 $programDesc = $row['Description'];
@@ -42,7 +60,7 @@ session_start();?>
     <div class="header">
         <h2>Application Information</h2>
     </div>
-    <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_user_applications.php" method="post">
+    <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_applications.php" method="post">
         <div class="flex align-center margin-top-10 margin-bot-10">
             <label class="event-label text-black font-size-l pd-10 font-weight-bold" for="app-num">Application Number: </label>
             <input class="font-size-l border-radius-12 width-48px text-align-center" id="app-num" type="text" placeholder="Application Number" name="app_num" value="<?php echo $appNum; ?>" disabled>
