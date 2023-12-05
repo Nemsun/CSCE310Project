@@ -129,6 +129,12 @@ function getUserData($conn, $UIN) {
                             if ($userData) {
 
                             ?>
+                    <div class="flex flex-col align-end">
+                        <form action="edit_student_admin.php" method="POST">
+                            <input type="hidden" name="UIN" value="<?php echo $userData['UIN']; ?>">
+                            <button type="submit" name="student_btn" class="table-btn edit-btn">EDIT</button>
+                        </form>
+                    </div>
                     <tr>
                         <td>UIN</td>
                         <td><?php echo $userData['UIN'];?></td>
