@@ -67,15 +67,22 @@ if (isset($_POST['create_account'])) {
     $stmt->bind_param("issssssss", $uin, $firstName, $middleInitial, $lastName, $username, $password, $usertype, $email, $discord);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Account created successfully";
+        //AUTOMATICALLY LOG USER IN
+        $_SESSION['user_id'] = $uin;
+        $_SESSION['user_type'] = $usertype;
+        $_SESSION['first_name'] = $firstName;
+
+        // Redirect to the desired page
+        header("Location: ../pages/student_dashboard.php");
+        exit();
     } else {
-        $_SESSION['message'] = "Account was not created, please recheck for valid inputs";
+        if ($result->num_rows !== 0) {
+            redirectTo("error=failedcreation", 'Failed to create an account');
+        }
     }
 
     $stmt->close();
     $conn->close();
-    echo '<script>alert("' . $_SESSION['message'] . '");</script>';
-    unset($_SESSION['message']);
 
     header("Location: ../");
     exit();

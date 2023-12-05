@@ -1,7 +1,6 @@
-<?php include '../assets/event_admin_header.php'; 
+<?php include '../assets/header.php'; 
 include '../assets/student_navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
-session_start();
 
 ?>
 
@@ -60,3 +59,5 @@ session_start();
         } 
     ?>
 </div>
+
+<script src="../js/index.js"></script>
