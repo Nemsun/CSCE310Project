@@ -29,33 +29,41 @@ session_start();
         <h1>SIGNUP</h1>
             <form action="../includes/process_student.php" method="post">
                 <br>
-                <select name="gender" id="gender">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
+                <div class="flex justify-center">
+                    <select name="gender" id="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
 
                 <br>
-
-                <select name="hispanic" id="hispanic">
-                    <option value="1">Hispanic/Latino</option>
-                    <option value="0">Not Hispanic/Latino</option>
-                </select>
+                
+                <div class="flex justify-center">
+                    <select name="hispanic" id="hispanic">
+                        <option value="1">Hispanic/Latino</option>
+                        <option value="0">Not Hispanic/Latino</option>
+                    </select>
+                </div>
 
                 <br>
                 <input type="text" placeholder="Race" id="race" name="race" required>
 
                 <br>
-                <select name="citizen" id="citizen">
-                    <option value="1">US Citizen</option>
-                    <option value="0">Not US Citizen</option>
-                </select>
+                <div class="flex justify-center">
+                    <select name="citizen" id="citizen">
+                        <option value="1">US Citizen</option>
+                        <option value="0">Not US Citizen</option>
+                    </select>
+                </div>
 
                 <br>
-                <select name="first_generation" id="first_generation">
-                    <option value="1">First Generation Student</option>
-                    <option value="0">Not First Generation Student</option>
-                </select>
+                <div class="flex justify-center">
+                    <select name="first_generation" id="first_generation">
+                        <option value="1">First Generation Student</option>
+                        <option value="0">Not First Generation Student</option>
+                    </select>
+                </div>
 
                 <br>
                 <input type="date" placeholder="Date of Birth" id="dob" name="dob" required>
@@ -79,21 +87,24 @@ session_start();
                 <input type="text" placeholder="School" id="school" name="school" required>
 
                 <br>
-                <select name="classification" id="classification">
-                    <option value="Freshman">Freshman</option>
-                    <option value="Sophomore">Sophomore</option>
-                    <option value="Junior">Junior</option>
-                    <option value="Senior">Senior</option>
-                    <option value="Other">Other</option>
-                </select>
+                <div class="flex justify-center">
+                    <select name="classification" id="classification">
+                        <option value="Freshman">Freshman</option>
+                        <option value="Sophomore">Sophomore</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+               
 
                 <br>
                 <input type="text" placeholder="Phone Number (No dashes)" id="phone" name="phone" required>
                 
                 <br>
                 
-                <button type="submit" name="create_student" id="signup-button">SUBMIT</button>
-                <a href="../index.php">Cancel</a>
+                <button type="submit" name="create_student" id="signup-button" class="register-btn">SUBMIT</button>
+                <a href="../index.php" class="cancel-register">Cancel</a>
             </form>
         </div>
     </body>
