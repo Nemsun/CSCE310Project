@@ -1,7 +1,6 @@
 <?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
-session_start();
 
 function getUserData($conn, $UIN) {
     $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");

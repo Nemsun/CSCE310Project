@@ -93,6 +93,7 @@ session_start();
                 <br>
                 
                 <button type="submit" name="create_student" id="signup-button">SUBMIT</button>
+                <a href="../index.php">Cancel</a>
             </form>
         </div>
     </body>
