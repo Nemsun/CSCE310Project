@@ -1,7 +1,7 @@
 <!-- WRITTEN BY: NAMSON PHAM
      UIN: 530003416 -->
 <?php
-
+// GENERAL FUNCTIONS
 /**
  * This function validates the start date + start time and end date + end time
  * @param $startDate - the start date

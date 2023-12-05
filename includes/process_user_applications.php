@@ -5,43 +5,15 @@
 session_start();
 include_once 'dbh.inc.php';
 include 'helper.php';
+include 'app_helper.php';
 
-/**
- * This function adds an application to the applications table in the database
- * 
- * @param $conn - the connection to the database
- * @param $uin - the UIN of the student
- * @param $programNum - the program number of the program the student is applying to
- * @param $uncomCert - the uncompleted certificate of the student
- * @param $comCert - the completed certificate of the student
- * @param $purposeStmt - the purpose statement of the student
- */
-function addApplication($conn, $uin, $programNum, $uncomCert, $comCert, $purposeStmt) {
-    // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("INSERT INTO applications (UIN, Program_Num, Uncom_Cert, Com_Cert, Purpose_Statement) 
-                            VALUES (?, ?, ?, ?, ?)");
-    // Bind parameters to the statement
-    $stmt->bind_param("iisss", $uin, $programNum, $uncomCert, $comCert, $purposeStmt);
-    
-    // Execute the statement
-    // If successful, redirect to application_information page with success message
-    // If unsuccessful, redirect to application_information page with failure message
-    if ($stmt->execute()) {
-        $_SESSION['success'] = 'Application added successfully!';
-        header("Location: ../pages/application_information.php?addapp=success");
-        $stmt->close();
-        exit();
-    } else {
-        redirectTo("application_information", "addapp=failure", 'Application failed to add!');
-        $stmt->close();
-    }
-}
 /*
  * ALL POST REQUESTS
  * ADD APPLICATION
  * DELETE APPLICATION
  * UPDATE APPLICATION
 */
+
 if (isset($_POST['add_app_btn'])) {
     // Get all the information from the form
     // Validate the information
@@ -87,7 +59,9 @@ if (isset($_POST['add_app_btn'])) {
     // If no errors, add the application to the database
     addApplication($conn, $userUIN, $programNum, $uncomCert, $comCert, $purposeStmt);
 
-} else if (isset($_POST['delete_app_btn'])) {
+} 
+
+if (isset($_POST['delete_app_btn'])) {
     // Get the application number from the form
     $appToBeDeleted = $_POST['delete_app_id'];
     $studentUIN = $_SESSION['user_id'];
@@ -109,7 +83,9 @@ if (isset($_POST['add_app_btn'])) {
         $stmt->close();
     }
 
-} else if (isset($_POST['update_app_btn'])) {
+} 
+
+if (isset($_POST['update_app_btn'])) {
     // Get all the information from the form
     $editAppID = $_POST['edit_app_id'];
     $editProgramNum = filter_var($_POST['program_num'], FILTER_VALIDATE_INT);
@@ -150,7 +126,4 @@ if (isset($_POST['add_app_btn'])) {
         redirectTo("application_information", "updateapp=failure", 'Application failed to update!');
         $stmt->close();
     }
-} else {
-    // If no POST requests, redirect to application_information page with error message
-    redirectTo("application_information", "error=invalidaction", 'Invalid action!');
 }
