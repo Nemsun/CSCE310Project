@@ -82,7 +82,11 @@ if (isset($_POST['delete_btn'])) {
 
     $stmt = $conn->prepare("UPDATE users SET User_Type = 'Inactive' WHERE UIN = ?");
     $stmt->bind_param("i", $uin);
-    if ($stmt->execute()) {
+
+    $stmt2 = $conn->prepare("UPDATE college_student SET Student_Type = 'Inactive' WHERE UIN = ?");
+    $stmt2->bind_param("i", $uin);
+
+    if ($stmt->execute() AND $stmt2->execute()) {
         $_SESSION['success'] = 'User deleted successfully!';
         header("Location: ../pages/user_admin.php?deleteuser=success");
         $stmt->close();
@@ -100,7 +104,11 @@ if (isset($_POST['hard_delete_btn'])) {
 
     $stmt = $conn->prepare("DELETE FROM users WHERE UIN = ?");
     $stmt->bind_param("i", $uin);
-    if ($stmt->execute()) {
+
+    $stmt2 = $conn->prepare("DELETE FROM college_student WHERE UIN = ?");
+    $stmt2->bind_param("i", $uin);
+
+    if ($stmt->execute() AND $stmt2->execute()) {
         $_SESSION['success'] = 'User hard deleted successfully!';
         header("Location: ../pages/user_admin.php?deleteuser=success");
         $stmt->close();
