@@ -24,8 +24,8 @@ if (isset($_POST['update_btn'])) {
     $editEventType = $_POST['edit_event_type'];
 
     /* Error checking */
-    // Program number must be between 1 and 5 (TODO: check if program number exists)
-    if ($editProgramNum < 1 || $editProgramNum > 5) {
+    // Program number must be a number greater than 0
+    if ($editProgramNum < 1) {
         $_SESSION['error'] = "Program number must be between 1 and 5";
         header("Location: ../pages/event_admin.php");
         exit();
@@ -50,6 +50,17 @@ if (isset($_POST['update_btn'])) {
     $result = $stmt->get_result();
     if ($result->num_rows == 0) {
         $_SESSION['error'] = "User does not exist";
+        header("Location: ../pages/event_admin.php");
+        exit();
+    }
+    
+    // Program must exist
+    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
+    $stmt->bind_param("i", $editProgramNum);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0) {
+        $_SESSION['error'] = "Program does not exist";
         header("Location: ../pages/event_admin.php");
         exit();
     }

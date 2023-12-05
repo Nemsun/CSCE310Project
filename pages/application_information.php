@@ -71,7 +71,7 @@ session_start();?>
                             <?php
                         }
                     } else {
-                        $_SESSION['error'] = "No applications found in the database";
+                        // $_SESSION['error'] = "No applications found in the database";
                     }
                     ?>
                 </tbody>

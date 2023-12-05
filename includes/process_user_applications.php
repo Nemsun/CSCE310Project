@@ -68,4 +68,34 @@ if (isset($_POST['add_app_btn'])) {
         redirectTo("deleteapp=failure", 'Application failed to delete!');
         $stmt->close();
     }
+} else if (isset($_POST['update_app_btn'])) {
+    $editAppID = $_POST['edit_app_id'];
+    $editProgramNum = $_POST['program_num'];
+    $editUncomCert = $_POST['uncom_cert'];
+    $editComCert = $_POST['com_cert'];
+    $editPurposeStmt = $_POST['purpose_statement'];
+    /* Error checking */
+    /* Check if program number exists in program table */
+    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
+    $stmt->bind_param("i", $editProgramNum);
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows == 0) {
+            redirectTo("error=invalidprogram", 'Program does not exist');
+        }
+        $stmt->close();
+    }
+    $stmt = $conn->prepare("UPDATE applications SET Program_Num = ?, Uncom_Cert = ?, Com_Cert = ?, Purpose_Statement = ? WHERE App_Num = '$editAppID'");
+    $stmt->bind_param("isss", $editProgramNum, $editUncomCert, $editComCert, $editPurposeStmt);
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Application updated successfully";
+        header("Location: ../pages/application_information.php?updateapp=success");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("updateapp=failure", 'Application failed to update!');
+        $stmt->close();
+    }
+} else {
+    redirectTo("error.php", 'Invalid request!');
 }
