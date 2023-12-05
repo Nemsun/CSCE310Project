@@ -19,7 +19,7 @@
             <a href="#" class="nav-link">Program</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Documents</a>
+            <a href="../pages/documents_student.php" class="nav-link">Documents</a>
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">

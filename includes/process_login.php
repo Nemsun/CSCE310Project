@@ -9,8 +9,8 @@ function redirectTo($location, $error) {
 }
 
 if (isset($_POST['login'])) {
-    $enteredUsername = $_POST['username'];
-    $enteredPassword = $_POST['password'];
+    $enteredUsername = $_POST['root@localhost'];
+    $enteredPassword = $_POST[''];
 
     //Make sure that username and password don't contain sql injections
 
