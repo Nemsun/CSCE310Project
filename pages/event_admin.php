@@ -108,6 +108,7 @@ include '../includes/event_helper.php';
                         <th>Event ID</th>
                         <th>UIN</th>
                         <th class="hidden">.</th>
+                        <th class="hidden">.</th>
                     </tr>
                 </thead>
                 <tbody id="eventTrackingTableBody">
