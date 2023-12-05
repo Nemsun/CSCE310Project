@@ -30,51 +30,53 @@ session_start();?>
             $result = $stmt->get_result();
             $stmt->close();
         ?>
-        <table id="eventTable">
-            <thead>
-                <tr>
-                    <th>Application</th>
-                    <th>Program</th>
-                    <th>Uncompleted Certifications</th>
-                    <th>Completed Certifications</th>
-                    <th>Purpose Statement</th>
-                    <th class="hidden">.</th>
-                    <th class="hidden">.</th>
-                    <th class="hidden">.</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if(mysqli_num_rows($result) > 0) {
-                    while($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                        <tr>
-                            <td><?php echo $row['App_Num']; ?></td>
-                            <td><?php echo $row['Program_Num']; ?></td>
-                            <td><?php echo $row['Uncom_Cert']; ?></td>
-                            <td><?php echo $row['Com_Cert']; ?></td>
-                            <td><?php echo $row['Purpose_Statement']; ?></td>
-                            <td>
-                                <form action="#" method="POST">
-                                    <input type="hidden" name="edit_id" value="<?php echo $row['App_Num']; ?>">
-                                    <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
-                                </form>
-                            </td> 
-                            <td>
-                                <form action="#" method="POST">
-                                    <input type="hidden" name="delete_id" value="<?php echo $row['App_Num']; ?>">
-                                    <button type="submit" name="delete_btn" class="table-btn delete-btn">DELETE</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php
+        <div class="table-container">
+            <table id="app-table">
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Program</th>
+                        <th>Uncompleted Certifications</th>
+                        <th>Completed Certifications</th>
+                        <th>Purpose Statement</th>
+                        <th class="hidden">.</th>
+                        <th class="hidden">.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if(mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
+                            ?>
+                            <tr>
+                                <td><?php echo $row['App_Num']; ?></td>
+                                <td><?php echo $row['Program_Num'] ?></td>
+                                <td><?php echo $row['Uncom_Cert']; ?></td>
+                                <td><?php echo $row['Com_Cert']; ?></td>
+                                <td><?php echo $row['Purpose_Statement']; ?></td>
+                                <td>
+                                    <form action="view_application_information.php" method="POST">
+                                        <input type="hidden" name="view_app_id" value="<?php echo $row['App_Num']; ?>">
+                                        <button type="submit" name="view_app_btn" class="table-btn view-btn">VIEW</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="../includes/process_user_applications.php" method="POST">
+                                        <input type="hidden" name="delete_app_id" value="<?php echo $row['App_Num']; ?>">
+                                        <button type="submit" name="delete_app_btn" class="table-btn delete-btn">DELETE</button>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        // $_SESSION['error'] = "No applications found in the database";
                     }
-                } else {
-                    $_SESSION['error'] = "No applications found in the database";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -84,7 +86,7 @@ session_start();?>
         <h3>Add Application</h3>
         <button autofocus id="close-app-modal" class="close-modal-btn">&times;</button>
     </div>
-    <form class="flex flex-col" action="../includes/process_event.php" method="post">
+    <form class="flex flex-col" action="../includes/process_user_applications.php" method="post">
             
         <input type="hidden" name="uin" value="<?php echo $_SESSION['user_id'] ?>">
 
