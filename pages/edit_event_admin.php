@@ -27,7 +27,7 @@ session_start(); ?>
                 <input class="pd-20 border-radius-12 edit-input" id="uin-id" type="text" placeholder="UIN" name="edit_UIN" value="<?php echo $row['UIN']?>">
 
                 <label class="event-label text-black font-size-l pd-10" for="program-num">Program Number</label>
-                <input class="pd-20 border-radius-12 edit-input" id="program-num" type="text" placeholder="Program Number (1-5)" name="edit_program_num" value="<?php echo $row['Program_Num']?>">
+                <input class="pd-20 border-radius-12 edit-input" id="program-num" type="text" placeholder="Program Number" name="edit_program_num" value="<?php echo $row['Program_Num']?>">
                 
                 <label class="event-label text-black font-size-l pd-10" for="start-date">Start Date</label>
                 <input class="pd-20 border-radius-12 edit-input" id="start-date" type="date" name="edit_start_date" value="<?php echo $row['Start_Date']?>">
