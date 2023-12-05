@@ -19,7 +19,7 @@
             <a href="../pages/event_admin.php" class="nav-link">Events</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Documents</a>
+            <a href="../pages/documents_admin.php" class="nav-link">Documents</a>
         </li>
         <li class="nav-item">
             <div class="btn-wrapper">
