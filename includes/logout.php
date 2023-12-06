@@ -1,3 +1,5 @@
+<!-- Written by Patrick Keating -->
+
 <?php
 session_start();
 
