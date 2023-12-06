@@ -16,7 +16,10 @@
             <a href="../pages/application_information.php" class="nav-link">Application Information</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Program Progress</a>
+            <a href="../pages/program_management.php" class="nav-link">Program Management</a>
+        </li>
+        <li class="nav-item">
+            <a href="../pages/progress_tracking.php" class="nav-link">Progress Tracking</a>
         </li>
         <li class="nav-item">
             <a href="../pages/documents_student.php" class="nav-link">Documents</a>
