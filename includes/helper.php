@@ -79,3 +79,20 @@ function checkPrograms($conn, $programNum) {
     $stmt->close();
     return mysqli_num_rows($result) > 0;
 }
+
+/**
+ * This function checks if a user is inactive
+ * @param $conn - the connection to the database
+ * @param $UIN - the UIN of the user
+ * @return bool - true if the user is inactive, false otherwise
+ */
+function checkInactiveUser($conn, $UIN) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ? AND User_Type = 'Inactive'");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $UIN);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return mysqli_num_rows($result) > 0;
+}

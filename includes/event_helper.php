@@ -227,14 +227,25 @@ function checkUserAttending($conn, $eventID, $UIN) {
 /**
  * This function checks if the user is hosting an event
  * @param $conn - the connection to the database
- * @param $UIN - the UIN of the user to be checked
+ * @param $ET_Num - the event tracking number of the event to be checked
  * @return bool - true if the user is hosting an event, false otherwise
  */
-function checkUserHost($conn, $UIN) {
+function checkUserHost($conn, $ET_Num) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE ET_Num = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $ET_Num);
+    // Execute the statement
+    $stmt->execute();
+    // Get the result from the statement
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    $stmt->close();
+    $uin = $data['UIN'];
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");
     // Bind parameters to the statement
-    $stmt->bind_param("i", $UIN);
+    $stmt->bind_param("i", $uin);
     // Execute the statement
     $stmt->execute();
     // Get the result from the statement
@@ -259,5 +270,5 @@ function checkEventExists($conn, $eventID) {
     // Get the result from the statement
     $result = $stmt->get_result();
     $stmt->close();
-    return mysqli_num_rows($result) == 0;
+    return mysqli_num_rows($result) > 0;
 }

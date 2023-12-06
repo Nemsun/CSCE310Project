@@ -62,7 +62,7 @@ include '../includes/event_helper.php';?>
                                         <button type="submit" id="edit-user-btn" name="edit_event_user_btn" class="table-btn edit-btn">EDIT</button>
                                     </form>
                                 </td>
-                                <?php if ($userType['User_Type'] == 'Student' || $hostUIN['UIN'] != $row['UIN']) { ?>
+                                <?php if ($userType['User_Type'] != 'Admin' || $hostUIN['UIN'] != $row['UIN']) { ?>
                                     <td>
                                         <form action="../includes/process_event.php" method="post">
                                             <input type="hidden" name="delete_et_num" value="<?php echo $row['ET_Num']; ?>">

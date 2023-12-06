@@ -13,6 +13,7 @@ include 'event_helper.php';
  * DELETE EVENT
  * DELETE USER FROM EVENT
  * UPDATE EVENT
+ * UPDATE EVENT TRACKING
 */
 
 if (isset($_POST['add_event_btn'])) {
@@ -40,6 +41,11 @@ if (isset($_POST['add_event_btn'])) {
         // If the user does not exist, redirect to the event admin page with an error
         redirectTo("event_admin", "error=invaliduser", 'User does not exist');
     }
+    /* Check if the user is inactive */
+    if (checkInactiveUser($conn, $uin)) {
+        // If the user is inactive, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=inactiveuser", 'User is inactive');
+    }
     /* Check the user is not a college student */
     if (checkCollegeStudent($conn, $uin)) {
         // If the user is a college student, redirect to the event admin page with an error
@@ -63,17 +69,22 @@ if (isset($_POST['add_user_btn'])) {
     /* Check if the user is already tracking the event */
     if (checkUserAttending($conn, $eventID, $uin)) {
         // If the user is already tracking the event, redirect to the event admin page with an error
-        redirectTo("view_event_tracking", "error=alreadytracking", 'User is already tracking the event');
+        redirectTo("event_admin", "error=alreadytracking", 'User is already tracking the event');
     }
     /* Check if the user exists */
     if (!checkUser($conn, $uin)) {
         // If the user does not exist, redirect to the event admin page with an error
-        redirectTo("view_event_tracking", "error=invaliduser", 'User does not exist');
+        redirectTo("event_admin", "error=invaliduser", 'User does not exist');
+    }
+    /* Check if the user is inactive */
+    if (checkInactiveUser($conn, $uin)) {
+        // If the user is inactive, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=inactiveuser", 'User is inactive');
     }
     /* Check if the event exists */
-    if (checkEventExists($conn, $eventID)) {
+    if (!checkEventExists($conn, $eventID)) {
         // If the event does not exist, redirect to the event admin page with an error
-        redirectTo("view_event_tracking", "error=invalidevent", 'Event does not exist');
+        redirectTo("event_admin", "error=invalidevent", 'Event does not exist');
     }
     // If all error checking passes, add the user to the event
     addUserToEvent($conn, $eventID, $uin);
@@ -128,6 +139,12 @@ if (isset($_POST['update_btn'])) {
         redirectTo("event_admin", "error=invaliduser", 'User does not exist');
         exit();
     }
+    // User must not be inactive
+    if (checkInactiveUser($conn, $editUIN)) {
+        // If the user is inactive, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=inactiveuser", 'User is inactive');
+        exit();
+    }
     // User must not be a college student
     if (checkCollegeStudent($conn, $editUIN)) {
         // If the user is a college student, redirect to the event admin page with an error
@@ -149,23 +166,38 @@ if (isset($_POST['update_tracking_btn'])) {
     // Validate the data make sure it is in the correct format
     $eventTrackingNum = $_POST['et_num'];
     $editEventID = filter_var($_POST['edit_tracking_id'], FILTER_VALIDATE_INT);
-    $editUIN = filter_var($_POST['edit_track_uin'], FILTER_VALIDATE_INT);
+    $editUIN = filter_var($_POST['edit_tracking_uin'], FILTER_VALIDATE_INT);
     /* Error checking */
+    // Check if user exists
     if (!checkUser($conn, $editUIN)) {
         // If the user does not exist, redirect to the event admin page with an error
         redirectTo("event_admin", "error=invaliduser", 'User does not exist');
         exit();
     }
+    // Check if the user is a host
+    if (checkUserHost($conn, $eventTrackingNum)) {
+        // If the user is a host, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=hostingevent", 'User is hosting the event');
+        exit();
+    }
+    // Check if user is inactive
+    if (checkInactiveUser($conn, $editUIN)) {
+        // If the user is inactive, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=inactiveuser", 'User is inactive');
+        exit();
+    }
+    // Check if user is already tracking event
     if (checkUserAttending($conn, $editEventID, $editUIN)) {
         // If the user is already tracking the event, redirect to the event admin page with an error
         redirectTo("event_admin", "error=alreadytracking", 'User is already tracking the event');
         exit();
     }
+    // Check if event exists
     if (!checkEventExists($conn, $editEventID)) {
         // If the event does not exist, redirect to the event admin page with an error
         redirectTo("event_admin", "error=invalidevent", 'Event does not exist');
         exit();
     }
     // if all error checking passes, update the event in the event tracking table
-    updateTracking($conn, $editEventID, $editUIN, $eventTrackingNum);
+    updateTracking($conn, $eventTrackingNum, $editEventID, $editUIN);
 }
