@@ -1,5 +1,5 @@
-<?php include '../assets/header.php'; 
-include '../assets/student_navbar.php';
+<?php include '../assets/user_admin_header.php'; 
+include '../assets/navbar.php';
 include_once '../includes/dbh.inc.php';  
 
 
