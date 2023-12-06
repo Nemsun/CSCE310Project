@@ -15,9 +15,9 @@
         <li class="nav-item">
             <a href="../pages/application_information.php" class="nav-link">Application Information</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a href="../pages/program_management.php" class="nav-link">Program Management</a>
-        </li>
+        </li> -->
         <li class="nav-item">
             <a href="../pages/progress_tracking.php" class="nav-link">Progress Tracking</a>
         </li>
