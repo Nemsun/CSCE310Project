@@ -61,10 +61,29 @@ function updateEventTrackingTable(eventTrackingData) {
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
         cell1.innerHTML = eventTrackingData[i].ET_Num;
         cell2.innerHTML = eventTrackingData[i].Event_Id;
         cell3.innerHTML = eventTrackingData[i].UIN;
         
+        // Create a form for the edit button
+        var editForm = document.createElement("form");
+        editForm.method = "POST";
+        editForm.action = "edit_event_tracking.php";
+        var hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "edit_et_num";
+        hiddenInput.value = eventTrackingData[i].ET_Num;
+        var editButton = document.createElement("button");
+        editButton.type = "submit";
+        editButton.name = "edit_event_tracking_btn";
+        editButton.innerHTML = "Edit";
+        editButton.className = "table-btn edit-btn";
+        editForm.appendChild(hiddenInput);
+        editForm.appendChild(editButton);
+        cell4.appendChild(editForm);
+
+        // Create a form for the delete button
         var deleteForm = document.createElement("form");
         deleteForm.method = "POST";
         deleteForm.action = "../includes/process_event.php";
@@ -79,6 +98,6 @@ function updateEventTrackingTable(eventTrackingData) {
         deleteButton.className = "table-btn delete-btn";
         deleteForm.appendChild(hiddenInput);
         deleteForm.appendChild(deleteButton);
-        cell4.appendChild(deleteForm);
+        cell5.appendChild(deleteForm);
     }
 }
