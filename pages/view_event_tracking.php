@@ -19,7 +19,7 @@ include '../includes/event_helper.php';?>
             // Get the event tracking number from the form
             $eventID = $_POST['view_id'];
             // Prepare statement to prevent SQL injection
-            $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
+            $stmt = $conn->prepare("SELECT * FROM event_attendance WHERE Event_Id = ?");
             // Bind parameters to the statement
             $stmt->bind_param("i", $eventID);
             // Execute the statement
@@ -40,6 +40,10 @@ include '../includes/event_helper.php';?>
                         <th>Event Tracking Number</th>
                         <th>Event ID</th>
                         <th>UIN</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>User Type</th>
+                        <th>Host</th>
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
                 </thead>
@@ -49,14 +53,20 @@ include '../includes/event_helper.php';?>
                     // Loop through each row in the result set
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
-                            $userType = getUserType($conn, $row['UIN']);
-                            $hostUIN = getUserHostUIN($conn, $row['Event_Id']);
                             ?>
                             <tr>
                                 <td><?php echo $row['ET_Num']; ?></td>
                                 <td><?php echo $row['Event_Id']; ?></td>
                                 <td><?php echo $row['UIN']; ?></td>
-                                <?php if ($userType['User_Type'] != 'Admin' || $hostUIN['UIN'] != $row['UIN']) { ?>
+                                <td><?php echo $row['First_name']; ?></td>
+                                <td><?php echo $row['Last_Name']; ?></td>
+                                <td><?php echo $row['Is_Admin']; ?></td>
+                                <?php if ($row['Is_Host'] == 'Host'){?>
+                                    <td>Yes</td>
+                                <?php } else { ?>
+                                    <td>No</td>
+                                <?php } ?>
+                                <?php if ($row['Is_Host'] != 'Host'){?>
                                     <td>
                                         <form action="edit_event_tracking.php" method="post">
                                             <input type="hidden" name="edit_et_num" value="<?php echo $row['ET_Num']; ?>">
