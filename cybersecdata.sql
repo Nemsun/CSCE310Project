@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2023 at 09:59 PM
+-- Generation Time: Dec 06, 2023 at 05:58 AM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -22,7 +22,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `cybersecdata`;
-
 -- --------------------------------------------------------
 
 --
@@ -126,8 +125,8 @@ CREATE TABLE `college_student` (
 --
 
 INSERT INTO `college_student` (`UIN`, `Gender`, `Hispanic`, `Race`, `Citizen`, `First_Generation`, `DoB`, `GPA`, `Major`, `Minor_1`, `Minor_2`, `Expected_Graduation`, `School`, `Classification`, `Phone`, `Student_Type`) VALUES
-(530003416, 'Male', 0x31, 'Asian', 0x31, 0x31, '2023-12-05', 4, 'CPEN', '', '', 2024, 'Texas A&M', 'Senior', 1234567890, 'Inactive'),
 (333333333, 'Male', 0x31, 'asdf', 0x31, 0x31, '2023-11-27', 3, 'asdf', '', '', 2020, 'asdf', 'Freshman', 2341234444, 'Active'),
+(530003416, 'Male', 0x31, 'Asian', 0x31, 0x31, '2023-12-05', 4, 'CPEN', '', '', 2024, 'Texas A&M', 'Senior', 1234567890, 'Inactive'),
 (630003608, 'Male', 0x31, 'White', 0x31, 0x31, '0000-00-00', 3.9, 'Computer Engineering', 'Mathematics', '', 2024, 'Texas A&M University', 'Freshman', 8325400698, 'Active');
 
 --
@@ -185,7 +184,7 @@ CREATE TABLE `event` (
   `Event_Type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+--
 -- Triggers `event`
 --
 DELIMITER $$
@@ -198,6 +197,25 @@ $$
 DELIMITER ;
 
 -- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `event_attendance`
+-- (See below for the actual view)
+--
+CREATE TABLE `event_attendance` (
+`ET_Num` int(11)
+,`Event_Id` int(11)
+,`UIN` int(11)
+,`First_name` varchar(255)
+,`M_Initial` char(1)
+,`Last_Name` varchar(255)
+,`Username` varchar(255)
+,`Is_Admin` varchar(255)
+,`Is_Host` varchar(8)
+);
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `event_tracking`
 --
@@ -293,12 +311,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, `Passwords`, `User_Type`, `Email`, `Discord`) VALUES
-(999999999, 'admin', 'a', 'admin', 'admin', 'admin', 'Admin', 'admin@abc.com', 'admin'),
-(530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
 (111111111, 'Test1', 'a', 'test2', 'test1', 'test1', 'Student', 'test1@gmail.com', 'test1'),
 (123456789, 'john', 'a', 'doe', 'johndoe', 'johndoe', 'Admin', 'johndoe@gmail.com', 'johndoe'),
 (333333333, 'test5', 't', 'test5', 'test5', 'test5', 'Student', 'test5@gmail.com', 'test5'),
-(630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick_k');
+(530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
+(630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick_k'),
+(999999999, 'admin', 'a', 'admin', 'admin', 'admin', 'Admin', 'admin@abc.com', 'admin');
 
 --
 -- Triggers `users`
@@ -311,6 +329,15 @@ DELIMITER $$
 CREATE TRIGGER `deleteEventTracking` BEFORE DELETE ON `users` FOR EACH ROW DELETE FROM event_tracking WHERE UIN = OLD.UIN
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `event_attendance`
+--
+DROP TABLE IF EXISTS `event_attendance`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `event_attendance`  AS SELECT `et`.`ET_Num` AS `ET_Num`, `et`.`Event_Id` AS `Event_Id`, `et`.`UIN` AS `UIN`, `u`.`First_name` AS `First_name`, `u`.`M_Initial` AS `M_Initial`, `u`.`Last_Name` AS `Last_Name`, `u`.`Username` AS `Username`, `u`.`User_Type` AS `Is_Admin`, CASE WHEN `e`.`Event_Id` is not null THEN 'Host' ELSE 'Not Host' END AS `Is_Host` FROM ((`event_tracking` `et` join `users` `u` on(`et`.`UIN` = `u`.`UIN`)) left join `event` `e` on(`et`.`Event_Id` = `e`.`Event_Id` and `et`.`UIN` = `e`.`UIN`)) ;
 
 --
 -- Indexes for dumped tables
@@ -501,7 +528,7 @@ ALTER TABLE `applications`
 -- Constraints for table `cert_enrollment`
 --
 ALTER TABLE `cert_enrollment`
-  ADD CONSTRAINT `Cert_ID` FOREIGN KEY (`Cert_ID`) REFERENCES `certification` (`Cert_Id`),
+  ADD CONSTRAINT `Cert_ID` FOREIGN KEY (`Cert_ID`) REFERENCES `certification` (`Cert_ID`),
   ADD CONSTRAINT `Cert_Program` FOREIGN KEY (`Program_Num`) REFERENCES `programs` (`Program_Num`),
   ADD CONSTRAINT `Cert_UIN` FOREIGN KEY (`UIN`) REFERENCES `college_student` (`UIN`);
 
