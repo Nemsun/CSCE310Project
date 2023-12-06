@@ -16,6 +16,9 @@
             <a href="../pages/application_information.php" class="nav-link">Application Information</a>
         </li>
         <li class="nav-item">
+            <a href="#" class="nav-link">Program Progress</a>
+        </li>
+        <li class="nav-item">
             <a href="../pages/documents_student.php" class="nav-link">Documents</a>
         </li>
         <li class="nav-item">
