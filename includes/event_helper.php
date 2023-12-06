@@ -86,11 +86,11 @@ function deleteEvent($conn, $eventID) {
  * @param $conn - the connection to the database
  * @param $UIN - the UIN of the user to be deleted
  */
-function deleteUserFromEvent($conn, $UIN) {
+function deleteUserFromEvent($conn, $ETNum) {
     // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("DELETE FROM event_tracking WHERE UIN = ?");
+    $stmt = $conn->prepare("DELETE FROM event_tracking WHERE ET_Num = ?");
     // Bind parameters to the statement
-    $stmt->bind_param("i", $UIN);
+    $stmt->bind_param("i", $ETNum);
     // Execute the statement and check if it was successful, if so, redirect to the event admin page with a success message
     // if not redirect to the event admin page with an error
     if ($stmt->execute()) {
@@ -105,26 +105,159 @@ function deleteUserFromEvent($conn, $UIN) {
 }
 
 /**
- * This function gets the event tracking data from the database using the event ID
+ * This function updates an event in the event table
  * @param $conn - the connection to the database
- * @param $eventId - the event ID
- * @return array - the event tracking data
+ * @param $UIN - the UIN of the student
+ * @param $ProgramNum - the program number of the program the student is applying to
+ * @param $StartDate - the start date of the event
+ * @param $EndDate - the end date of the event
+ * @param $Location - the location of the event
+ * @param $EndDate - the end date of the event
+ * @param $EndTime - the end time of the event
+ * @param $EventType - the event type
  */
-function getEventTrackingData($conn, $eventId) {
-    // Get event tracking data from database using event ID
-    // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ?");
-    $stmt->bind_param("i", $eventId);
-    $stmt->execute();    
-    $result = $stmt->get_result();
-    // Store data in array
-    $data = array();
-    // Loop through each row in the result set
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+function updateEvent($conn, $UIN, $ProgramNum, $StartDate, $StartTime, $Location, $EndDate, $EndTime, $EventType, $EventID) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("UPDATE event SET UIN = ?, Program_Num = ?, Start_Date = ?, Start_Time = ?, Location = ?, End_Date = ?, End_Time = ?, Event_Type = ? WHERE Event_Id = '$EventID'");
+    // Bind parameters to the statement
+    $stmt->bind_param("iissssss", $UIN, $ProgramNum, $StartDate, $StartTime, $Location, $EndDate, $EndTime, $EventType);
+    // Execute the statement and check if it was successful
+    // If the statement was successful redirect to the event admin page with a success message
+    // if not redirect to the event admin page with an error
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Event updated successfully";
+        header("Location: ../pages/event_admin.php");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("event_admin", "error=updatefailure", 'Event failed to update!');
+        $stmt->close();
+        exit();
     }
-    // Close statement
+}
+
+/**
+ * This function updates an event in the event tracking table
+ * @param $conn - the connection to the database
+ * @param $ETNum - the event tracking number of the event to be updated
+ * @param $EventID - the event ID of the event to be updated
+ * @param $UIN - the UIN of the user to be updated
+ */
+function updateTracking($conn, $ETNum, $EventID, $UIN) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("UPDATE event_tracking SET Event_Id = ?, UIN = ? WHERE ET_Num = '$ETNum'");
+    // Bind parameters to the statement
+    $stmt->bind_param("ii", $EventID, $UIN);
+    // Execute the statement and check if it was successful
+    // If the statement was successful redirect to the event admin page with a success message
+    // if not redirect to the event admin page with an error
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Event updated successfully";
+        header("Location: ../pages/event_admin.php");
+        $stmt->close();
+        exit();
+    } else {
+        redirectTo("event_admin", "error=updatefailure", 'Event failed to update!');
+        $stmt->close();
+        exit();
+    }
+}
+
+
+/**
+ * This function gets the user type of a user
+ * @param $conn - the connection to the database
+ * @param $UIN - the UIN of the user
+ * @return mixed - the user type of the user
+ */
+function getUserType($conn, $UIN) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT User_Type FROM users WHERE UIN = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $UIN);
+    // Execute the statement
+    $stmt->execute();
+    // Get the result from the statement
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    // Close the statement
     $stmt->close();
-    // Return data
+    // Return the result
     return $data;
+}
+
+function getUserHostUIN($conn, $EventID) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT UIN FROM event WHERE Event_Id = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $EventID);
+    // Execute the statement
+    $stmt->execute();
+    // Get the result from the statement
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    // Close the statement
+    $stmt->close();
+    // Return the result
+    return $data;
+}
+
+// ERROR CHECKING FUNCTIONS BELOW
+
+/**
+ * This function checks if the user is already tracking the event
+ * @param $conn - the connection to the database
+ * @param $eventID - the event ID of the event to be checked
+ * @param $UIN - the UIN of the user to be checked
+ * @return bool - true if the user is already tracking the event, false otherwise
+ */
+function checkUserAttending($conn, $eventID, $UIN) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ? AND UIN = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("ii", $eventID, $UIN);
+    // Execute the statement
+    $stmt->execute();
+    // Get the result from the statement
+    $result = $stmt->get_result();
+    $stmt->close();
+    return mysqli_num_rows($result) > 0;
+}
+
+/**
+ * This function checks if the user is hosting an event
+ * @param $conn - the connection to the database
+ * @param $UIN - the UIN of the user to be checked
+ * @return bool - true if the user is hosting an event, false otherwise
+ */
+function checkUserHost($conn, $UIN) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $UIN);
+    // Execute the statement
+    $stmt->execute();
+    // Get the result from the statement
+    $result = $stmt->get_result();
+    $stmt->close();
+    return mysqli_num_rows($result) > 0;
+}
+
+/**
+ * This function checks if the event exists
+ * @param $conn - the connection to the database
+ * @param $eventID - the event ID of the event to be checked
+ * @return bool - true if the event exists, false otherwise
+ */
+function checkEventExists($conn, $eventID) {
+    // Prepare statement to prevent SQL injections
+    $stmt = $conn->prepare("SELECT * FROM event WHERE Event_Id = ?");
+    // Bind parameters to the statement
+    $stmt->bind_param("i", $eventID);
+    // Execute the statement
+    $stmt->execute();
+    // Get the result from the statement
+    $result = $stmt->get_result();
+    $stmt->close();
+    return mysqli_num_rows($result) == 0;
 }

@@ -36,46 +36,19 @@ if (isset($_POST['add_event_btn'])) {
         redirectTo("event_admin", "error=invaliduinlength", 'UIN should be 9 numbers');
     }
     /* Check the user exists in the user table */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $uin);
-    // Execute the statement and check if it was successful
-    // If the user does not exist, redirect to the event admin page with an error
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        if ($result->num_rows == 0) {
-            redirectTo("event_admin", "error=invaliduser", 'User does not exist');
-        }
-        $stmt->close();
+    if (!checkUser($conn, $uin)) {
+        // If the user does not exist, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=invaliduser", 'User does not exist');
     }
     /* Check the user is not a college student */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $uin);
-    // Execute the statement and check if it was successful
-    // If the user is a college student, redirect to the event admin page with an error
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            redirectTo("event_admin", "error=invaliduser", 'User is a college student');
-        }
-        $stmt->close();
+    if (checkCollegeStudent($conn, $uin)) {
+        // If the user is a college student, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=invaliduser", 'User is a college student');
     }
     /* Check the program number exists in program table */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $programNum);
-    // Execute the statement and check if it was successful
-    // If the program does not exist, redirect to the event admin page with an error
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        if ($result->num_rows == 0) {
-            redirectTo("event_admin", "error=invalidprogram", 'Program does not exist');
-        }
-        $stmt->close();
+    if (!checkPrograms($conn, $programNum)) {
+        // If the program does not exist, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=invalidprogram", 'Program does not exist');
     }
     // If all error checking passes, add the event to the event table
     addEvent($conn, $uin, $programNum, $startDate, $startTime, $location, $endDate, $endTime, $eventType);
@@ -88,40 +61,19 @@ if (isset($_POST['add_user_btn'])) {
     $uin = filter_var($_POST['UIN'], FILTER_VALIDATE_INT);
     /* Error checking */
     /* Check if the user is already tracking the event */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE Event_Id = ? AND UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("ii", $eventID, $uin);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    $result = $stmt->get_result();
-    // If the user is already tracking the event, redirect to the event admin page with an error
-    if ($result->num_rows > 0) {
-        redirectTo("error=alreadytracking", 'User is already tracking this event');
+    if (checkUserAttending($conn, $eventID, $uin)) {
+        // If the user is already tracking the event, redirect to the event admin page with an error
+        redirectTo("view_event_tracking", "error=alreadytracking", 'User is already tracking the event');
     }
     /* Check if the user exists */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $uin);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    // If the user does not exist, redirect to the event admin page with an error
-    $result = $stmt->get_result();
-    if ($result->num_rows == 0) {
-        redirectTo("event_admin", "error=invaliduser", 'User does not exist');
+    if (!checkUser($conn, $uin)) {
+        // If the user does not exist, redirect to the event admin page with an error
+        redirectTo("view_event_tracking", "error=invaliduser", 'User does not exist');
     }
     /* Check if the event exists */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM event WHERE Event_Id = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $eventID);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    // If the event does not exist, redirect to the event admin page with an error
-    $result = $stmt->get_result();
-    if ($result->num_rows == 0) {
-        redirectTo("event_admin", "error=invalidevent", 'Event does not exist');
+    if (checkEventExists($conn, $eventID)) {
+        // If the event does not exist, redirect to the event admin page with an error
+        redirectTo("view_event_tracking", "error=invalidevent", 'Event does not exist');
     }
     // If all error checking passes, add the user to the event
     addUserToEvent($conn, $eventID, $uin);
@@ -136,21 +88,13 @@ if (isset($_POST['delete_btn'])) {
 
 if (isset($_POST['delete_event_user_btn'])) {
     // Get the data from the form
-    $UINDeleteID = $_POST['delete_uin_id'];
-    /* Check for dependencies in event table */
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $UINDeleteID);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    // If the user is hosting an event, redirect to the event admin page with an error
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        redirectTo("event_admin", "error=hasdependents", 'User is hosting the event');
+    $ETNumDelete = $_POST['delete_et_num'];
+    if (checkUserHost($conn, $ETNumDelete)) {
+        // If the user is hosting the event, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=hostingevent", 'User is hosting the event');
     }
     // If no dependencies are found, delete the user from the event tracking table
-    deleteUserFromEvent($conn, $UINDeleteID);
+    deleteUserFromEvent($conn, $ETNumDelete);
 } 
 
 if (isset($_POST['update_btn'])) {
@@ -179,60 +123,49 @@ if (isset($_POST['update_btn'])) {
         exit();
     }
     // User must exist in the user table
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $editUIN);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    // If the user does not exist, redirect to the event admin page with an error
-    $result = $stmt->get_result();
-    if ($result->num_rows == 0) {
+    if (!checkUser($conn, $editUIN)) {
+        // If the user does not exist, redirect to the event admin page with an error
         redirectTo("event_admin", "error=invaliduser", 'User does not exist');
         exit();
     }
     // User must not be a college student
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $editUIN);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    // If the user is a college student, redirect to the event admin page with an error
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
+    if (checkCollegeStudent($conn, $editUIN)) {
+        // If the user is a college student, redirect to the event admin page with an error
         redirectTo("event_admin", "error=invaliduser", 'User is a college student');
         exit();
     }
     // Program must exist in the program table
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $editProgramNum);
-    // Execute the statement and check if it was successful
-    $stmt->execute();
-    // If the program does not exist, redirect to the event admin page with an error
-    $result = $stmt->get_result();
-    if ($result->num_rows == 0) {
+    if (!checkPrograms($conn, $editProgramNum)) {
+        // If the program does not exist, redirect to the event admin page with an error
         redirectTo("event_admin", "error=invalidprogram", 'Program does not exist');
         exit();
     }
     // If all error checking passes, update the event in the event table
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("UPDATE event SET UIN = ?, Program_Num = ?, Start_Date = ?, Start_Time = ?, Location = ?, End_Date = ?, End_Time = ?, Event_Type = ? WHERE Event_Id = '$editEventID'");
-    // Bind parameters to the statement
-    $stmt->bind_param("iissssss", $editUIN, $editProgramNum, $editStartDate, $editStartTime, $editLocation, $editEndDate, $editEndTime, $editEventType);
-    // Execute the statement and check if it was successful
-    // If the statement was successful redirect to the event admin page with a success message
-    // if not redirect to the event admin page with an error
-    if ($stmt->execute()) {
-        $_SESSION['success'] = "Event updated successfully";
-        header("Location: ../pages/event_admin.php");
-        $stmt->close();
-        exit();
-    } else {
-        redirectTo("event_admin", "error=updatefailure", 'Event failed to update!');
-        $stmt->close();
+    updateEvent($conn, $editUIN, $editProgramNum, $editStartDate, $editStartTime, $editLocation, $editEndDate, $editEndTime, $editEventType, $editEventID);
+}
+    
+if (isset($_POST['update_tracking_btn'])) {
+    // Get the data from the form
+    // Validate the data make sure it is in the correct format
+    $eventTrackingNum = $_POST['et_num'];
+    $editEventID = filter_var($_POST['edit_tracking_id'], FILTER_VALIDATE_INT);
+    $editUIN = filter_var($_POST['edit_track_uin'], FILTER_VALIDATE_INT);
+    /* Error checking */
+    if (!checkUser($conn, $editUIN)) {
+        // If the user does not exist, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=invaliduser", 'User does not exist');
         exit();
     }
+    if (checkUserAttending($conn, $editEventID, $editUIN)) {
+        // If the user is already tracking the event, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=alreadytracking", 'User is already tracking the event');
+        exit();
+    }
+    if (!checkEventExists($conn, $editEventID)) {
+        // If the event does not exist, redirect to the event admin page with an error
+        redirectTo("event_admin", "error=invalidevent", 'Event does not exist');
+        exit();
+    }
+    // if all error checking passes, update the event in the event tracking table
+    updateTracking($conn, $editEventID, $editUIN, $eventTrackingNum);
 }
