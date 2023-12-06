@@ -10,7 +10,7 @@
             <a href="../pages/user_admin.php" class="nav-link" >User Dashboard</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Program Information</a>
+            <a href="../pages/program_management.php" class="nav-link">Program Information</a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link">Progress Tracking</a>
