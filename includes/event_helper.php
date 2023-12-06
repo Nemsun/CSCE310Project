@@ -186,6 +186,12 @@ function getUserType($conn, $UIN) {
     return $data;
 }
 
+/**
+ * This function gets the user host uin
+ * @param $conn - the connection to the database
+ * @param $EventID - the event ID of the event
+ * @return mixed - the user host uin of the event
+ */
 function getUserHostUIN($conn, $EventID) {
     // Prepare statement to prevent SQL injections
     $stmt = $conn->prepare("SELECT UIN FROM event WHERE Event_Id = ?");
