@@ -71,7 +71,7 @@ include_once '../includes/dbh.inc.php';
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="../includes/process_user_applications.php" method="POST">
+                                    <form action="../includes/process_applications.php" method="POST">
                                         <input type="hidden" name="delete_app_id" value="<?php echo $row['App_Num']; ?>">
                                         <button type="submit" name="delete_app_btn" class="table-btn delete-btn">DELETE</button>
                                     </form>
@@ -94,7 +94,7 @@ include_once '../includes/dbh.inc.php';
         <?php
             // Get all programs from database
             // Prepare statement to prevent SQL injection
-            $stmt = $conn->prepare("SELECT Program_Num,Name FROM programs");
+            $stmt = $conn->prepare("SELECT Program_Num,Name FROM programs ORDER BY Program_Num");
             // Execute the statement
             $stmt->execute();
             // Get the result from the statement
@@ -120,9 +120,9 @@ include_once '../includes/dbh.inc.php';
                                 <td><?php echo $row['Program_Num'] ?></td>
                                 <td><?php echo $row['Name']?></td>
                                 <td>
-                                    <form action="view_program_information.php" method="POST">
-                                        <input type="hidden" name="view_program_id" value="<?php echo $row['Program_Num']; ?>">
-                                        <button type="submit" name="view_program_btn" class="table-btn view-btn">APPLY</button>
+                                    <form action="apply_application_information.php" method="POST">
+                                        <input type="hidden" name="apply_program_num" value="<?php echo $row['Program_Num']; ?>">
+                                        <button type="submit" name="apply_program_btn" class="table-btn view-btn">APPLY</button>
                                     </form>
                                 </td>
                             </tr>

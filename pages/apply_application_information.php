@@ -7,37 +7,14 @@ include_once '../includes/dbh.inc.php';
 ?>
 <?php
     // Variables to store the application information
-    $appNum = "";
     $programNum = "";
     $programName = "";
     $programDesc = "";
-    $uncomCert = "";
-    $comCert = "";
-    $purposeStatement = "";
     // If the view button is clicked, get the application id and display the application information
     // POST METHOD
-    if (isset($_POST['view_app_btn'])) {
+    if (isset($_POST['apply_program_btn'])) {
         // Get the application id from the form
-        $appNum = $_POST['view_app_id'];
-        // Prepare statement to prevent SQL injection
-        $stmt = $conn->prepare("SELECT * FROM applications WHERE App_Num = ?");
-        // Bind parameters to the statement
-        $stmt->bind_param("i", $appNum);
-        // Execute the statement
-        if ($stmt->execute()) {
-            // Get the result from the statement
-            $result = $stmt->get_result();
-            $stmt->close();
-            // Display the application information
-            // Store the application information in variables
-            foreach ($result as $row) {
-                $appNum = $row['App_Num'];
-                $programNum = $row['Program_Num'];
-                $uncomCert = $row['Uncom_Cert'];
-                $comCert = $row['Com_Cert'];
-                $purposeStatement = $row['Purpose_Statement'];
-            }
-        }
+        $programNum = $_POST['apply_program_num'];
         // Get the program information
         // Prepare statement to prevent SQL injection
         $programStmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
@@ -49,21 +26,22 @@ include_once '../includes/dbh.inc.php';
             $programResult = $programStmt->get_result();
             $programStmt->close();
             // Store the program information in variables
-            foreach ($programResult as $row) {
-                $programName = $row['Name'];
-                $programDesc = $row['Description'];
-            }
+            $data = $programResult->fetch_assoc();
+            $programNum = $data['Program_Num'];
+            $programName = $data['Name'];
+            $programDesc = $data['Description'];
         }
     }
 ?>
 <div class="main-container margin-left-280">
     <div class="header">
-        <h2>Application Information</h2>
+        <h2>Program Application Information</h2>
     </div>
     <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_applications.php" method="post">
+
         <div class="flex align-center margin-top-10 margin-bot-10">
             <label class="event-label text-black font-size-l pd-10 font-weight-bold" for="program-num">Program Number: </label>
-            <input class="font-size-l border-radius-12 width-auto text-align-center" id="program-num" type="text" placeholder="Program Number" name="program_num" value="<?php echo $programNum; ?>">
+            <input class="font-size-l border-radius-12 width-auto text-align-center" id="program-num" type="text" placeholder="Program Number" name="program_num" value="<?php echo $programNum; ?>" disabled>
         </div>
 
         <div class="flex align-center margin-top-10 margin-bot-10">
@@ -78,22 +56,23 @@ include_once '../includes/dbh.inc.php';
 
         <div class="flex align-center margin-top-10 margin-bot-10">
             <label class="event-label text-black font-size-l pd-10 font-weight-bold" for="uncom-cert">Uncompleted Certificates: </label>
-            <textarea class="font-size-l border-radius-12 pd-20 width-1250px" id="uncom-cert" type="text" placeholder="Uncompleted Certificates" name="uncom_cert"><?php echo $uncomCert; ?></textarea>
+            <textarea class="font-size-l border-radius-12 pd-20 width-1250px" id="uncom-cert" type="text" placeholder="Uncompleted Certificates" name="uncom_cert"></textarea>
         </div>
 
         <div class="flex align-center margin-top-10 margin-bot-10">
             <label class="event-label text-black font-size-l pd-10 font-weight-bold" for="com-cert">Completed Certificates: </label>
-            <textarea class="font-size-l border-radius-12 pd-20 width-1275px" id="com-cert" type="text" placeholder="Completed Certificates" name="com_cert"><?php echo $comCert; ?></textarea>
+            <textarea class="font-size-l border-radius-12 pd-20 width-1275px" id="com-cert" type="text" placeholder="Completed Certificates" name="com_cert"></textarea>
         </div>
 
         <div class="flex align-center margin-top-10 margin-bot-10">
             <label class="event-label text-black font-size-l pd-10 font-weight-bold" for="purpose-statement">Purpose Statement: </label>
-            <textarea class="font-size-l border-radius-12 pd-20 width-1315px" id="purpose-statement" type="text" placeholder="Purpose Statement" name="purpose_statement"><?php echo $purposeStatement; ?></textarea>
+            <textarea class="font-size-l border-radius-12 pd-20 width-1315px" id="purpose-statement" type="text" placeholder="Purpose Statement" name="purpose_stmt" required></textarea>
         </div>
 
         <div class="flex space-between width-24">
-            <input type="hidden" name="edit_app_id" value="<?php echo $appNum; ?>">
-            <button type="submit" class="add-btn margin-top-20" name="update_app_btn">Update</button>
+            <input type="hidden" name="program_num" value="<?php echo $programNum; ?>">
+            <input type="hidden" name="uin" value="<?php echo $_SESSION['user_id'] ?>">
+            <button type="submit" class="add-btn margin-top-20" name="add_app_btn">Apply</button>
             <a href="application_information.php" class="cancel-btn margin-top-20">Back</a>
         </div>
     </form>
