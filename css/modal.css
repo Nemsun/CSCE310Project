@@ -1,5 +1,5 @@
 /*  WRITTEN BY: NAMSON PHAM
-    UIN: 530003416                         
+    UIN: 530003416
 */
 * {
     font-family: 'Poppins', sans-serif;
@@ -28,7 +28,7 @@
 
 .modal-app {
     width: 500px;
-    height: 475px;
+    height: 650px;
 }
 
 .modal-input {
@@ -39,7 +39,15 @@
     border: none;
     border-radius: 12px;
 }
-
+.modal-text-area {
+    width: 420px;
+    height: 100px;
+    margin: 12px auto;
+    padding: 0 10px;
+    border: none;
+    border-radius: 12px;
+    text-align: left;
+}
 text {
     width: 420px;
     height: 44px;
@@ -86,8 +94,8 @@ text {
 }
 
 .event-label {
-    font-size: 12px; 
-    color: white; 
+    font-size: 12px;
+    color: white;
 }
 
 .edit-input {
