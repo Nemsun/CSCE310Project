@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2023 at 05:58 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Dec 07, 2023 at 04:36 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `cybersecdata`
 --
-CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `cybersecdata`;
+
 -- --------------------------------------------------------
 
 --
@@ -36,6 +35,17 @@ CREATE TABLE `applications` (
   `Com_Cert` varchar(255) DEFAULT NULL,
   `Purpose_Statement` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`App_Num`, `Program_Num`, `UIN`, `Uncom_Cert`, `Com_Cert`, `Purpose_Statement`) VALUES
+(1, 2, 530003416, '', '', 'Hello world!'),
+(2, 1, 630003608, '', '', 'Hello world'),
+(3, 2, 530003416, '', '', 'hello world.'),
+(4, 1, 530003416, '', '', 'hello world!!!'),
+(7, 1, 630003608, '', '', 'I would like to get an A in this class please!');
 
 -- --------------------------------------------------------
 
@@ -125,6 +135,7 @@ CREATE TABLE `college_student` (
 --
 
 INSERT INTO `college_student` (`UIN`, `Gender`, `Hispanic`, `Race`, `Citizen`, `First_Generation`, `DoB`, `GPA`, `Major`, `Minor_1`, `Minor_2`, `Expected_Graduation`, `School`, `Classification`, `Phone`, `Student_Type`) VALUES
+(121212121, 'Male', 0x30, 'White', 0x31, 0x31, '2023-12-05', 4, 'CSCE', '', '', 2024, 'UT', 'Freshman', 1112223331, 'Active'),
 (333333333, 'Male', 0x31, 'asdf', 0x31, 0x31, '2023-11-27', 3, 'asdf', '', '', 2020, 'asdf', 'Freshman', 2341234444, 'Active'),
 (530003416, 'Male', 0x31, 'Asian', 0x31, 0x31, '2023-12-05', 4, 'CPEN', '', '', 2024, 'Texas A&M', 'Senior', 1234567890, 'Inactive'),
 (630003608, 'Male', 0x31, 'White', 0x31, 0x31, '0000-00-00', 3.9, 'Computer Engineering', 'Mathematics', '', 2024, 'Texas A&M University', 'Freshman', 8325400698, 'Active');
@@ -185,6 +196,14 @@ CREATE TABLE `event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`Event_Id`, `UIN`, `Program_Num`, `Start_Date`, `Start_Time`, `Location`, `End_Date`, `End_Time`, `Event_Type`) VALUES
+(1, 123456789, 2, '2023-12-06', '16:29:00', 'College Station, TX', '2023-12-06', '16:31:00', 'Conference'),
+(2, 123456789, 2, '2023-12-05', '16:29:00', 'College Station, TX', '2023-12-21', '16:30:00', 'Competition');
+
+--
 -- Triggers `event`
 --
 DELIMITER $$
@@ -225,6 +244,18 @@ CREATE TABLE `event_tracking` (
   `Event_Id` int(11) NOT NULL,
   `UIN` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event_tracking`
+--
+
+INSERT INTO `event_tracking` (`ET_Num`, `Event_Id`, `UIN`) VALUES
+(1, 1, 123456789),
+(2, 1, 530003416),
+(3, 1, 630003608),
+(4, 1, 999999999),
+(5, 2, 123456789),
+(6, 2, 999999999);
 
 -- --------------------------------------------------------
 
@@ -312,6 +343,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, `Passwords`, `User_Type`, `Email`, `Discord`) VALUES
 (111111111, 'Test1', 'a', 'test2', 'test1', 'test1', 'Student', 'test1@gmail.com', 'test1'),
+(121212121, 'aaa', 'a', 'aaa', 'yesyes', '123', 'Student', 'aaa@gmail.com', 'adasd'),
 (123456789, 'john', 'a', 'doe', 'johndoe', 'johndoe', 'Admin', 'johndoe@gmail.com', 'johndoe'),
 (333333333, 'test5', 't', 'test5', 'test5', 'test5', 'Student', 'test5@gmail.com', 'test5'),
 (530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
@@ -427,7 +459,8 @@ ALTER TABLE `intern_app`
 -- Indexes for table `programs`
 --
 ALTER TABLE `programs`
-  ADD PRIMARY KEY (`Program_Num`);
+  ADD PRIMARY KEY (`Program_Num`),
+  ADD KEY `program_name_idx` (`Name`);
 
 --
 -- Indexes for table `track`
@@ -451,7 +484,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `App_Num` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `App_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `certification`
@@ -481,13 +514,13 @@ ALTER TABLE `document`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `event_tracking`
 --
 ALTER TABLE `event_tracking`
-  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `internship`
