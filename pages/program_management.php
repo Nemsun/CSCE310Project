@@ -40,6 +40,7 @@ include_once '../includes/dbh.inc.php';
                         <th class="program-number">Program Number</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Active</th>
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
@@ -49,25 +50,28 @@ include_once '../includes/dbh.inc.php';
                     <?php
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
+                            // Convert boolean value to a user-friendly string
+                            $activeStatus = $row['IsActive'] ? 'Yes' : 'No';
                             ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['Program_Num']); ?></td>
                                 <td><?php echo htmlspecialchars($row['Name']); ?></td>
                                 <td class="description"><?php echo htmlspecialchars($row['Description']); ?></td>
+                                <td><?php echo $activeStatus; ?></td> <!-- Display active status -->
                                 <td>
-                                    <!-- <button onclick="location.href='../includes/edit_program.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Edit</button> -->
-                                    <button onclick="location.href='add_program.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Edit</button>
-                                </td>
-                                <td>
-                                <form action="../includes/process_program.php" method="POST">
-                                    <input type="hidden" name="program_num" value="<?php echo $row['Program_Num']; ?>">
-                                    <button type="submit" name="delete_program" class="table-btn delete-btn" onclick="return confirm('Are you sure you want to delete this program?');">Delete</button>
-                                </form>                                    
+                                    <button onclick="location.href='edit_program.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Edit</button>
                                 </td>
                                 <td>
                                     <form action="../includes/process_program.php" method="POST">
                                         <input type="hidden" name="program_num" value="<?php echo $row['Program_Num']; ?>">
-                                        <button type="submit" name="hide_program" class="table-btn hide-btn">Hide</button>
+                                        <button type="submit" name="delete_program" class="table-btn delete-btn" onclick="return confirm('Are you sure you want to delete this program?');">Delete</button>
+                                    </form>                                    
+                                </td>
+                                <td>
+                                    <form action="../includes/process_program.php" method="POST">
+                                        <input type="hidden" name="program_num" value="<?php echo $row['Program_Num']; ?>">
+                                        <!-- Toggle the active status instead of just hiding -->
+                                        <button type="submit" name="hide_program" class="table-btn"><?php echo $row['IsActive'] ? 'Hide' : 'Show'; ?></button>
                                     </form>
                                 </td>
                             </tr>

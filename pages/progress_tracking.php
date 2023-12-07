@@ -1,6 +1,6 @@
 <?php
 include '../assets/header.php'; 
-include '../assets/navbar.php';
+include '../assets/student_navbar.php';
 include_once '../includes/dbh.inc.php';
 
 if (!isset($_SESSION['user_id'])) {
