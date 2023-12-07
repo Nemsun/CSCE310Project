@@ -1,9 +1,9 @@
 <!--WRITTEN BY: NAMSON PHAM
-    UIN: 530003416                         
+    UIN: 530003416
 -->
-<?php include '../assets/user_admin_header.php'; 
-include '../assets/navbar.php'; 
-include_once '../includes/dbh.inc.php'; 
+<?php include '../assets/user_admin_header.php';
+include '../assets/navbar.php';
+include_once '../includes/dbh.inc.php';
 include '../includes/event_helper.php';
 ?>
 
@@ -32,7 +32,7 @@ include '../includes/event_helper.php';
                 <thead>
                     <tr>
                         <th>Event ID</th>
-                        <th>UIN</th>
+                        <th>Host UIN</th>
                         <th>Program</th>
                         <th>Start Date</th>
                         <th>Start Time</th>
@@ -67,7 +67,7 @@ include '../includes/event_helper.php';
                                         <input type="hidden" name="edit_id" value="<?php echo $row['Event_Id']; ?>">
                                         <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
                                     </form>
-                                </td> 
+                                </td>
                                 <td>
                                     <form action="../includes/process_event.php" method="POST">
                                         <input type="hidden" name="delete_id" value="<?php echo $row['Event_Id']; ?>">
@@ -105,7 +105,7 @@ include '../includes/event_helper.php';
 
         <label class="event-label margin-left-24" for="program-num">Program Number</label>
         <input class="modal-input" id="program-num" type="text" placeholder="Program Number" name="program_num" required>
-        
+
         <label class="event-label margin-left-24" for="start-date">Start Date</label>
         <input class="modal-input" id="start-date" type="date" name="start_date" required>
 
@@ -123,7 +123,7 @@ include '../includes/event_helper.php';
 
         <label class="event-label margin-left-24" for="event-type">Event Type</label>
         <input class="modal-input" id="event-type" type="text" placeholder="Event Type" name="event_type" required>
-        
+
         <button type="submit" class="add-btn center margin-top-10" name="add_event_btn">Add</button>
     </form>
 </dialog>
