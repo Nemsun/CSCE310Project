@@ -88,6 +88,55 @@ include_once '../includes/dbh.inc.php';
             </table>
         </div>
     </div>
+
+    <div class="table-wrapper margin-top-10">
+    <h3>Programs</h3>
+        <?php
+            // Get all programs from database
+            // Prepare statement to prevent SQL injection
+            $stmt = $conn->prepare("SELECT Program_Num,Name FROM programs");
+            // Execute the statement
+            $stmt->execute();
+            // Get the result from the statement
+            $result = $stmt->get_result();
+            $stmt->close();
+        ?>
+        <div class="table-container">
+            <table id="program-table">
+                <thead>
+                    <tr>
+                        <th>Program Number</th>
+                        <th>Program Name</th>
+                        <th class="hidden">.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Populate table with data from database
+                    if(mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Program_Num'] ?></td>
+                                <td><?php echo $row['Name']?></td>
+                                <td>
+                                    <form action="view_program_information.php" method="POST">
+                                        <input type="hidden" name="view_program_id" value="<?php echo $row['Program_Num']; ?>">
+                                        <button type="submit" name="view_program_btn" class="table-btn view-btn">APPLY</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        $_SESSION['error'] = "No programs found in the database";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <!-- Dialogs -->
@@ -104,13 +153,14 @@ include_once '../includes/dbh.inc.php';
         <input class="modal-input" id="program-num" type="text" placeholder="Program Number" name="program_num" required>
 
         <label class="event-label margin-left-24" for="uncom-cert">Uncompleted Certifications</label>
-        <input class="modal-input" id="uncom-cert" type="text" placeholder="Uncompleted Certifications" name="uncom_cert">
+        <textarea class="modal-text-area" id="uncom-cert" placeholder="Uncompleted Certifications" name="uncom_cert"></textarea>
 
         <label class="event-label margin-left-24" for="com-cert">Completed Certifications</label>
-        <input class="modal-input" id="com-cert" type="text" placeholder="Completed Certifications" name="com_cert">
+        <textarea class="modal-text-area" id="com-cert" placeholder="Completed Certifications" name="com_cert"></textarea>
 
         <label class="event-label margin-left-24" for="purpose-stmt">Purpose Statement</label>
-        <input class="modal-input" id="purpose-stmt" type="text" placeholder="Purpose Statement" name="purpose_stmt" required>
+        <textarea class="modal-text-area" id="purpose-stmt" placeholder="Purpose Statement" name="purpose_stmt" required></textarea>
+
 
         <button type="submit" class="add-btn center margin-top-10" name="add_app_btn">Add</button>
     </form>
