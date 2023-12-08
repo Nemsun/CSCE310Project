@@ -1,9 +1,9 @@
 <!--WRITTEN BY: NAMSON PHAM
-    UIN: 530003416                         
+    UIN: 530003416
 -->
-<?php include '../assets/user_admin_header.php'; 
-include '../assets/navbar.php'; 
-include_once '../includes/dbh.inc.php'; 
+<?php include '../assets/user_admin_header.php';
+include '../assets/navbar.php';
+include_once '../includes/dbh.inc.php';
 include '../includes/event_helper.php';
 ?>
 
@@ -32,7 +32,7 @@ include '../includes/event_helper.php';
                 <thead>
                     <tr>
                         <th>Event ID</th>
-                        <th>UIN</th>
+                        <th>Host UIN</th>
                         <th>Program</th>
                         <th>Start Date</th>
                         <th>Start Time</th>
@@ -67,7 +67,7 @@ include '../includes/event_helper.php';
                                         <input type="hidden" name="edit_id" value="<?php echo $row['Event_Id']; ?>">
                                         <button type="submit" name="edit_btn" class="table-btn edit-btn">EDIT</button>
                                     </form>
-                                </td> 
+                                </td>
                                 <td>
                                     <form action="../includes/process_event.php" method="POST">
                                         <input type="hidden" name="delete_id" value="<?php echo $row['Event_Id']; ?>">
@@ -75,44 +75,18 @@ include '../includes/event_helper.php';
                                     </form>
                                 </td>
                                 <td>
-                                    <button type="button" name="view_btn" class="table-btn view-btn" onclick="showEventTrackingDetails(<?php echo $row['Event_Id']; ?>)">VIEW</button>
-                                    <input type="hidden" id="eventTrackingData <?php echo $row['Event_Id']; ?>" 
-                                        value='<?php 
-                                                // Get event tracking data from database using event ID
-                                                // In order to pass data to JavaScript, we need to encode it as a JSON string
-                                                echo json_encode(getEventTrackingData($conn, $row['Event_Id'])); ?>'
-                                    >
+                                    <form action="view_event_tracking.php" method="POST">
+                                        <input type="hidden" name="view_id" value="<?php echo $row['Event_Id']?>">
+                                        <button type="submit" name="view_btn" class="table-btn view-btn">VIEW</button>
+                                    </form>
                                 </td>
                             </tr>
                             <?php
                         }
                     } else {
-                        // $_SESSION['error'] = "No events found in the database";
+                        $_SESSION['error'] = "No events found in the database";
                     }
                     ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-        
-    <div id="event-tracking" class="table-wrapper margin-top-40">
-        <div class="flex flex-col align-end">
-            <button class="add-btn" id="open-event-user-modal">Add User</button>
-        </div>
-        <h3>Event Tracking List</h3>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Event Tracking Number</th>
-                        <th>Event ID</th>
-                        <th>UIN</th>
-                        <th class="hidden">.</th>
-                        <th class="hidden">.</th>
-                    </tr>
-                </thead>
-                <tbody id="eventTrackingTableBody">
-                    <!-- Populate table -->
                 </tbody>
             </table>
         </div>
@@ -131,7 +105,7 @@ include '../includes/event_helper.php';
 
         <label class="event-label margin-left-24" for="program-num">Program Number</label>
         <input class="modal-input" id="program-num" type="text" placeholder="Program Number" name="program_num" required>
-        
+
         <label class="event-label margin-left-24" for="start-date">Start Date</label>
         <input class="modal-input" id="start-date" type="date" name="start_date" required>
 
@@ -149,26 +123,24 @@ include '../includes/event_helper.php';
 
         <label class="event-label margin-left-24" for="event-type">Event Type</label>
         <input class="modal-input" id="event-type" type="text" placeholder="Event Type" name="event_type" required>
-        
+
         <button type="submit" class="add-btn center margin-top-10" name="add_event_btn">Add</button>
     </form>
 </dialog>
 
-<dialog id="event-user-dialog" class="modal modal-event-user">
-    <div class="modal-header">
-        <h3>Add User</h3>
-        <button autofocus id="close-event-user-modal" class="close-modal-btn">&times;</button>
-    </div>
-    <form class="flex flex-col" action="../includes/process_event.php" method="post">
-        <label class="event-label margin-left-24" for="event-id">Event ID</label>
-        <input class="modal-input" id="event-id" type="text" placeholder="Event ID" name="Event_Id" required>
+<script>
+    const eventDialog = document.getElementById('event-dialog');
+    const openEventModal = document.getElementById('open-event-modal');
+    const closeEventModal = document.getElementById('close-event-modal');
 
-        <label class="event-label margin-left-24" for="user-id">User ID</label>
-        <input class="modal-input" id="user-id" type="text" placeholder="User ID" name="UIN" required>
-        
-        <button type="submit" class="add-btn center margin-top-10" name="add_user_btn">Add</button>
-    </form>
-</dialog>
+    // Adding event listeners to the open and close buttons
+    openEventModal.addEventListener('click', () => {
+        eventDialog.showModal();
+    });
+
+    closeEventModal.addEventListener('click', () => {
+        eventDialog.close();
+});
+</script>
 
 <script src="../js/index.js"></script>
-<script src="../js/event.js"></script>

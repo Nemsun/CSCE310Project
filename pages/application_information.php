@@ -1,9 +1,9 @@
 <!--WRITTEN BY: NAMSON PHAM
-    UIN: 530003416                         
+    UIN: 530003416
 -->
-<?php include '../assets/header.php'; 
-include '../assets/student_navbar.php'; 
-include_once '../includes/dbh.inc.php';  
+<?php include '../assets/header.php';
+include '../assets/student_navbar.php';
+include_once '../includes/dbh.inc.php';
 ?>
 
 <div class="main-container margin-left-280">
@@ -19,7 +19,9 @@ include_once '../includes/dbh.inc.php';
         <?php
             // Get all applications from database
             // Prepare statement to prevent SQL injection
-            $stmt = $conn->prepare("SELECT * FROM applications");
+            $stmt = $conn->prepare("SELECT * FROM applications WHERE UIN = ?");
+            // Bind statement
+            $stmt->bind_param("i", $_SESSION['user_id']);
             // Execute the statement
             $stmt->execute();
             // Get the result from the statement
@@ -30,8 +32,8 @@ include_once '../includes/dbh.inc.php';
             <table id="app-table">
                 <thead>
                     <tr>
-                        <th>Application</th>
-                        <th>Program</th>
+                        <th>Program Number</th>
+                        <th>Program Name</th>
                         <th>Uncompleted Certifications</th>
                         <th>Completed Certifications</th>
                         <th>Purpose Statement</th>
@@ -44,10 +46,21 @@ include_once '../includes/dbh.inc.php';
                     // Populate table with data from database
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
+                            // Prepare sstatement to prevent SQL injection
+                            $stmt = $conn->prepare("SELECT Name FROM programs WHERE Program_Num = ?");
+                            // Bind statement
+                            $stmt->bind_param("i", $row['Program_Num']);
+                            // Execute the statement
+                            $stmt->execute();
+                            // Get the result from the statement
+                            $nameResult = $stmt->get_result();
+                            // Put result into an itemized array
+                            $data = $nameResult->fetch_assoc();
+                            $stmt->close();
                             ?>
                             <tr>
-                                <td><?php echo $row['App_Num']; ?></td>
                                 <td><?php echo $row['Program_Num'] ?></td>
+                                <td><?php echo $data['Name']?></td>
                                 <td><?php echo $row['Uncom_Cert']; ?></td>
                                 <td><?php echo $row['Com_Cert']; ?></td>
                                 <td><?php echo $row['Purpose_Statement']; ?></td>
@@ -58,23 +71,72 @@ include_once '../includes/dbh.inc.php';
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="../includes/process_user_applications.php" method="POST">
+                                    <form action="../includes/process_applications.php" method="POST">
                                         <input type="hidden" name="delete_app_id" value="<?php echo $row['App_Num']; ?>">
                                         <button type="submit" name="delete_app_btn" class="table-btn delete-btn">DELETE</button>
                                     </form>
                                 </td>
-                                
+
                             </tr>
                             <?php
                         }
                     } else {
-                        // $_SESSION['error'] = "No applications found in the database";
+                        $_SESSION['error'] = "No applications found in the database";
                     }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div class="table-wrapper margin-top-10">
+    <h3>Programs</h3>
+        <?php
+            // Get all programs from database
+            // Prepare statement to prevent SQL injection
+            $stmt = $conn->prepare("SELECT Program_Num,Name FROM programs ORDER BY Program_Num");
+            // Execute the statement
+            $stmt->execute();
+            // Get the result from the statement
+            $result = $stmt->get_result();
+            $stmt->close();
+        ?>
+        <div class="table-container">
+            <table id="program-table">
+                <thead>
+                    <tr>
+                        <th>Program Number</th>
+                        <th>Program Name</th>
+                        <th class="hidden">.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Populate table with data from database
+                    if(mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Program_Num'] ?></td>
+                                <td><?php echo $row['Name']?></td>
+                                <td>
+                                    <form action="apply_application_information.php" method="POST">
+                                        <input type="hidden" name="apply_program_num" value="<?php echo $row['Program_Num']; ?>">
+                                        <button type="submit" name="apply_program_btn" class="table-btn view-btn">APPLY</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        $_SESSION['error'] = "No programs found in the database";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <!-- Dialogs -->
@@ -84,24 +146,40 @@ include_once '../includes/dbh.inc.php';
         <button autofocus id="close-app-modal" class="close-modal-btn">&times;</button>
     </div>
     <form class="flex flex-col" action="../includes/process_applications.php" method="post">
-            
+
         <input type="hidden" name="uin" value="<?php echo $_SESSION['user_id'] ?>">
 
         <label class="event-label margin-left-24" for="program-num">Program Number</label>
         <input class="modal-input" id="program-num" type="text" placeholder="Program Number" name="program_num" required>
 
         <label class="event-label margin-left-24" for="uncom-cert">Uncompleted Certifications</label>
-        <input class="modal-input" id="uncom-cert" type="text" placeholder="Uncompleted Certifications" name="uncom_cert">
+        <textarea class="modal-text-area" id="uncom-cert" placeholder="Uncompleted Certifications" name="uncom_cert"></textarea>
 
         <label class="event-label margin-left-24" for="com-cert">Completed Certifications</label>
-        <input class="modal-input" id="com-cert" type="text" placeholder="Completed Certifications" name="com_cert">
+        <textarea class="modal-text-area" id="com-cert" placeholder="Completed Certifications" name="com_cert"></textarea>
 
         <label class="event-label margin-left-24" for="purpose-stmt">Purpose Statement</label>
-        <input class="modal-input" id="purpose-stmt" type="text" placeholder="Purpose Statement" name="purpose_stmt" required>
-        
+        <textarea class="modal-text-area" id="purpose-stmt" placeholder="Purpose Statement" name="purpose_stmt" required></textarea>
+
+
         <button type="submit" class="add-btn center margin-top-10" name="add_app_btn">Add</button>
     </form>
 </dialog>
 
+
+<script>
+    // Grabbing the application dialog and the open and close buttons
+    const appDialog = document.getElementById('app-dialog');
+    const openAppModal = document.getElementById('open-app-modal');
+    const closeAppModal = document.getElementById('close-app-modal');
+
+    openAppModal.addEventListener('click', () => {
+        appDialog.showModal();
+    });
+
+    closeAppModal.addEventListener('click', () => {
+        appDialog.close();
+    });
+</script>
 <script src="../js/index.js"></script>
-<script src="../js/app.js"></script>
+

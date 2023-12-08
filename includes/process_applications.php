@@ -24,34 +24,16 @@ if (isset($_POST['add_app_btn'])) {
     $purposeStmt = filter_var($_POST['purpose_stmt'], FILTER_SANITIZE_STRING);
     /* Error checking */
     /* Check if UIN exists in the student table */
-    // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $userUIN);
-    // Execute the statement
-    // If successful, check if the result has 0 rows
-    // If 0 rows, redirect to application_information page with error message
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        if ($result->num_rows == 0) {
-            redirectTo("application_information", "error=invaliduser", 'User does not exist');
-        }
-        $stmt->close();
+    if (!checkCollegeStudent($conn, $userUIN)) {
+        // If the user does not exist, redirect to the application_information page with an error
+        redirectTo("application_information", "error=invaliduser", 'User does not exist');
+        exit();
     }
     /* Check if program number exists in program table */
-    // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $programNum);
-    // Execute the statement
-    // If successful, check if the result has 0 rows
-    // If 0 rows, redirect to application_information page with error message
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        if ($result->num_rows == 0) {
-            redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
-        }
-        $stmt->close();
+    if (!checkPrograms($conn, $programNum)) {
+        // If the program does not exist, redirect to the application_information page with an error
+        redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
+        exit();
     }
     // If no errors, add the application to the database
     addApplication($conn, $userUIN, $programNum, $uncomCert, $comCert, $purposeStmt);
@@ -88,19 +70,10 @@ if (isset($_POST['update_app_btn'])) {
     $editPurposeStmt = filter_var($_POST['purpose_statement'], FILTER_SANITIZE_STRING);
     /* Error checking */
     /* Check if program number exists in program table */
-    // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $editProgramNum);
-    // Execute the statement
-    // If successful, check if the result has 0 rows
-    // If 0 rows, redirect to application_information page with error message
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        if ($result->num_rows == 0) {
-            redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
-        }
-        $stmt->close();
+    if (!checkPrograms($conn, $editProgramNum)) {
+        // If the program does not exist, redirect to the application_information page with an error
+        redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
+        exit();
     }
     // if no errors, update the application in the database
     // Prepare statement to prevent SQL injection
