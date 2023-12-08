@@ -168,10 +168,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `document`
+-- Table structure for table `documents`
 --
 
-CREATE TABLE `document` (
+CREATE TABLE `documents` (
   `Doc_Num` int(11) NOT NULL,
   `App_Num` int(11) NOT NULL,
   `Link` varchar(255) NOT NULL,
@@ -420,9 +420,9 @@ ALTER TABLE `college_student`
   ADD PRIMARY KEY (`UIN`);
 
 --
--- Indexes for table `document`
+-- Indexes for table `documents`
 --
-ALTER TABLE `document`
+ALTER TABLE `documents`
   ADD PRIMARY KEY (`Doc_Num`),
   ADD KEY `Document_App` (`App_Num`);
 
@@ -506,9 +506,9 @@ ALTER TABLE `class_enrollment`
   MODIFY `ce_num` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `document`
+-- AUTO_INCREMENT for table `documents`
 --
-ALTER TABLE `document`
+ALTER TABLE `documents`
   MODIFY `Doc_Num` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -574,9 +574,9 @@ ALTER TABLE `class_enrollment`
   ADD CONSTRAINT `Class_UIN` FOREIGN KEY (`UIN`) REFERENCES `college_student` (`UIN`);
 
 --
--- Constraints for table `document`
+-- Constraints for table `documents`
 --
-ALTER TABLE `document`
+ALTER TABLE `documents`
   ADD CONSTRAINT `Document_App` FOREIGN KEY (`App_Num`) REFERENCES `applications` (`App_Num`);
 
 --
