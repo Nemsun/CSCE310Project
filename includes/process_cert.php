@@ -25,7 +25,7 @@ if (isset($_POST['submit-cert'])) {
         }
         $stmt->close();
     } elseif ($_POST['action'] === 'edit') {
-        $certId = $_POST['cert_id']; // Ensure this matches your form field name for certification ID
+        $certId = $_POST['cert_id'];
 
         $stmt = $conn->prepare("UPDATE Certification SET Name = ?, Description = ? WHERE Cert_ID = ?");
         $stmt->bind_param("ssi", $certName, $certDescription, $certId);
@@ -39,10 +39,10 @@ if (isset($_POST['submit-cert'])) {
     }
 
     $conn->close();
-} elseif (isset($_POST['delete_cert'])) {
-    $certId = $_POST['cert_id']; // Adjust to match your form field name
+} elseif (isset($_POST['delete-cert'])) {
+    $certId = $_POST['certe_num'];
 
-    $stmt = $conn->prepare("DELETE FROM Certification WHERE Cert_ID = ?");
+    $stmt = $conn->prepare("DELETE FROM cert_enrollment WHERE CertE_Num = ?");
     $stmt->bind_param("i", $certId);
 
     if ($stmt->execute()) {
