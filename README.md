@@ -36,4 +36,13 @@ Repository for CSCE 310 Project.
 # Zubair
    ### Admin and Student: 
     Program Information Management
-    Program Progress Tracking
+    - process_program.php
+    - program_management.php
+    - edit_program.php
+    - add_program.php
+    Program Progress Tracking (User)
+    - progress_tracking.php (split with Tarun)
+    - process_class.php (split with Tarun)
+    - process_cert.php (split with Tarun)
+    - insert_class.php
+    - insert_cert.php
