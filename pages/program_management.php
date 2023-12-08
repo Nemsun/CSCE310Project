@@ -59,7 +59,7 @@ include_once '../includes/dbh.inc.php';
                                 <td class="description"><?php echo htmlspecialchars($row['Description']); ?></td>
                                 <td><?php echo $activeStatus; ?></td> <!-- Display active status -->
                                 <td>
-                                    <button onclick="location.href='edit_program.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Edit</button>
+                                    <button onclick="location.href='add_program.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Edit</button>
                                 </td>
                                 <td>
                                     <form action="../includes/process_program.php" method="POST">
