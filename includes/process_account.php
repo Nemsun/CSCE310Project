@@ -1,5 +1,7 @@
 <!-- Written by Patrick Keating -->
 
+<!-- Creates a new student account from the login page -->
+
 <?php
 session_start();
 include_once 'dbh.inc.php';

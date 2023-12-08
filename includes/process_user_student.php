@@ -57,6 +57,7 @@ if (isset($_POST['update_btn'])) {
     $conn->close();
 }
 
+//UPDATING STUDENT
 if (isset($_POST['update_student_btn'])) {
     $uin = $_SESSION['user_id'];
     $gender = $_POST['gender'];
@@ -117,10 +118,7 @@ if (isset($_POST['delete_btn'])) {
     $stmt = $conn->prepare("UPDATE users SET User_Type = 'Inactive' WHERE UIN = ?");
     $stmt->bind_param("i", $uin);
 
-    $stmt2 = $conn->prepare("UPDATE college_student SET Student_Type = 'Inactive' WHERE UIN = ?");
-    $stmt2->bind_param("i", $uin);
-
-    if ($stmt->execute() AND $stmt2->execute()) {
+    if ($stmt->execute()) {
         $_SESSION['success'] = 'User deleted successfully!';
         header("Location: ../index.php?deleteuser=success");
         $stmt->close();

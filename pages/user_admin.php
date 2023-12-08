@@ -1,9 +1,12 @@
 <!-- Written by Patrick Keating -->
 
+<!-- Admin Dashboard for viewing information on Users and Student tables -->
+
 <?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
 
+//Function that fetches all information from students given a UIN (PK)
 function getUserData($conn, $UIN) {
     $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
     $stmt->bind_param("i", $UIN);
@@ -15,6 +18,7 @@ function getUserData($conn, $UIN) {
 ?>
 
 <div class="main-container margin-left-280">
+        <!-- Alerts Box -->
         <?php
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
@@ -31,6 +35,7 @@ function getUserData($conn, $UIN) {
     <div class="flex flex-col align-end">
         <button class="add-btn" id="open-user-modal">Add User</button>
     </div>
+        <!-- Retrieve information from the Users table -->
         <h3>User List</h3>
         <?php
             $stmt = $conn->prepare("SELECT * FROM users");
@@ -39,6 +44,7 @@ function getUserData($conn, $UIN) {
             $stmt->close();
         ?>
         <div class="table-container">
+            <!-- Create the header for the first table for users -->
             <table id="userTable">
                 <thead>
                     <tr>
@@ -58,6 +64,7 @@ function getUserData($conn, $UIN) {
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Fill in the first table with every user in the database along with buttons for edting/deleting -->
                     <?php
                     if(mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
@@ -72,6 +79,7 @@ function getUserData($conn, $UIN) {
                                 <td><?php echo $row['Discord']; ?></td>
                                 <td><?php echo $row['Username']; ?></td>
                                 <td><?php echo $row['Passwords']; ?></td>
+                                <!-- View button shows only for the student type for the second table -->
                                 <?php if ($row['User_Type'] == 'Student') { ?>
                                 <td>
                                     <form action="user_admin.php" method="POST">
@@ -113,6 +121,7 @@ function getUserData($conn, $UIN) {
     </div>
 
     <br>
+    <!-- View information from the college student role based on a selected user from the first table -->
     <div class="table-wrapper" id="specificTable">
         <h2> View Student </h2>
         <div class="table-container">
@@ -124,6 +133,7 @@ function getUserData($conn, $UIN) {
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Retrieve information from the getUserData function -->
                     <?php 
                         if (isset($_POST['view_btn'])) {
                             $currentUIN = $_POST['UIN'];
@@ -131,6 +141,7 @@ function getUserData($conn, $UIN) {
                             if ($userData) {
 
                             ?>
+                    <!-- Fills in the table with all of student information retrieved -->
                     <div class="flex flex-col align-end">
                         <form action="edit_student_admin.php" method="POST">
                             <input type="hidden" name="UIN" value="<?php echo $userData['UIN']; ?>">
@@ -212,11 +223,13 @@ function getUserData($conn, $UIN) {
     </div>
 </div>
 
+<!-- Modal for admins to manually add users to the User database-->
 <dialog id="user-dialog" class="modal modal-event">
     <div class="modal-header">
         <h3>Add User</h3>
         <button autofocus id="close-user-modal" class="close-modal-btn">&times;</button>
     </div>
+    <!-- Fields required for adding a new user to the database -->
     <form class="flex flex-col" action="../includes/process_user.php" method="post">
         <label class="event-label margin-left-24" for="UIN">UIN: </label>
         <input class="modal-input" id="UIN" type="text" placeholder="UIN" name="UIN" required>

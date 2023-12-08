@@ -1,11 +1,13 @@
 <!-- Written by Patrick Keating -->
 
+<!-- Editting page for admins to change information on user information-->
 <?php include '../assets/user_admin_header.php'; 
 include '../assets/navbar.php'; 
 include_once '../includes/dbh.inc.php'; 
 ?>
 
 <div class="main-container margin-left-280">
+    <!-- Alert Box -->
     <?php
         if(isset($_SESSION['success'])) {
             echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
@@ -19,6 +21,7 @@ include_once '../includes/dbh.inc.php';
         <h2>Edit User</h2>
     </div>
     <?php
+        //Pulls already existing data for the user to autofill some fields
         if (isset($_POST['edit_btn'])) {
             $uin = $_POST['edit_id'];
             $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");

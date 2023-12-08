@@ -6,7 +6,9 @@ include_once '../includes/dbh.inc.php';
 
 ?>
 
+<!-- Student Dashboard for editing account information -->
 <div class="main-container margin-left-280">
+    <!-- Alerts box -->
     <?php
         if(isset($_SESSION['success'])) {
             echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
@@ -19,6 +21,7 @@ include_once '../includes/dbh.inc.php';
     <div class="header">
         <h2>Edit Account Information</h2>
     </div>
+    <!-- Edit information within the User table -->
     <?php
         $olduin = $_SESSION['user_id'];
         $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
@@ -26,6 +29,9 @@ include_once '../includes/dbh.inc.php';
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
+        //Input fields for editing user information
+        //Autofills fields from using existing data for user from User table
+        //Change be changed and updated
         foreach ($result as $row) {
         ?>
         <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_user_student.php" method="post">
@@ -64,6 +70,7 @@ include_once '../includes/dbh.inc.php';
 <div class="header">
         <h2>Edit Student Information</h2>
     </div>
+    <!-- Edit information within the Student table -->
     <?php
         $olduin = $_SESSION['user_id'];
         $stmt = $conn->prepare("SELECT * FROM college_student WHERE UIN = ?");
@@ -71,6 +78,9 @@ include_once '../includes/dbh.inc.php';
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
+        //Input fields for editing student information
+        //Autofills fields from using existing data for student from User table
+        //Change be changed and updated
         foreach ($result as $row) {
         ?>
         <form class="edit-form flex flex-col flex-start align-start" action="../includes/process_user_student.php" method="post">

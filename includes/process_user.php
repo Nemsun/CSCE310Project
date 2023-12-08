@@ -3,6 +3,10 @@
 session_start();
 include_once 'dbh.inc.php';
 
+//Contains all of the functions used in the user dashboard for admins
+//Functions include adding, updating, deleting, or full deleting a user
+
+//Redirects the user back to the home page and sends an alert to the user
 function redirectTo($location, $error) {
     $_SESSION['error'] = $error;
     header("Location: ../pages/user_admin.php?$location");
@@ -22,6 +26,7 @@ if (isset($_POST['add_user_btn'])) {
     $password = $_POST['password'];
     $usertype = $_POST['user_type'];
 
+    //Verifies that some inputs fields are of the correct length and type
     if (strlen($middleInitial) !== 1) {
         redirectTo("error=invalidminitial", 'Middle Initial should be 1 character');
     }
@@ -58,6 +63,7 @@ if (isset($_POST['add_user_btn'])) {
         redirectTo("error=invalidUIN", 'This user is already registered');
     }
 
+    //Inserting all the collected data into the database to create a new user
     $stmt = $conn->prepare("INSERT INTO users (UIN, First_name, M_Initial, Last_Name, Username, Passwords, User_Type, Email, Discord) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("issssssss", $uin, $firstName, $middleInitial, $lastName, $username, $password, $usertype, $email, $discord);
@@ -81,13 +87,11 @@ if (isset($_POST['add_user_btn'])) {
 if (isset($_POST['delete_btn'])) {
     $uin = $_POST['UIN'];
 
+    //Soft deleting is done by setting the user type to inactive of both the student or admin with a trigger
     $stmt = $conn->prepare("UPDATE users SET User_Type = 'Inactive' WHERE UIN = ?");
     $stmt->bind_param("i", $uin);
 
-    $stmt2 = $conn->prepare("UPDATE college_student SET Student_Type = 'Inactive' WHERE UIN = ?");
-    $stmt2->bind_param("i", $uin);
-
-    if ($stmt->execute() AND $stmt2->execute()) {
+    if ($stmt->execute()) {
         $_SESSION['success'] = 'User deleted successfully!';
         header("Location: ../pages/user_admin.php?deleteuser=success");
         $stmt->close();
@@ -106,10 +110,9 @@ if (isset($_POST['hard_delete_btn'])) {
     $stmt = $conn->prepare("DELETE FROM users WHERE UIN = ?");
     $stmt->bind_param("i", $uin);
 
-    $stmt2 = $conn->prepare("DELETE FROM college_student WHERE UIN = ?");
-    $stmt2->bind_param("i", $uin);
+    //Full deleting is done by completely deleting the user and student from the database with a trigger
 
-    if ($stmt->execute() AND $stmt2->execute()) {
+    if ($stmt->execute()) {
         $_SESSION['success'] = 'User hard deleted successfully!';
         header("Location: ../pages/user_admin.php?deleteuser=success");
         $stmt->close();
@@ -138,7 +141,8 @@ if (isset($_POST['update_btn'])) {
     $password = $_POST['password'];
     $usertype = $_POST['user_type'];
     $oldUIN = $_POST['old_uin'];
-
+    
+    //Verifies that some inputs fields are of the correct length and type
     if (strlen($middleInitial) !== 1) {
         redirectToUpdate("error=invalidminitial", 'Middle Initial should be 1 character');
     }
@@ -166,6 +170,7 @@ if (isset($_POST['update_btn'])) {
         redirectToUpdate("error=invaliduser", 'Duplicate username, try a new one');
     }
 
+    //Updating all the collected data into the database to update a user
     $stmt = $conn->prepare("UPDATE users SET UIN = ?, First_name = ?, M_Initial = ?, Last_Name = ?, Username = ?, Passwords = ?, User_Type = ?, Email = ?, Discord = ? WHERE UIN = ?");
     $stmt->bind_param("issssssssi", $uin, $firstName, $middleInitial, $lastName, $username, $password, $usertype, $email, $discord, $oldUIN);
 

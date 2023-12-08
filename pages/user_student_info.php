@@ -5,6 +5,9 @@ include_once '../includes/dbh.inc.php';
 session_start();
 ?>
 
+<!-- After a user creates an account, this page will be used to create an entry within the student table if they have no entry in the Student table-->
+<!-- Add information to the Student table -->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +19,7 @@ session_start();
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <div class = "main-container margin-left-35">
+        <!-- Alerts box -->
         <?php
             if(isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert" id="alert">' . $_SESSION['success'] . '<span class="alert-close-btn" onclick="closeAlert()">&times;</span>' . '</div>';
@@ -27,6 +31,7 @@ session_start();
         ?>
     </div>
     <body>
+        <!-- Fill in student information with fill in fields and drop down menus-->
         <div class="student-container">
         <h1>SIGNUP</h1>
             <form action="../includes/process_student.php" method="post">

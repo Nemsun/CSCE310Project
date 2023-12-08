@@ -1,5 +1,6 @@
 <!-- Written by Patrick Keating -->
 
+<!-- Handles the login functionality, checks that there is an account and logs the user in -->
 <?php
 session_start();
 include_once 'dbh.inc.php';

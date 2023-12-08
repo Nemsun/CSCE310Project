@@ -1,5 +1,6 @@
 <!-- Written by Patrick Keating -->
 
+<!-- Creates a new student account when logged in as a student page -->
 <?php
 session_start();
 include_once 'dbh.inc.php';
@@ -10,7 +11,7 @@ function redirectTo($location, $error) {
     exit();
 }
 
-//NEED TO FIX ALERTS
+
 
 if (isset($_POST['create_student'])) {
     $uin = $_SESSION['user_id'];
@@ -71,7 +72,7 @@ function redirectToAdmin($location, $error) {
     exit();
 }
 
-
+//Updates student information from student dashboard
 if (isset($_POST['update_student'])) {
     $uin = $_POST['stu_uin'];
     $gender = $_POST['gender'];
@@ -90,6 +91,7 @@ if (isset($_POST['update_student'])) {
     $phone = $_POST['phone'];
     $student_type = $_POST['student_type'];
 
+    //Valid year should be entered
     if (strlen($expected_graduation) !== 4 OR !is_numeric($expected_graduation)) {
         redirectToAdmin("error=invalidgrad", 'Please enter a valid graduation date');
     }
@@ -98,7 +100,8 @@ if (isset($_POST['update_student'])) {
     if (!is_numeric($phone) OR strlen($phone) !== 10) {
         redirectToAdmin("error=invalidPhone", 'Phone Number should only contain numbers and be 10 characters');
     }
-
+    
+    //GPA should be a number
     if (!is_numeric($gpa)) {
         redirectToAdmin("error=invalidGPA", 'Please enter a valid GPA');
     }
