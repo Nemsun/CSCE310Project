@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2023 at 12:03 AM
+-- Generation Time: Dec 09, 2023 at 12:16 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -295,19 +295,20 @@ CREATE TABLE `intern_app` (
 CREATE TABLE `programs` (
   `Program_Num` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Description` varchar(255) NOT NULL
+  `Description` varchar(255) NOT NULL,
+  `IsActive` tinyint(4) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `programs`
 --
 
-INSERT INTO `programs` (`Program_Num`, `Name`, `Description`) VALUES
-(1, 'Cyber Leader Development Program (CLDP)', 'CLDP is a two-year program that complements a student’s existing degree path by providing opportunities for hands-on experience, industry certifications, summer internships, leadership development, and individual mentoring.'),
-(2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.'),
-(3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.'),
-(4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.'),
-(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.');
+INSERT INTO `programs` (`Program_Num`, `Name`, `Description`, `IsActive`) VALUES
+(1, 'Cyber Leader Development Program (CLDP)', 'CLDP is a two-year program that complements a student’s existing degree path by providing opportunities for hands-on experience, industry certifications, summer internships, leadership development, and individual mentoring.', 1),
+(2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.', 1),
+(3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.', 1),
+(4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.', 1),
+(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.', 1);
 
 -- --------------------------------------------------------
 
@@ -595,7 +596,7 @@ ALTER TABLE `intern_app`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `track`
