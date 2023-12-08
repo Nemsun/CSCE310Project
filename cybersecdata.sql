@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2023 at 04:36 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Dec 09, 2023 at 12:16 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -44,9 +44,9 @@ CREATE TABLE `applications` (
 INSERT INTO `applications` (`App_Num`, `Program_Num`, `UIN`, `Uncom_Cert`, `Com_Cert`, `Purpose_Statement`) VALUES
 (1, 2, 530003416, '', '', 'Hello world!'),
 (2, 1, 630003608, '', '', 'Hello world'),
-(3, 2, 530003416, '', '', 'hello world.'),
-(4, 1, 530003416, '', '', 'hello world!!!'),
-(7, 1, 630003608, '', '', 'I would like to get an A in this class please!');
+(7, 1, 630003608, '', '', 'I would like to get an A in this class please!'),
+(9, 5, 530003416, 'CSCE 310', '', 'hello world!'),
+(10, 2, 530003416, 'hello', 'hello!!', 'hello world!!');
 
 -- --------------------------------------------------------
 
@@ -168,10 +168,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `document`
+-- Table structure for table `documents`
 --
 
-CREATE TABLE `document` (
+CREATE TABLE `documents` (
   `Doc_Num` int(11) NOT NULL,
   `App_Num` int(11) NOT NULL,
   `Link` varchar(255) NOT NULL,
@@ -252,11 +252,12 @@ CREATE TABLE `event_tracking` (
 
 INSERT INTO `event_tracking` (`ET_Num`, `Event_Id`, `UIN`) VALUES
 (1, 1, 123456789),
-(2, 1, 530003416),
 (3, 1, 630003608),
 (4, 1, 999999999),
 (5, 2, 123456789),
-(6, 2, 999999999);
+(6, 2, 999999999),
+(8, 1, 530003416),
+(9, 2, 630003608);
 
 -- --------------------------------------------------------
 
@@ -294,19 +295,37 @@ CREATE TABLE `intern_app` (
 CREATE TABLE `programs` (
   `Program_Num` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Description` varchar(255) NOT NULL
+  `Description` varchar(255) NOT NULL,
+  `IsActive` tinyint(4) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `programs`
 --
 
-INSERT INTO `programs` (`Program_Num`, `Name`, `Description`) VALUES
-(1, 'Cyber Leader Development Program (CLDP)', 'CLDP is a two-year program that complements a student’s existing degree path by providing opportunities for hands-on experience, industry certifications, summer internships, leadership development, and individual mentoring.'),
-(2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.'),
-(3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.'),
-(4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.'),
-(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.');
+INSERT INTO `programs` (`Program_Num`, `Name`, `Description`, `IsActive`) VALUES
+(1, 'Cyber Leader Development Program (CLDP)', 'CLDP is a two-year program that complements a student’s existing degree path by providing opportunities for hands-on experience, industry certifications, summer internships, leadership development, and individual mentoring.', 1),
+(2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.', 1),
+(3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.', 1),
+(4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.', 1),
+(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `student_class_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `student_class_view` (
+`ClassEnrollmentID` int(11)
+,`UIN` int(11)
+,`Class_ID` int(11)
+,`ClassName` varchar(255)
+,`ClassDescription` varchar(255)
+,`Status` varchar(255)
+,`Semester` varchar(255)
+,`Year` year(4)
+);
 
 -- --------------------------------------------------------
 
@@ -366,11 +385,49 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `user_certification_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `user_certification_view` (
+`CertE_Num` int(11)
+,`UIN` int(11)
+,`Cert_ID` int(11)
+,`Status` varchar(255)
+,`Training_Status` varchar(255)
+,`Program_Num` int(11)
+,`Semester` varchar(255)
+,`Year` year(4)
+,`Level` varchar(255)
+,`CertName` varchar(255)
+,`CertDescription` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `event_attendance`
 --
 DROP TABLE IF EXISTS `event_attendance`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `event_attendance`  AS SELECT `et`.`ET_Num` AS `ET_Num`, `et`.`Event_Id` AS `Event_Id`, `et`.`UIN` AS `UIN`, `u`.`First_name` AS `First_name`, `u`.`M_Initial` AS `M_Initial`, `u`.`Last_Name` AS `Last_Name`, `u`.`Username` AS `Username`, `u`.`User_Type` AS `Is_Admin`, CASE WHEN `e`.`Event_Id` is not null THEN 'Host' ELSE 'Not Host' END AS `Is_Host` FROM ((`event_tracking` `et` join `users` `u` on(`et`.`UIN` = `u`.`UIN`)) left join `event` `e` on(`et`.`Event_Id` = `e`.`Event_Id` and `et`.`UIN` = `e`.`UIN`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `student_class_view`
+--
+DROP TABLE IF EXISTS `student_class_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `student_class_view`  AS SELECT `class_enrollment`.`ce_num` AS `ClassEnrollmentID`, `class_enrollment`.`UIN` AS `UIN`, `classes`.`Class_Id` AS `Class_ID`, `classes`.`Name` AS `ClassName`, `classes`.`Description` AS `ClassDescription`, `class_enrollment`.`Status` AS `Status`, `class_enrollment`.`Semester` AS `Semester`, `class_enrollment`.`Year` AS `Year` FROM (`class_enrollment` join `classes` on(`class_enrollment`.`Class_ID` = `classes`.`Class_Id`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `user_certification_view`
+--
+DROP TABLE IF EXISTS `user_certification_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_certification_view`  AS SELECT `ce`.`CertE_Num` AS `CertE_Num`, `ce`.`UIN` AS `UIN`, `ce`.`Cert_ID` AS `Cert_ID`, `ce`.`Status` AS `Status`, `ce`.`Training_Status` AS `Training_Status`, `ce`.`Program_Num` AS `Program_Num`, `ce`.`Semester` AS `Semester`, `ce`.`Year` AS `Year`, `c`.`Level` AS `Level`, `c`.`Name` AS `CertName`, `c`.`Description` AS `CertDescription` FROM (`cert_enrollment` `ce` join `certification` `c` on(`ce`.`Cert_ID` = `c`.`Cert_ID`)) ;
 
 --
 -- Indexes for dumped tables
@@ -420,9 +477,9 @@ ALTER TABLE `college_student`
   ADD PRIMARY KEY (`UIN`);
 
 --
--- Indexes for table `document`
+-- Indexes for table `documents`
 --
-ALTER TABLE `document`
+ALTER TABLE `documents`
   ADD PRIMARY KEY (`Doc_Num`),
   ADD KEY `Document_App` (`App_Num`);
 
@@ -485,7 +542,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `App_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `App_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `certification`
@@ -506,22 +563,22 @@ ALTER TABLE `class_enrollment`
   MODIFY `ce_num` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `document`
+-- AUTO_INCREMENT for table `documents`
 --
-ALTER TABLE `document`
+ALTER TABLE `documents`
   MODIFY `Doc_Num` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Event_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `event_tracking`
 --
 ALTER TABLE `event_tracking`
-  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ET_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `internship`
@@ -539,7 +596,7 @@ ALTER TABLE `intern_app`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `track`
@@ -574,9 +631,9 @@ ALTER TABLE `class_enrollment`
   ADD CONSTRAINT `Class_UIN` FOREIGN KEY (`UIN`) REFERENCES `college_student` (`UIN`);
 
 --
--- Constraints for table `document`
+-- Constraints for table `documents`
 --
-ALTER TABLE `document`
+ALTER TABLE `documents`
   ADD CONSTRAINT `Document_App` FOREIGN KEY (`App_Num`) REFERENCES `applications` (`App_Num`);
 
 --

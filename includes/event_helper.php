@@ -186,27 +186,6 @@ function getUserType($conn, $UIN) {
     return $data;
 }
 
-/**
- * This function gets the user host uin
- * @param $conn - the connection to the database
- * @param $EventID - the event ID of the event
- * @return mixed - the user host uin of the event
- */
-function getUserHostUIN($conn, $EventID) {
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT UIN FROM event WHERE Event_Id = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $EventID);
-    // Execute the statement
-    $stmt->execute();
-    // Get the result from the statement
-    $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
-    // Close the statement
-    $stmt->close();
-    // Return the result
-    return $data;
-}
 
 // ERROR CHECKING FUNCTIONS BELOW
 
@@ -238,25 +217,14 @@ function checkUserAttending($conn, $eventID, $UIN) {
  */
 function checkUserHost($conn, $ET_Num) {
     // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM event_tracking WHERE ET_Num = ?");
+    $host = "Host";
+    $stmt = $conn->prepare("SELECT * FROM event_attendance WHERE ET_Num = ? AND Is_Host = '$host'");
     // Bind parameters to the statement
     $stmt->bind_param("i", $ET_Num);
     // Execute the statement
     $stmt->execute();
     // Get the result from the statement
     $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
-    $stmt->close();
-    $uin = $data['UIN'];
-    // Prepare statement to prevent SQL injections
-    $stmt = $conn->prepare("SELECT * FROM event WHERE UIN = ?");
-    // Bind parameters to the statement
-    $stmt->bind_param("i", $uin);
-    // Execute the statement
-    $stmt->execute();
-    // Get the result from the statement
-    $result = $stmt->get_result();
-    $stmt->close();
     return mysqli_num_rows($result) > 0;
 }
 
