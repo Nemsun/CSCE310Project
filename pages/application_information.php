@@ -94,7 +94,7 @@ include_once '../includes/dbh.inc.php';
         <?php
             // Get all programs from database
             // Prepare statement to prevent SQL injection
-            $stmt = $conn->prepare("SELECT Program_Num,Name FROM programs ORDER BY Program_Num");
+            $stmt = $conn->prepare("SELECT Program_Num,Name FROM programs WHERE IsActive = 1 ORDER BY Program_Num");
             // Execute the statement
             $stmt->execute();
             // Get the result from the statement

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2023 at 12:16 AM
+-- Generation Time: Dec 09, 2023 at 12:52 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `cybersecdata`
 --
-CREATE DATABASE IF NOT EXISTS `cybersecdata` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `cybersecdata`;
+
 -- --------------------------------------------------------
 
 --
@@ -61,6 +60,18 @@ CREATE TABLE `certification` (
   `Description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `certification`
+--
+
+INSERT INTO `certification` (`Cert_ID`, `Level`, `Name`, `Description`) VALUES
+(1, 'IAT Level I', 'A+ CE', '\r\nCompTIA A+ certifies individuals as adept problem solvers skilled in essential IT tasks, such as device configuration, data backup, recovery, and operating system setup.'),
+(2, 'IAT Level I', 'CCNA-Security', 'The CCNA Security program focuses on essential security technologies and the installation, troubleshooting, and monitoring of network equipment to ensure data and device reliability, privacy, and accessibility.'),
+(3, 'IAT Level II', 'CCNA-Security', 'The CCNA Security program focuses on essential security technologies and the installation, troubleshooting, and monitoring of network equipment to ensure data and device reliability, privacy, and accessibility.'),
+(4, 'IAT Level II', 'CySA+', 'CompTIA Cybersecurity Analyst (CySA+) is an IT workforce certification that applies behavioral analytics to networks and devices to prevent, detect and combat cybersecurity threats.'),
+(5, 'IAT Level III', 'CASP+ CE', 'CASP+ is for tech professionals who prefer hands-on roles over management, validating advanced skills in risk management, enterprise security operations, and architecture.'),
+(6, 'IAT Level III', 'CCNP Security', 'CCNP Security professionals manage and secure Routers, Switches, and Networking Devices, handling configuration and support for Firewalls, VPNs, and IDS/IPS solutions.');
+
 -- --------------------------------------------------------
 
 --
@@ -90,6 +101,20 @@ CREATE TABLE `classes` (
   `Description` varchar(255) NOT NULL,
   `Type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `classes`
+--
+
+INSERT INTO `classes` (`Class_Id`, `Name`, `Description`, `Type`) VALUES
+(1, 'CSCE 310', 'Database Systems', 'Data science'),
+(2, 'MATH 470', 'Introduction to Cryptography I', 'Cryptography'),
+(3, 'MATH 471', 'Introduction to Cryptography II', 'Cryptography'),
+(4, 'DAEN 210', 'Uncertainty Modeling', 'Data science'),
+(5, 'CSCE 305', 'Computational Data Science', 'Data science'),
+(6, 'CSCE 320', 'Principles of Data Science', 'Data science'),
+(7, 'DAEN 429', 'Data Analytics II', 'Data science'),
+(8, 'SPAN 202', 'Intermediate Spanish', 'Foreign language');
 
 -- --------------------------------------------------------
 
@@ -308,7 +333,8 @@ INSERT INTO `programs` (`Program_Num`, `Name`, `Description`, `IsActive`) VALUES
 (2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.', 1),
 (3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.', 1),
 (4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.', 1),
-(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.', 1);
+(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.', 1),
+(7, 'asdfasdfa', 'adsfadsadsfasd', 1);
 
 -- --------------------------------------------------------
 
@@ -325,6 +351,23 @@ CREATE TABLE `student_class_view` (
 ,`Status` varchar(255)
 ,`Semester` varchar(255)
 ,`Year` year(4)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `student_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `student_view` (
+`UIN` int(255)
+,`First_name` varchar(255)
+,`M_Initial` char(1)
+,`Last_Name` varchar(255)
+,`Username` varchar(255)
+,`Passwords` varchar(255)
+,`Email` varchar(255)
+,`Discord` varchar(255)
 );
 
 -- --------------------------------------------------------
@@ -381,6 +424,14 @@ DELIMITER $$
 CREATE TRIGGER `deleteEventTracking` BEFORE DELETE ON `users` FOR EACH ROW DELETE FROM event_tracking WHERE UIN = OLD.UIN
 $$
 DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteUser` BEFORE UPDATE ON `users` FOR EACH ROW UPDATE college_student SET Student_Type = 'Inactive' WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `hardDeleteUser` BEFORE DELETE ON `users` FOR EACH ROW DELETE FROM college_student WHERE UIN = OLD.UIN
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -419,6 +470,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `student_class_view`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `student_class_view`  AS SELECT `class_enrollment`.`ce_num` AS `ClassEnrollmentID`, `class_enrollment`.`UIN` AS `UIN`, `classes`.`Class_Id` AS `Class_ID`, `classes`.`Name` AS `ClassName`, `classes`.`Description` AS `ClassDescription`, `class_enrollment`.`Status` AS `Status`, `class_enrollment`.`Semester` AS `Semester`, `class_enrollment`.`Year` AS `Year` FROM (`class_enrollment` join `classes` on(`class_enrollment`.`Class_ID` = `classes`.`Class_Id`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `student_view`
+--
+DROP TABLE IF EXISTS `student_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `student_view`  AS SELECT `users`.`UIN` AS `UIN`, `users`.`First_name` AS `First_name`, `users`.`M_Initial` AS `M_Initial`, `users`.`Last_Name` AS `Last_Name`, `users`.`Username` AS `Username`, `users`.`Passwords` AS `Passwords`, `users`.`Email` AS `Email`, `users`.`Discord` AS `Discord` FROM `users` ;
 
 -- --------------------------------------------------------
 
@@ -548,7 +608,7 @@ ALTER TABLE `applications`
 -- AUTO_INCREMENT for table `certification`
 --
 ALTER TABLE `certification`
-  MODIFY `Cert_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Cert_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `cert_enrollment`
@@ -596,7 +656,7 @@ ALTER TABLE `intern_app`
 -- AUTO_INCREMENT for table `programs`
 --
 ALTER TABLE `programs`
-  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Program_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `track`
