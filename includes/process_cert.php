@@ -40,15 +40,25 @@ if (isset($_POST['submit-cert'])) {
 
     $conn->close();
 } elseif (isset($_POST['delete-cert'])) {
-    $certId = $_POST['certe_num'];
+    $certName = $_POST['CertName'];
+    $stmt = $conn->prepare("SELECT Cert_ID FROM user_certification_view WHERE CertName = ?");
+    $stmt->bind_param("s", $certName);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $certId = $row['Cert_ID'];
+        $deleteStmt = $conn->prepare("DELETE FROM Cert_Enrollment WHERE Cert_ID = ?");
+        $deleteStmt->bind_param("i", $certId);
+        $deleteStmt->execute();
 
-    $stmt = $conn->prepare("DELETE FROM cert_enrollment WHERE CertE_Num = ?");
-    $stmt->bind_param("i", $certId);
-
-    if ($stmt->execute()) {
-        redirectWithMessage("../pages/progress_tracking.php", "Certification deleted successfully");
+        if ($deleteStmt->affected_rows > 0) {
+            redirectWithMessage("../pages/progress_tracking.php", "Certification enrollment deleted successfully");
+        } else {
+            redirectWithMessage("../pages/error.php", "Error deleting certification enrollment: " . $deleteStmt->error);
+        }
+        $deleteStmt->close();
     } else {
-        redirectWithMessage("../pages/progress_tracking.php", "Error deleting certification: " . $stmt->error);
+        redirectWithMessage("../pages/error.php", "No certification found with the provided name");
     }
     $stmt->close();
     $conn->close();
