@@ -1,6 +1,7 @@
 <!-- Written by Patrick Keating -->
 
 <!-- Creates a new student account when logged in as a student page -->
+<!-- Updates selected student information from the admin page -->
 <?php
 session_start();
 include_once 'dbh.inc.php';
