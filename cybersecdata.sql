@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2023 at 01:45 AM
+-- Generation Time: Dec 09, 2023 at 04:57 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,8 +44,7 @@ INSERT INTO `applications` (`App_Num`, `Program_Num`, `UIN`, `Uncom_Cert`, `Com_
 (1, 2, 530003416, '', '', 'Hello world!'),
 (2, 1, 630003608, '', '', 'Hello world'),
 (7, 1, 630003608, '', '', 'I would like to get an A in this class please!'),
-(9, 5, 530003416, 'CSCE 310', '', 'hello world!'),
-(10, 2, 530003416, 'hello', 'hello!!', 'hello world!!');
+(9, 5, 530003416, 'CSCE 310', '', 'hello world!');
 
 -- --------------------------------------------------------
 
@@ -164,7 +163,8 @@ INSERT INTO `college_student` (`UIN`, `Gender`, `Hispanic`, `Race`, `Citizen`, `
 (121212121, 'Male', 0x30, 'White', 0x31, 0x31, '2023-12-05', 4, 'CSCE', '', '', 2024, 'UT', 'Freshman', 1112223331, 'Active'),
 (333333333, 'Male', 0x31, 'asdf', 0x31, 0x31, '2023-11-27', 3, 'asdf', '', '', 2020, 'asdf', 'Freshman', 2341234444, 'Active'),
 (530003416, 'Male', 0x31, 'Asian', 0x31, 0x31, '2023-12-05', 4, 'CPEN', '', '', 2024, 'Texas A&M', 'Senior', 1234567890, 'Inactive'),
-(630003608, 'Male', 0x31, 'White', 0x31, 0x31, '0000-00-00', 3.9, 'Computer Engineering', 'Mathematics', '', 2024, 'Texas A&M University', 'Freshman', 8325400698, 'Active');
+(630003608, 'Male', 0x31, 'White', 0x31, 0x31, '0000-00-00', 3.9, 'Computer Engineering', 'Mathematics', '', 2024, 'Texas A&M University', 'Freshman', 8325400698, 'Active'),
+(964590082, 'Male', 0x31, 'sadfd', 0x31, 0x31, '2023-12-08', 4, 'math', 'elen', '', 2025, 'Texas A&M', 'Sophomore', 1113334440, 'Active');
 
 --
 -- Triggers `college_student`
@@ -340,8 +340,7 @@ INSERT INTO `programs` (`Program_Num`, `Name`, `Description`, `IsActive`) VALUES
 (2, 'Virtual Institutes for Cyber and Electromagnetic Spectrum Research and Employ (VICEROY)', 'A program intended to help support the development of an enhanced and expanded pipeline for future cyber leaders. Students who participate in the program will be trained in technology areas of critical importance to our National Defense Strategy.', 1),
 (3, 'Pathways', 'Pathways prepares students for cybersecurity careers through mentorship, access to resources, and development opportunities.', 1),
 (4, 'CyberCorps: Scholarship for Service (SFS)', 'Through the Federal CyberCorps Scholarship for Service (SFS) program, Texas A&M University provides scholarships to outstanding students studying in the field of Cybersecurity.', 1),
-(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.', 1),
-(7, 'asdfasdfa', 'adsfadsadsfasd', 0);
+(5, 'DoD Cybersecurity Scholarship Program (CySP)', 'The DoD Cybersecurity Scholarship Program (DoD CySP) aims to attract and keep highly skilled individuals in cybersecurity while fostering ongoing workforce development at designated higher education institutions (CAEs) in the United States.', 1);
 
 -- --------------------------------------------------------
 
@@ -389,6 +388,18 @@ CREATE TABLE `track` (
   `Tracking_Num` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `track`
+--
+
+INSERT INTO `track` (`Program_Num`, `Student_Num`, `Tracking_Num`) VALUES
+(1, 630003608, 1),
+(4, 630003608, 2),
+(2, 121212121, 3),
+(3, 530003416, 4),
+(5, 333333333, 5),
+(4, 964590082, 6);
+
 -- --------------------------------------------------------
 
 --
@@ -418,6 +429,7 @@ INSERT INTO `users` (`UIN`, `First_name`, `M_Initial`, `Last_Name`, `Username`, 
 (333333333, 'test5', 't', 'test5', 'test5', 'test5', 'Student', 'test5@gmail.com', 'test5'),
 (530003416, 'Namson', 'G', 'Pham', 'Nemsun', 'password', 'Student', 'namsonpham@tamu.edu', 'nemsun'),
 (630003608, 'Patrick', 'L', 'Keating', 'pkeating', 'Password', 'Student', 'pkeating@tamu.edu', 'patrick_k'),
+(964590082, 'john', 'a', 'smith', 'jdsmith', '123', 'Student', 'abc@gmail.com', 'jdsmith'),
 (999999999, 'admin', 'a', 'admin', 'admin', 'admin', 'Admin', 'admin@abc.com', 'admin');
 
 --
@@ -670,7 +682,7 @@ ALTER TABLE `programs`
 -- AUTO_INCREMENT for table `track`
 --
 ALTER TABLE `track`
-  MODIFY `Tracking_Num` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Tracking_Num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
