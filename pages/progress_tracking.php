@@ -130,7 +130,7 @@ include_once '../includes/dbh.inc.php';
                             echo "<td><button onclick=\"location.href='edit_certification.php?CertE_Num=" . $row['CertE_Num'] . "'\" class=\"table-btn edit-btn\">Edit</button></td>";
                             echo "<td>";
                             echo "<form action=\"../includes/process_cert.php\" method=\"POST\">";
-                            echo "<input type=\"hidden\" name=\"certe_num\" value=\"" . $row['CertE_Num'] . "\">";
+                            echo "<input type=\"hidden\" name=\"CertName\" value=\"" . $row['CertName'] . "\">";
                             echo "<button type=\"submit\" name=\"delete-cert\" class=\"table-btn delete-btn\" onclick=\"return confirm('Are you sure you want to delete this certification?');\">Delete</button>";
                             echo "</form></td>";
                             echo "</tr>";
