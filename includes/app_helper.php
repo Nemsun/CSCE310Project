@@ -33,3 +33,23 @@ function addApplication($conn, $uin, $programNum, $uncomCert, $comCert, $purpose
         $stmt->close();
     }
 }
+
+/**
+ * This function checks if a program is active or not.
+ * @param $conn - the connection to the database
+ * @param $programNum - the program number
+ * @return bool true if the program is active
+ */
+function checkActiveProgram($conn, $programNum) {
+    // Prepare statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM programs WHERE Program_Num = ? AND IsActive = 1");
+    // Bind parameters to statement
+    $stmt->bind_param("i", $programNum);
+    // Execute the statement
+    // If successful, redirect to application_information page with success message
+    // If unsuccessful, redirect to application_information page with failure message
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return mysqli_num_rows($result) > 0;
+}
