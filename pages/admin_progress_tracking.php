@@ -1,7 +1,8 @@
-<!-- Written by Tarun Arumugam and Zubair ABdullah -->
-<?php
-include '../assets/header.php'; 
-include '../assets/student_navbar.php';
+<!-- Written by Tarun Arumugam -->
+
+<?php 
+include '../assets/user_admin_header.php'; 
+include '../assets/navbar.php';
 include_once '../includes/dbh.inc.php';
 ?>
 
@@ -10,7 +11,7 @@ include_once '../includes/dbh.inc.php';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Program Management</title>
+    <title>Progress Tracking</title>
     <style>
         .program-number {
             width: 10%;
@@ -83,7 +84,6 @@ include_once '../includes/dbh.inc.php';
         </div>
     </div>
 
-
     <div class="table-wrapper">
     <div class="flex flex-col align-end min-width-180">
         <button class="add-btn" onclick="window.location.href='insert_cert.php'">Add Certification</button>
@@ -131,7 +131,7 @@ include_once '../includes/dbh.inc.php';
                             echo "<td><button onclick=\"location.href='edit_certification.php?CertE_Num=" . $row['CertE_Num'] . "'\" class=\"table-btn edit-btn\">Edit</button></td>";
                             echo "<td>";
                             echo "<form action=\"../includes/process_cert.php\" method=\"POST\">";
-                            echo "<input type=\"hidden\" name=\"CertName\" value=\"" . $row['CertName'] . "\">";
+                            echo "<input type=\"hidden\" name=\"certe_num\" value=\"" . $row['CertE_Num'] . "\">";
                             echo "<button type=\"submit\" name=\"delete-cert\" class=\"table-btn delete-btn\" onclick=\"return confirm('Are you sure you want to delete this certification?');\">Delete</button>";
                             echo "</form></td>";
                             echo "</tr>";

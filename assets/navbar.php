@@ -13,7 +13,7 @@
             <a href="../pages/program_management.php" class="nav-link">Program Information</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Progress Tracking</a>
+            <a href="../pages/admin_progress_tracking.php" class="nav-link">Progress Tracking</a>
         </li>
         <li class="nav-item">
             <a href="../pages/event_admin.php" class="nav-link">Events</a>
