@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2023 at 01:19 AM
+-- Generation Time: Dec 09, 2023 at 01:45 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -600,7 +600,8 @@ ALTER TABLE `track`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`UIN`);
+  ADD PRIMARY KEY (`UIN`),
+  ADD UNIQUE KEY `Username_index` (`Username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
