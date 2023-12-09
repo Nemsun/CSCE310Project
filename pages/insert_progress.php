@@ -1,3 +1,5 @@
+<!-- Written by Tarun Arumugam -->
+
 <?php
 include '../assets/header.php'; // Include the header
 include '../assets/student_navbar.php'; // Include the student navigation bar
