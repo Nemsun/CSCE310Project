@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2023 at 04:57 AM
+-- Generation Time: Dec 09, 2023 at 05:09 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -321,6 +321,30 @@ CREATE TABLE `intern_app` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `programdetailedreport`
+-- (See below for the actual view)
+--
+CREATE TABLE `programdetailedreport` (
+`Program_Num` int(11)
+,`Program_Name` varchar(255)
+,`Total_Students` bigint(21)
+,`Completed_Certifications` decimal(22,0)
+,`Foreign_Language_Courses` decimal(22,0)
+,`Cryptography_Courses` decimal(22,0)
+,`Data_Science_Courses` decimal(22,0)
+,`Other_Courses` decimal(22,0)
+,`Enrolled_DoD_Training` decimal(22,0)
+,`Completed_DoD_Training` decimal(22,0)
+,`Passed_DoD_Exam` decimal(22,0)
+,`Minority_Participation` decimal(22,0)
+,`K12_Summer_Camp_Enrollments` decimal(22,0)
+,`Accepted_Federal_Internships` decimal(22,0)
+,`Student_Majors` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `programs`
 --
 
@@ -480,6 +504,15 @@ CREATE TABLE `user_certification_view` (
 DROP TABLE IF EXISTS `event_attendance`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `event_attendance`  AS SELECT `et`.`ET_Num` AS `ET_Num`, `et`.`Event_Id` AS `Event_Id`, `et`.`UIN` AS `UIN`, `u`.`First_name` AS `First_name`, `u`.`M_Initial` AS `M_Initial`, `u`.`Last_Name` AS `Last_Name`, `u`.`Username` AS `Username`, `u`.`User_Type` AS `Is_Admin`, CASE WHEN `e`.`Event_Id` is not null THEN 'Host' ELSE 'Not Host' END AS `Is_Host` FROM ((`event_tracking` `et` join `users` `u` on(`et`.`UIN` = `u`.`UIN`)) left join `event` `e` on(`et`.`Event_Id` = `e`.`Event_Id` and `et`.`UIN` = `e`.`UIN`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `programdetailedreport`
+--
+DROP TABLE IF EXISTS `programdetailedreport`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `programdetailedreport`  AS SELECT `p`.`Program_Num` AS `Program_Num`, `p`.`Name` AS `Program_Name`, count(distinct `t`.`Student_Num`) AS `Total_Students`, sum(case when `ce`.`Status` = 'Completed' then 1 else 0 end) AS `Completed_Certifications`, sum(case when `cl`.`Type` = 'Foreign Language' then 1 else 0 end) AS `Foreign_Language_Courses`, sum(case when `cl`.`Type` = 'Cryptography' then 1 else 0 end) AS `Cryptography_Courses`, sum(case when `cl`.`Type` = 'Data Science' then 1 else 0 end) AS `Data_Science_Courses`, sum(case when `cl`.`Type` not in ('Foreign Language','Cryptography','Data Science') then 1 else 0 end) AS `Other_Courses`, sum(case when `ce`.`Training_Status` = 'DoD 8570.01M' and `ce`.`Status` = 'Enrolled' then 1 else 0 end) AS `Enrolled_DoD_Training`, sum(case when `ce`.`Training_Status` = 'DoD 8570.01M' and `ce`.`Status` = 'Completed' then 1 else 0 end) AS `Completed_DoD_Training`, sum(case when `ce`.`Training_Status` = 'DoD 8570.01M' and `ce`.`Status` = 'Passed' then 1 else 0 end) AS `Passed_DoD_Exam`, sum(case when `cs`.`Race` not in ('White','Caucasian') then 1 else 0 end) AS `Minority_Participation`, sum(case when `cs`.`Student_Type` = 'K-12' and `e`.`Event_Type` = 'Summer Camp' then 1 else 0 end) AS `K12_Summer_Camp_Enrollments`, sum(case when `ia`.`Status` = 'Accepted' then 1 else 0 end) AS `Accepted_Federal_Internships`, group_concat(distinct `cs`.`Major` separator ', ') AS `Student_Majors` FROM (((((((((`programs` `p` left join `track` `t` on(`p`.`Program_Num` = `t`.`Program_Num`)) left join `college_student` `cs` on(`t`.`Student_Num` = `cs`.`UIN`)) left join `cert_enrollment` `ce` on(`cs`.`UIN` = `ce`.`UIN` and `ce`.`Program_Num` = `p`.`Program_Num`)) left join `class_enrollment` `cle` on(`cs`.`UIN` = `cle`.`UIN`)) left join `classes` `cl` on(`cle`.`Class_ID` = `cl`.`Class_Id`)) left join `intern_app` `ia` on(`cs`.`UIN` = `ia`.`UIN`)) left join `internship` `i` on(`ia`.`Intern_ID` = `i`.`Intern_ID`)) left join `event_tracking` `et` on(`cs`.`UIN` = `et`.`UIN`)) left join `event` `e` on(`et`.`Event_Id` = `e`.`Event_Id` and `e`.`Program_Num` = `p`.`Program_Num`)) GROUP BY `p`.`Program_Num` ;
 
 -- --------------------------------------------------------
 
