@@ -21,10 +21,10 @@ include_once '../includes/dbh.inc.php';
     <div class="header">
         <h2>Edit Account Information</h2>
     </div>
-    <!-- Edit information within the User table -->
+    <!-- Edit information within the User student view -->
     <?php
         $olduin = $_SESSION['user_id'];
-        $stmt = $conn->prepare("SELECT * FROM users WHERE UIN = ?");
+        $stmt = $conn->prepare("SELECT * FROM student_view WHERE UIN = ?");
         $stmt->bind_param("i", $olduin);
         $stmt->execute();
         $result = $stmt->get_result();

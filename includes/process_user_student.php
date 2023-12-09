@@ -1,5 +1,6 @@
 <!-- Written by Patrick Keating -->
 
+<!-- Handles all functionality needed the student side, including editing their own information and deactivating their account -->
 <?php
 session_start();
 include_once 'dbh.inc.php';
