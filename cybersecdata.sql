@@ -197,10 +197,10 @@ DELIMITER ;
 --
 
 CREATE TABLE `documents` (
-  `Doc_Num` int(11) NOT NULL,
-  `App_Num` int(11) NOT NULL,
-  `Link` varchar(255) NOT NULL,
-  `Doc_Type` varchar(255) NOT NULL
+  `id` int(11) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file` mediumblob NOT NULL,
+  `UIN` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -540,8 +540,7 @@ ALTER TABLE `college_student`
 -- Indexes for table `documents`
 --
 ALTER TABLE `documents`
-  ADD PRIMARY KEY (`Doc_Num`),
-  ADD KEY `Document_App` (`App_Num`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `event`
@@ -626,7 +625,7 @@ ALTER TABLE `class_enrollment`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `Doc_Num` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `event`
@@ -689,12 +688,6 @@ ALTER TABLE `cert_enrollment`
 ALTER TABLE `class_enrollment`
   ADD CONSTRAINT `Class_ID` FOREIGN KEY (`Class_ID`) REFERENCES `classes` (`Class_Id`),
   ADD CONSTRAINT `Class_UIN` FOREIGN KEY (`UIN`) REFERENCES `college_student` (`UIN`);
-
---
--- Constraints for table `documents`
---
-ALTER TABLE `documents`
-  ADD CONSTRAINT `Document_App` FOREIGN KEY (`App_Num`) REFERENCES `applications` (`App_Num`);
 
 --
 -- Constraints for table `event`
