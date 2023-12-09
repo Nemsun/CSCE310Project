@@ -44,20 +44,20 @@ include_once '../includes/dbh.inc.php';
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
                         <th class="hidden">.</th>
+                        <th class="hidden">.</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
-                            // Convert boolean value to a user-friendly string
                             $activeStatus = $row['IsActive'] ? 'Yes' : 'No';
                             ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['Program_Num']); ?></td>
                                 <td><?php echo htmlspecialchars($row['Name']); ?></td>
                                 <td class="description"><?php echo htmlspecialchars($row['Description']); ?></td>
-                                <td><?php echo $activeStatus; ?></td> <!-- Display active status -->
+                                <td><?php echo $activeStatus; ?></td>
                                 <td>
                                     <button onclick="location.href='add_program.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Edit</button>
                                 </td>
@@ -70,18 +70,20 @@ include_once '../includes/dbh.inc.php';
                                 <td>
                                     <form action="../includes/process_program.php" method="POST">
                                         <input type="hidden" name="program_num" value="<?php echo $row['Program_Num']; ?>">
-                                        <!-- Toggle the active status instead of just hiding -->
                                         <button type="submit" name="hide_program" class="table-btn"><?php echo $row['IsActive'] ? 'Hide' : 'Show'; ?></button>
                                     </form>
                                 </td>
-                            </tr>
+                                <td>
+                                    <button onclick="location.href='view_report.php?Program_Num=<?php echo $row['Program_Num']; ?>'" class="table-btn edit-btn">Select</button>
+                                </td>
                             <?php
                         }
                     } else {
-                        echo "<tr><td colspan='7'>No programs found.</td></tr>";
+                        echo "<tr><td colspan='8'>No programs found.</td></tr>";
                     }
                     ?>
                 </tbody>
+
             </table>
         </div>
     </div>
