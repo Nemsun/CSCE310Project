@@ -35,6 +35,12 @@ if (isset($_POST['add_app_btn'])) {
         redirectTo("application_information", "error=invalidprogram", 'Program does not exist');
         exit();
     }
+    /* Check if the program is active */
+    if (!checkActiveProgram($conn, $programNum)) {
+        // If the program is not active, redirect to the application_information page with an error
+        redirectTo("application_information", "error=invalidprogram", "Program is not active");
+        exit();
+    }
     // If no errors, add the application to the database
     addApplication($conn, $userUIN, $programNum, $uncomCert, $comCert, $purposeStmt);
 } 
